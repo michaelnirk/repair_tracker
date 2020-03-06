@@ -1,0 +1,27 @@
+<?php
+/* Smarty version 3.1.30, created on 2017-12-10 14:24:14
+  from "/var/www/repair_tracker/templates/vehicle/css.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5a2d438e11e524_99457485',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '469bfa6228af95b7327f333aff6442a058de2ba0' => 
+    array (
+      0 => '/var/www/repair_tracker/templates/vehicle/css.tpl',
+      1 => 1512914348,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5a2d438e11e524_99457485 (Smarty_Internal_Template $_smarty_tpl) {
+?>
+<link href="css/modules/vehicle/list_vehicles.css" rel="stylesheet">
+<link href="css/modules/vehicle/form_vehicle.css" rel="stylesheet"><?php }
+}

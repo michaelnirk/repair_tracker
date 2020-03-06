@@ -1,0 +1,19 @@
+#formVehicleWrapper .notes-header {
+  display: flex;
+}
+#formVehicleWrapper .notes-header button.toolbar-button {
+  margin: 0;
+}
+#formVehicleWrapper div.standard-form-element.note {
+  padding-left: calc(15vw + 15px);
+  align-items: flex-start;
+}
+#formVehicleWrapper div.standard-form-element.note i {
+  margin-left: 5px;
+  font-size: 1.2rem;
+}
+#formVehicleWrapper div.standard-form-element.note i:hover {
+  color: #f99a48;
+  cursor: pointer;
+}
+/*# sourceMappingURL=form_vehicle.css.map */

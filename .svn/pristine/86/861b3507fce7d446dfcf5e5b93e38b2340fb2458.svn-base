@@ -1,0 +1,27 @@
+<?php
+/* Smarty version 3.1.30, created on 2016-10-31 20:02:50
+  from "C:\wamp\www\repair_tracker\templates\vehicle\css.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5817955a4db685_64303436',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '3b70c00aeec79b54399f0ec5bba129851ac0c565' => 
+    array (
+      0 => 'C:\\wamp\\www\\repair_tracker\\templates\\vehicle\\css.tpl',
+      1 => 1477930749,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5817955a4db685_64303436 (Smarty_Internal_Template $_smarty_tpl) {
+?>
+<link href="css/modules/vehicle/list_vehicles.css" rel="stylesheet">
+<link href="css/modules/vehicle/form_vehicle.css" rel="stylesheet"><?php }
+}

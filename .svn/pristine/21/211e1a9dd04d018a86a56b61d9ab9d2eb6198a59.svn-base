@@ -1,0 +1,30 @@
+<?php
+/* Smarty version 3.1.30, created on 2016-11-03 13:27:53
+  from "C:\wamp\www\repair_tracker\templates\repair\js.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_581b2d49baa025_11328954',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '6f94e6eef8255826dea5f216261d5a403ebc0ea0' => 
+    array (
+      0 => 'C:\\wamp\\www\\repair_tracker\\templates\\repair\\js.tpl',
+      1 => 1478176050,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_581b2d49baa025_11328954 (Smarty_Internal_Template $_smarty_tpl) {
+echo '<script'; ?>
+ src="js/modules/repair/list_repairs.js"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+ src="js/modules/repair/form_repair.js"><?php echo '</script'; ?>
+><?php }
+}

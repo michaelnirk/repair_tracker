@@ -1,0 +1,54 @@
+var ListVehicles = {
+    init: function() {
+        $(".contentContainer").css("min-height", $(window).height() - 52);
+        
+        $(".list-vehicles-wrapper-div").off('click').on('click', function(event) {
+            switch(event.target.id){
+                case 'viewRepairsBtn':
+                    ListVehicles.listRepairs();
+                    break;
+                case 'view_editVehicleBtn':
+                    ListVehicles.viewEditVehicle();
+                    break;
+                case 'addNewVehicleBtn':
+                    ListVehicles.addNewVehicle();
+                    break;
+                case 'deleteVehicleBtn':
+                    ListVehicles.deleteFunction();
+                    break;
+            }
+        });
+    },
+    
+    deleteFunction: function() {
+        if (window.confirm("Do you really want to delete this vehicle?")) {
+
+          var vehID = $('#vehicleSelect').val();
+          window.location = 'index.php?module=Vehicle&action=deletevehicle&vehid=' + vehID;
+        }
+    },
+    
+    viewEditVehicle: function(){
+        var vehID = $('#vehicleSelect').val();
+        window.location = 'index.php?module=Vehicle&action=vieweditvehicle&vehid=' + vehID;
+    }, 
+    
+    addNewVehicle: function(){
+        window.location = 'index.php?module=Vehicle&action=addnewvehicle';
+    },
+    
+    listRepairs: function(){
+        var vehID = $('#vehicleSelect').val();
+        var vehName = $('#vehicleSelect option:selected').text();
+        window.location = 'index.php?module=Repair&action=listrepairs&vehid=' + vehID + '&vehname=' + vehName;
+    }
+};
+
+$(document).ready(function() {
+    var isListVehicle = $('.list-vehicles-wrapper-div').length;
+    if(isListVehicle > 0){
+        ListVehicles.init();
+    }
+});
+
+

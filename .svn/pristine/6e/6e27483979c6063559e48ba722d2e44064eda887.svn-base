@@ -1,0 +1,95 @@
+FormVehicle = {
+    init: function(){
+        
+        $(".contentContainer").css("min-height", $(window).height() - 52);
+        
+        $("#datePurchased").datepicker({
+            changeMonth:true, 
+            changeYear:true, 
+            dateFormat:'d M yy', 
+            maxDate:'0'
+        });
+        
+        $('.edit-view-vehicles-wrapper-div').off('click').on('click', function(event){
+            switch(event.target.id){
+                case 'updateVehicleButton':
+                case 'saveVehicleButton':
+                    FormVehicle.saveVehicle();
+                    break;
+                case 'cancelUpdateVehicleButton':
+                case 'cancelSaveVehicleButton':
+                    window.location = "index.php?module=Vehicle&action=listvehicles";
+                    break;
+                case 'viewVehicleRepairsButton':
+                    window.location = "index.php?module=Repair&action=listrepairs";
+                    break;
+                case 'vehicleListBtn':
+                    window.location = "index.php?module=Vehicle&action=listvehicles";
+            }
+        });
+    },
+    
+    saveVehicle: function(){
+        var isValid = FormVehicle.validateForm();
+        if(isValid){
+            $('#vehicleForm').submit();
+        }
+    },
+    
+    viewVehicleRepairs: function(){
+        
+    },
+    //Function to validate form inputs before submitting
+    validateForm: function(){
+        var isValid = true;
+        var name = $('#vehicleName').val();
+        var year = $('#year').val();
+        var km = $('#kmAtPurchase').val();
+        var errors = [];//array to hold error messages
+        
+        //Make sure name has a value
+        if(name && name !== ''){
+            $('#vehicleName').removeClass('redBorder');
+        } else {
+            isValid = false;
+            $('#vehicleName').addClass('redBorder');
+            errors.push('Please enter a name for this vehicle.');
+        }
+        //If year has a value, make sure it is a number
+        if(year && year !== ''){
+            if(isNaN(year)){
+                isValid = false;
+                $('#year').addClass('redBorder');
+                errors.push('Please enter a numerical value for year.');
+            } else {
+                $('#year').removeClass('redBorder');
+            }
+        }
+        //If km has a value, make sure it is a number
+        if(km && km !== ''){
+            if(isNaN(km)){
+                isValid = false;
+                $('#kmAtPurchase').addClass('redBorder');
+                errors.push('Please enter a numerical value for kilometers.');
+            } else {
+                $('#kmAtPurchase').removeClass('redBorder');
+            }
+        }
+        if(!isValid){
+            var message = '';
+            errors.forEach(function(item){
+                message += item + '\n\r';
+            });
+            alert(message);
+        }
+        return isValid;        
+    }
+};
+
+$(document).ready(function() {
+    var isViewEditVehicle = $('.edit-view-vehicles-wrapper-div').length;
+    if(isViewEditVehicle > 0){
+        FormVehicle.init();
+    }
+});
+

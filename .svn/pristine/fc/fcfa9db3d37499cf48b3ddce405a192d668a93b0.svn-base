@@ -1,0 +1,113 @@
+var Login = {
+    
+    init: function(){
+        
+        $(".login-wrapper-div").css("min-height", $(window).height() - 52);
+        
+        $(".login-wrapper-div").off('click').on('click', function(event){
+            var target = event.target.id;
+            
+            switch(target){
+                case 'createAccount':
+                    Login.createAccount();
+            }
+        });
+    },
+    
+    createAccount: function(){
+        if(Login.validateForm()){
+            $('#newAccountForm').submit();
+        }
+        
+    },
+    
+    //Function to validate form inputs before submitting
+    validateForm: function(){
+        var isValid = true;
+        var firstName = $('#firstName').val();
+        var lastName = $('#lastName').val();
+        var email = $('#email').val();
+        var password1 = $('#password').val();
+        var password2 = $('#confirmPassword').val();
+        var errors = [];//array to hold error messages
+        
+        //Make sure first name has a value
+        if(firstName && firstName !== ''){
+            $('#firstName').removeClass('redBorder');
+        } else {
+            isValid = false;
+            $('#firstName').addClass('redBorder');
+            errors.push('Please enter your first name.');
+        }
+        
+        //Make sure last name has a value
+        if(lastName && lastName !== ''){
+            $('#lastName').removeClass('redBorder');
+        } else {
+            isValid = false;
+            $('#lastName').addClass('redBorder');
+            errors.push('Please enter your last name.');
+        }
+        
+        //Make sure email has a value
+        if(email && email !== ''){
+            $('#email').removeClass('redBorder');
+        } else {
+            isValid = false;
+            $('#email').addClass('redBorder');
+            errors.push('Please enter your email address.');
+        }
+        
+        //Make sure password has a value
+        if(password1 && password1 !== ''){
+            $('#password').removeClass('redBorder');
+        } else {
+            isValid = false;
+            $('#password').addClass('redBorder');
+            errors.push('Please enter a password.');
+        }
+        
+        //Make sure confirm password has a value
+        if(password2 && password2 !== ''){
+            $('#confirmPassword').removeClass('redBorder');
+        } else {
+            isValid = false;
+            $('#confirmPassword').addClass('redBorder');
+            errors.push('Please confirm your password.');
+        }
+        
+        //Make sure passwords match
+        if((password1 && password1 !== '') && (password2 && password2 !== '')){
+            if(password1 !== password2){
+                isValid = false;
+                $('#password').addClass('redBorder');
+                $('#confirmPassword').addClass('redBorder');
+                errors.push("Your passwords do not match. Please try again.");
+            } else {
+                $('#password').removeClass('redBorder');
+                $('#confirmPassword').removeClass('redBorder');
+            }
+        }
+        
+        if(!isValid){
+            var message = '';
+            errors.forEach(function(item){
+                message += item + '\n\r';
+            });
+            alert(message);
+        }
+        return isValid;        
+    }
+    
+};
+
+$(document).ready(function() {
+    var isLogin = $('.login-wrapper-div').length;
+    if(isLogin){
+        Login.init();
+    }
+});
+
+
+
+

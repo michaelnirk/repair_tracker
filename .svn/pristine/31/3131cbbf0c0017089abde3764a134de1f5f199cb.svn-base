@@ -1,0 +1,146 @@
+<?php
+require_once 'entity/repair/RepairClass.php';
+class RepairControllerClass extends UIControllerClass {
+    //Constructor
+    function __construct($request) {
+        parent::__construct($request);
+        $this->tpl->assign('module', 'repair');
+    }
+    
+    function execute(){
+        switch($this->request['action']){
+            case 'listrepairs':
+                $this->listRepairs();
+                break;
+            case 'addnewrepair':
+                $this->showRepairForm();
+                break;
+            case 'editrepair':
+                $this->editRepair();
+                break;
+            case 'deleterepair':
+                $this->deleteRepair();
+                break;
+            case 'saverepair':
+                $this->saveRepair();
+                break;
+        }
+        
+        $this->tpl->display('index.tpl');
+    }
+    
+    private function listRepairs(){
+        if(empty($this->request['vehid'])){
+            $repairs = $this->DAO->listRepairs($_SESSION['currentVehicleID']);
+        } else {
+            $_SESSION['currentVehicleID'] = $this->request['vehid'];
+            $_SESSION['currentVehicleName'] = $this->request['vehname'];
+            $repairs = $this->DAO->listRepairs($_SESSION['currentVehicleID']);
+        }        
+        
+        if(count($repairs) <= 0){
+            $this->errors[] = 'This Vehicle Has No Repairs. Add a repair by clicking "Add a New Repair"';
+            $this->tpl->assign('errors', $this->errors);
+        }
+        $this->tpl->assign('vehicleName', $_SESSION['currentVehicleName']);
+        $this->tpl->assign('repairs', $repairs);
+        $this->tpl->assign('content', 'list_repairs');
+    }
+    
+    private function showRepairForm($repair = NULL){
+        if(!empty($repair)){   
+            $this->tpl->assign('repair', $repair);
+            $this->tpl->assign('repairJSON', json_encode($repair->getArray()));
+        }
+        
+        $this->tpl->assign('vehicleName', $_SESSION['currentVehicleName']);
+        $this->tpl->assign('content', 'form_repair');
+    }
+    
+    private function editRepair(){
+        $repair = $this->DAO->getRepair($this->request['repairid']);
+        $this->showRepairForm($repair);
+    }
+    
+    private function saveRepair(){
+        $repair = $this->request;
+        unset($repair['module'], $repair['action']);
+        
+        //Sanitize all input values
+        if(empty($repair['repair_descrip'])){
+            $this->errors[] = "Please enter a repair description.";
+        } else {
+            $repair['repair_descrip'] = test_input($repair['repair_descrip']);
+        }
+        
+        if(empty($repair['repair_date'])){
+            $this->errors[] = "Please select a repair date.";
+        } else {
+            $date = strtotime(test_input($repair['repair_date']));
+            $repair['repair_date'] = date("Y-m-d", $date);
+        }
+        
+        if(!empty($repair['km_at_repair'])){
+            $repair['km_at_repair'] = test_input($repair['km_at_repair']);
+        }
+        
+        if(empty($repair['repair_loc'])){
+            $this->errors[] = "Please enter a repair location.";
+        } else {
+            $repair['repair_loc'] = test_input($repair['repair_loc']);
+        }
+        
+        if(!empty($repair['cost'])){
+            $repair['cost'] = test_input($repair['cost']);
+        }
+        
+        if(!empty($repair['notes'])){
+            $repair['notes'] = test_input($repair['notes']);
+        }
+        
+        //If there are errors display repair form with errors
+        if(count($this->errors) > 0){//There are errors
+            $this->tpl->assign('errors', $this->errors);
+            $this->showRepairForm(new RepairClass($repair));
+        } else {//No errors
+            //Check if repair id is set. If so this is an update. If not new save
+            if(empty($repair['repair_ID'])){//New save  
+                $repair['vehicle_ID'] = $_SESSION['currentVehicleID'];
+                $result = $this->DAO->saveRepair(new RepairClass($repair));
+                if($result > 0){//Successful
+                    $this->messages[] = "Repair was successfully saved.";
+                    $this->tpl->assign('messages', $this->messages);
+                    $this->listRepairs();
+                } else {//Failed
+                    $this->errors[] = "There was a problem saving the repair. Please try again later.";
+                    $this->tpl->assign('errors', $this->errors);
+                    $this->listRepairs();
+                }
+            } else {//Update
+                $result = $this->DAO->updateRepair(new RepairClass($repair));
+                if($result > 0){//Successful
+                    $this->messages[] = "Repair was successfully updated.";
+                    $this->tpl->assign('messages', $this->messages);
+                    $this->listRepairs();
+                } else {//Failed
+                    $this->errors[] = "There was a problem saving the repair. Please try again later.";
+                    $this->tpl->assign('errors', $this->errors);
+                    $this->listRepairs();
+                }
+            }
+        } 
+    }
+    
+    private function deleteRepair(){
+        $result = $this->DAO->deleteRepair($this->request['repairid']);
+        if($result > 0){//Successful
+            $this->messages[] = "Repair was successfully deleted.";
+            $this->tpl->assign('messages', $this->messages);
+            $this->listRepairs();
+        } else {//Failed
+            $this->errors[] = "There was a problem deleting the repair. Please try again later.";
+            $this->tpl->assign('errors', $this->errors);
+            $this->listRepairs();
+        }
+    }
+}

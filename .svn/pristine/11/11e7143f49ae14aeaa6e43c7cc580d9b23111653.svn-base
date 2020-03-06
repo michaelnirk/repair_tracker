@@ -1,0 +1,28 @@
+<?php
+/* Smarty version 3.1.30, created on 2016-10-20 19:49:47
+  from "C:\wamp\www\repair_tracker\templates\login\js.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_580903bbb56223_83940811',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '105e009c1703bac6c8bc9012ccdb7419987efb93' => 
+    array (
+      0 => 'C:\\wamp\\www\\repair_tracker\\templates\\login\\js.tpl',
+      1 => 1476984693,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_580903bbb56223_83940811 (Smarty_Internal_Template $_smarty_tpl) {
+$_smarty_tpl->compiled->nocache_hash = '27256580903bbb4f283_11761682';
+echo '<script'; ?>
+ src="js/modules/login/login.js"><?php echo '</script'; ?>
+><?php }
+}

@@ -1,0 +1,79 @@
+<?php
+/* Smarty version 3.1.30, created on 2017-11-12 14:27:36
+  from "C:\wamp\www\repair_tracker\templates\index.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5a084c481e6808_19272349',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '7563487667360557c4cae08ecba2788ca2af0173' => 
+    array (
+      0 => 'C:\\wamp\\www\\repair_tracker\\templates\\index.tpl',
+      1 => 1509881724,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+    'file:css.tpl' => 1,
+    'file:js.tpl' => 1,
+    'file:login_header.tpl' => 1,
+    'file:header.tpl' => 1,
+  ),
+),false)) {
+function content_5a084c481e6808_19272349 (Smarty_Internal_Template $_smarty_tpl) {
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Repair Tracker</title>
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <?php echo '<script'; ?>
+ src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"><?php echo '</script'; ?>
+>
+        <?php echo '<script'; ?>
+ src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"><?php echo '</script'; ?>
+>
+        <![endif]-->
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <?php $_smarty_tpl->_subTemplateRender("file:css.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+?>
+        
+        <?php $_smarty_tpl->_subTemplateRender(((string)$_smarty_tpl->tpl_vars['module']->value)."/css.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, true);
+?>
+
+
+        <?php $_smarty_tpl->_subTemplateRender("file:js.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+?>
+
+        <?php $_smarty_tpl->_subTemplateRender(((string)$_smarty_tpl->tpl_vars['module']->value)."/js.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, true);
+?>
+
+        
+    </head>
+    <body>
+        <?php if ($_smarty_tpl->tpl_vars['module']->value == 'login') {?>
+            <?php $_smarty_tpl->_subTemplateRender("file:login_header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+?>
+
+        <?php } else { ?>
+            <?php $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+?>
+
+        <?php }?>
+        <?php $_smarty_tpl->_subTemplateRender(((string)$_smarty_tpl->tpl_vars['module']->value)."/".((string)$_smarty_tpl->tpl_vars['content']->value).".tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, true);
+?>
+
+    </body>
+</html><?php }
+}

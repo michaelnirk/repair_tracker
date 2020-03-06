@@ -1,0 +1,29 @@
+<?php
+/* Smarty version 3.1.30, created on 2016-10-19 20:01:23
+  from "C:\wamp\www\repair_tracker\templates\login.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5807b4f38c3788_21972359',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '690d160ff7f9ca806dbd0f94ffe2d7995d52bfd0' => 
+    array (
+      0 => 'C:\\wamp\\www\\repair_tracker\\templates\\login.tpl',
+      1 => 1476900079,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5807b4f38c3788_21972359 (Smarty_Internal_Template $_smarty_tpl) {
+$_smarty_tpl->compiled->nocache_hash = '273485807b4f3672388_40803540';
+?>
+
+
+Hey Dude!<?php }
+}

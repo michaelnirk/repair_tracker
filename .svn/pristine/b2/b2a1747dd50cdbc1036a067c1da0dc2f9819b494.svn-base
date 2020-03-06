@@ -1,0 +1,95 @@
+FormRepair = {
+    repairJSON: null,
+    init: function(){
+        
+        $(".contentContainer").css("min-height", $(window).height() - 52);
+        
+        $("#repairDate").datepicker({
+            changeMonth:true, 
+            changeYear:true, 
+            dateFormat:'d M yy', 
+            maxDate:'0'
+        });
+        
+        $('.form-repair-wrapper-div').off('click').on('click', function(event){
+            var eventTarget = event.target.id;
+            switch(eventTarget){
+                case 'editRepair':
+                case 'addRepair':
+                    FormRepair.saveRepair();
+                    break;
+                case 'cancelEdit':
+                case 'cancelAdd': 
+                    window.location = "index.php?module=Repair&action=listrepairs";
+                    break;
+            }
+        });
+        
+        if(FormRepair.repairJSON){
+            FormRepair.fillFormWithRepair();
+        }
+    },
+    
+    saveRepair: function(){
+        var isValid = FormRepair.validateRepairForm();
+        if(isValid){
+            $('#repairForm').submit();
+        }
+    },
+    
+    //Function to validate form inputs before submitting
+    validateRepairForm: function(){
+        var isValid = true;
+        var date = $('#repairDate').val();
+        var description = $('#repairDescription').val();
+        var location = $('#repairLocation').val();
+        var errors = [];//array to hold error messages
+        
+        //Make sure repair date has a value
+        if(date && date !== ''){
+            $('#repairDate').removeClass('redBorder');
+        } else {
+            isValid = false;
+            $('#repairDate').addClass('redBorder');
+            errors.push('Please select a date for this repair.');
+        }
+        //ake sure description has a value
+        if(description && description !== ''){
+            $('#repairDescription').removeClass('redBorder');                
+        } else {
+            isValid = false;
+            $('#repairDescription').addClass('redBorder');
+            errors.push('Please enter a description for this repair.');            
+        }
+        //ake sure location has a value
+        if(location && location !== ''){
+            $('#repairLocation').removeClass('redBorder');                
+        } else {
+            isValid = false;
+            $('#repairLocation').addClass('redBorder');
+            errors.push('Please enter a location for this repair.');
+        }
+        if(!isValid){
+            var message = '';
+            errors.forEach(function(item){
+                message += item + '\n\r';
+            });
+            alert(message);
+        }
+        return isValid;        
+    },
+    
+    fillFormWithRepair: function(){
+        $('#repairDescription').height(document.getElementById('repairDescription').scrollHeight);
+        $('#repairNotes').height(document.getElementById('repairNotes').scrollHeight);
+    }
+};
+
+$(document).ready(function(){
+   var isFormRepair = $('.form-repair-wrapper-div').length;
+   if(isFormRepair > 0){
+       FormRepair.init();
+   }
+});
+
+

@@ -1,0 +1,111 @@
+<?php
+/* Smarty version 3.1.30, created on 2017-12-10 14:24:14
+  from "/var/www/repair_tracker/templates/vehicle/list_vehicles.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5a2d438e22d0c9_22488804',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'e469c1d2daa895a9ed34d29fbd1ad21951aeee7f' => 
+    array (
+      0 => '/var/www/repair_tracker/templates/vehicle/list_vehicles.tpl',
+      1 => 1512914348,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5a2d438e22d0c9_22488804 (Smarty_Internal_Template $_smarty_tpl) {
+?>
+<div class="list-vehicles-wrapper-div contentContainer topContainer container">  
+    <div class="row center" id="topRow">
+        <div class="col-md-6 col-md-offset-3 whiteText">
+            <h1>Welcome to Repair Tracker!</h1>
+            <?php if (isset($_smarty_tpl->tpl_vars['noVehiclesMessage']->value)) {?>
+                <h2><?php echo $_smarty_tpl->tpl_vars['noVehiclesMessage']->value;?>
+</h2>
+            <?php } else { ?>
+                <h2>Select the vehicle you want to work with and then click the button for the action you wish to perform.</h2>
+            <?php }?>
+            
+            <?php if (isset($_smarty_tpl->tpl_vars['messages']->value)) {?> 
+                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['messages']->value, 'message');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['message']->value) {
+?>
+                    <div class="alert alert-success"><?php echo $_smarty_tpl->tpl_vars['message']->value;?>
+</div>  
+                <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
+            <?php }?>
+            <?php if (isset($_smarty_tpl->tpl_vars['errors']->value)) {?>
+                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['errors']->value, 'error');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['error']->value) {
+?>
+                    <div class="alert alert-danger"><?php echo $_smarty_tpl->tpl_vars['error']->value;?>
+</div>
+                <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
+            <?php }?>
+        </div>
+        <div class="row center contentRow">
+            <div class="col-md-2 col-md-offset-5">
+                <form role="form" method="post" id="select" name="select">
+                    <div class="form-group">
+                        <div class="marginBottom">
+                            <?php if (empty($_smarty_tpl->tpl_vars['noVehiclesMessage']->value)) {?>                                
+                                <select class="form-control input-lg" name="vehicleselect" id="vehicleSelect">
+                                    <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['vehicleList']->value, 'vehicle');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['vehicle']->value) {
+?>
+
+                                        <option value=<?php echo $_smarty_tpl->tpl_vars['vehicle']->value->getVehicleID();?>
+><?php echo $_smarty_tpl->tpl_vars['vehicle']->value->getName();?>
+</option>
+
+                                    <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
+                                </select>
+                            <?php }?>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row center">
+            <div class="col-md-8 col-md-offset-2">          
+                <div class="form-group">
+                    <div>                        
+                        <input type="button" class="btn btn-md btn-success" id="view_editVehicleBtn" value="View/Edit Vehicle" />
+                        <input type="button" class="btn btn-md btn-success" id="addNewVehicleBtn" value="Add New Vehicle" />
+                        <input type="button" class="btn btn-md btn-danger" id="deleteVehicleBtn" value="Delete Vehicle" />
+                        <input type="button" class="btn btn-md btn-success" id="viewRepairsBtn" value="View Vehicle Repairs" />                        
+                    </div>
+                </div>                                                  
+            </div>        
+        </div>
+    </div>
+</div><?php }
+}

@@ -1,0 +1,9 @@
+<?php
+/**
+ * Description of Entity
+ *
+ * @author Michael Nirk
+ */
+class EntityClass {
+    //put your code here
+}

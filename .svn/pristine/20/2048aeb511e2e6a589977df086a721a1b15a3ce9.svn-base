@@ -1,0 +1,32 @@
+<?php
+/* Smarty version 3.1.30, created on 2017-12-10 14:24:07
+  from "/var/www/repair_tracker/templates/css.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5a2d438779bac8_01649413',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '016481482240ec0824d480dcaf3d0fca71c213ae' => 
+    array (
+      0 => '/var/www/repair_tracker/templates/css.tpl',
+      1 => 1512914339,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5a2d438779bac8_01649413 (Smarty_Internal_Template $_smarty_tpl) {
+?>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap-theme.min.css" rel="stylesheet">
+<link href="css/jquery-ui.min.css" rel="stylesheet">
+<link href="css/jquery-ui.structure.min.css" rel="stylesheet">
+<link href="css/jquery-ui.theme.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<?php }
+}

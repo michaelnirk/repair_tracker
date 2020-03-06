@@ -1,0 +1,193 @@
+<?php
+/* Smarty version 3.1.30, created on 2017-12-10 14:24:24
+  from "/var/www/repair_tracker/templates/vehicle/form_vehicle.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5a2d439807d8a7_83172105',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '5d0efca71bf94066159729596a93686658fc8457' => 
+    array (
+      0 => '/var/www/repair_tracker/templates/vehicle/form_vehicle.tpl',
+      1 => 1512914348,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5a2d439807d8a7_83172105 (Smarty_Internal_Template $_smarty_tpl) {
+if (!is_callable('smarty_modifier_date_format')) require_once '/var/www/repair_tracker/Smarty/plugins/modifier.date_format.php';
+?>
+<div class="edit-view-vehicles-wrapper-div contentContainer topContainer container">
+    <div class="row center" id="topRow">
+        <div class="col-md-6 col-md-offset-3 whiteText">
+            <?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {?>
+                <h1><?php echo $_smarty_tpl->tpl_vars['vehicle']->value->getName();?>
+</h1>
+                <h2>
+                    Edit data on this vehicle by typing the new data
+                    <br>into the fields below and then clicking
+                    <br>'Update Information'
+                </h2>
+            <?php } else { ?>
+                <h1>Add A New Vehicle</h1>
+                <h2>
+                    Enter data for new vehicle into the form below and then click<br>'Add Vehicle'
+                </h2>
+            <?php }?>
+            
+            <?php if (isset($_smarty_tpl->tpl_vars['errors']->value)) {?>
+                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['errors']->value, 'error');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['error']->value) {
+?>
+                  <div class="alert alert-danger"><?php echo $_smarty_tpl->tpl_vars['error']->value;?>
+</div>
+                <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
+            <?php }?>
+            <?php if (isset($_smarty_tpl->tpl_vars['messages']->value)) {?>
+                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['messages']->value, 'message');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['message']->value) {
+?>
+                  <div class="alert alert-success"><?php echo $_smarty_tpl->tpl_vars['message']->value;?>
+</div>
+                <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
+            <?php }?>
+        </div>    
+    </div>
+    <div class="row center contentRow">
+        <div class="col-md-5 col-md-offset-3">
+            <form id="vehicleForm" class="form-horizontal" role="form" method="post" action="index.php?module=Vehicle&action=savevehicle">
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-xs-5 whiteText"><span class="redText">*</span> Indicates required field</label>
+                </div>
+                <div class="form-group">
+                    <label for="vehicleName" class="control-label col-xs-5 whiteText"><span class="redText">* </span>Vehicle Name</label>
+                    <div class="col-xs-7">
+                      <input type="text" class="form-control" name="name" id="vehicleName" value="<?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {
+echo $_smarty_tpl->tpl_vars['vehicle']->value->getName();
+}?>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="make" class="control-label col-xs-5 whiteText">Make</label>
+                    <div class="col-xs-7">
+                      <input type="text" class="form-control" name="make" id="make" value="<?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {
+echo $_smarty_tpl->tpl_vars['vehicle']->value->getMake();
+}?>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="model" class="control-label col-xs-5 whiteText">Model</label>
+                    <div class="col-xs-7">
+                      <input type="text" class="form-control" name="model" id="model" value="<?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {
+echo $_smarty_tpl->tpl_vars['vehicle']->value->getModel();
+}?>"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="year" class="control-label col-xs-5 whiteText">Year</label>
+                    <div class="col-xs-7">
+                      <input type="text" class="form-control" name="year" id="year" value="<?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {
+echo $_smarty_tpl->tpl_vars['vehicle']->value->getYear();
+}?>"/>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="sNum" class="control-label col-xs-5 whiteText">Schluessel Number</label>
+                    <div class="col-xs-7">
+                      <input type="text" class="form-control" name="key_num" id="sNum" value="<?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {
+echo $_smarty_tpl->tpl_vars['vehicle']->value->getKeyNum();
+}?>"/>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="datePurchased" class="control-label col-xs-5 whiteText">Date Purchased</label>
+                    <div class="col-xs-7">
+                      <input type="text" class="form-control" name="date_purchased" id="datePurchased" value="<?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {
+echo smarty_modifier_date_format($_smarty_tpl->tpl_vars['vehicle']->value->getDatePurchased(),"%d %b %Y");
+}?>"/>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="kmAtPurchase" class="control-label col-xs-5 whiteText">KM at Purchase</label>
+                    <div class="col-xs-7">
+                      <input type="text" class="form-control" name="km_at_purchase" id="kmAtPurchase" value="<?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {
+echo $_smarty_tpl->tpl_vars['vehicle']->value->getKmAtPurchase();
+}?>"/>
+                    </div> 
+                </div>
+                 <div class="form-group">
+                    <label for="comments" class="control-label col-xs-5 whiteText">Comments</label>
+                    <div class="col-xs-7">
+                      <textarea class="form-control" rows="5" name="comments" id="comments"><?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {
+echo $_smarty_tpl->tpl_vars['vehicle']->value->getComments();
+}?></textarea>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="purchasePrice" class="control-label col-xs-5 whiteText">Purchase Price</label>
+                    <div class="col-xs-7">
+                      <input type="text" class="form-control" name="purchase_price" id="purchasePrice" value="<?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {
+echo $_smarty_tpl->tpl_vars['vehicle']->value->getPurchasePrice();
+}?>"/>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="licensePlate" class="control-label col-xs-5 whiteText">License Plate</label>
+                    <div class="col-xs-7">
+                      <input type="text" class="form-control" name="license_plate" id="licensePlate" value="<?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {
+echo $_smarty_tpl->tpl_vars['vehicle']->value->getLicensePlate();
+}?>"/>
+                    </div> 
+                </div>
+                <div class="form-group">
+                    <label for="vin" class="control-label col-xs-5 whiteText">VIN</label>
+                    <div class="col-xs-7">
+                      <input type="text" class="form-control" name="VIN" id="vin" value="<?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {
+echo $_smarty_tpl->tpl_vars['vehicle']->value->getVin();
+}?>"/>
+                    </div> 
+                </div>
+                <input type="hidden" name="vehicle_ID" value="<?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {
+echo $_smarty_tpl->tpl_vars['vehicle']->value->getVehicleID();
+}?>" />
+            </form>                    
+        </div>
+    </div>
+    <div class="row center contentRow">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="marginBottom">
+                <?php if (isset($_smarty_tpl->tpl_vars['vehicle']->value)) {?>
+                    <button type="button" id='updateVehicleButton' class="btn btn-md btn-success" name="updatevehicle_btn">Update Information</button>
+                    <button type='button' id='cancelUpdateVehicleButton' class="btn btn-md btn-danger" name="cancelvehicleupdate_btn">Cancel Update</button>
+                    <button type="button" id='viewVehicleRepairsButton' class="btn btn-md btn-success" name="viewrepairs_btn">View Vehicle Repairs</button>
+                    <button type="button" class="btn btn-md btn-success" id="vehicleListBtn" value="View Vehicle List">View Vehicles List</button>
+                <?php } else { ?>
+                    <button type="button" id='saveVehicleButton' class="btn btn-md btn-success" name="savevehicle_btn">Save Vehicle</button>
+                    <button type='button' id='cancelSaveVehicleButton' class="btn btn-md btn-danger" name="cancelvehiclesave_btn">Cancel Save</button>
+                    <button type="button" class="btn btn-md btn-success" id="vehicleListBtn">View Vehicles List</button>
+                <?php }?>                
+            </div>
+        </div>
+    </div>    
+</div><?php }
+}

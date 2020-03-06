@@ -1,0 +1,14 @@
+.list-vehicles-wrapper-div #topRow {
+  margin-top: 70px;
+  padding-top: 20px;        
+}
+
+.list-vehicles-wrapper-div #topRow h1 {
+  font-size: 300%;
+}
+
+.list-vehicles-wrapper-div .marginBottom {
+  margin-bottom: 30px;
+}
+
+

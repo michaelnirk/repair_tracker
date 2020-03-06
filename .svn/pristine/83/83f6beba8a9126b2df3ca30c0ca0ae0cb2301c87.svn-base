@@ -1,0 +1,30 @@
+<?php
+/* Smarty version 3.1.30, created on 2016-10-20 21:29:42
+  from "C:\wamp\www\repair_tracker\templates\css.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_58091b26701852_31269915',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '33e689223a5d542e66cfebdbc74ee16c86d5f99c' => 
+    array (
+      0 => 'C:\\wamp\\www\\repair_tracker\\templates\\css.tpl',
+      1 => 1476991779,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_58091b26701852_31269915 (Smarty_Internal_Template $_smarty_tpl) {
+$_smarty_tpl->compiled->nocache_hash = '3001658091b266b6434_72894017';
+?>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap-theme.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<?php }
+}

@@ -1,0 +1,142 @@
+<?php
+require_once 'entity/EntityClass.php';
+class PartClass {
+    private $part_ID;
+    private $repair_ID;
+    private $description;
+    private $source;
+    private $brand;
+    private $price;
+    private $qty;
+    private $date_purchased;
+    private $number;
+    private $comments;
+    
+    public function __construct(array $args) {
+        if (!empty($args['part_ID'])) {
+            $this->part_ID = $args['part_ID'];
+        }
+        if (!empty($args['repair_ID'])) {
+            $this->repair_ID = $args['repair_ID'];
+        }
+        if (!empty($args['description'])) {
+            $this->description = $args['description'];
+        }
+        if (!empty($args['source'])) {
+            $this->source = $args['source'];
+        }
+        if (!empty($args['brand'])) {
+            $this->brand = $args['brand'];
+        }
+        if (!empty($args['price'])) {
+            $this->price = $args['price'];
+        }
+        if (!empty($args['qty'])) {
+            $this->qty = $args['qty'];
+        }
+        if (!empty($args['date_purchased'])) {
+            $this->date_purchased = $args['date_purchased'];
+        }
+        if (!empty($args['number'])) {
+            $this->number = $args['number'];
+        }
+        if (!empty($args['comments'])) {
+            $this->comments = $args['comments'];
+        }
+    }
+    public function getPart_ID() {
+        return $this->part_ID;
+    }
+
+    public function getRepair_ID() {
+        return $this->repair_ID;
+    }
+
+    public function getDescription() {
+        return $this->description;
+    }
+
+    public function getSource() {
+        return $this->source;
+    }
+
+    public function getBrand() {
+        return $this->brand;
+    }
+
+    public function getPrice() {
+        return $this->price;
+    }
+
+    public function getQty() {
+        return $this->qty;
+    }
+
+    public function getDate_purchased() {
+        return $this->date_purchased;
+    }
+
+    public function getNumber() {
+        return $this->number;
+    }
+
+    public function getComments() {
+        return $this->comments;
+    }
+
+    public function setPart_ID($part_ID) {
+        $this->part_ID = $part_ID;
+    }
+
+    public function setRepair_ID($repair_ID) {
+        $this->repair_ID = $repair_ID;
+    }
+
+    public function setDescription($description) {
+        $this->description = $description;
+    }
+
+    public function setSource($source) {
+        $this->source = $source;
+    }
+
+    public function setBrand($brand) {
+        $this->brand = $brand;
+    }
+
+    public function setPrice($price) {
+        $this->price = $price;
+    }
+
+    public function setQty($qty) {
+        $this->qty = $qty;
+    }
+
+    public function setDate_purchased($date_purchased) {
+        $this->date_purchased = $date_purchased;
+    }
+
+    public function setNumber($number) {
+        $this->number = $number;
+    }
+
+    public function setComments($comments) {
+        $this->comments = $comments;
+    }
+
+    public function getArray() {
+        $part = array(
+            'part_ID' => $this->getPart_ID(),
+            'repair_ID' => $this->getRepair_ID(),
+            'description' => $this->getDescription(),
+            'source' => $this->getSource(),
+            'brand' => $this->getBrand(),
+            'price' => $this->getPrice(),
+            'qty' => $this->getQty(),
+            'date_purchased' => $this->getDate_purchased(),
+            'number' => $this->getNumber(),
+            'comments' => $this->getComments()
+        );
+        return $part;
+    }
+}

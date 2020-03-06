@@ -1,0 +1,131 @@
+<?php
+require_once('../include/DatabaseAccessClass.php');
+
+class LoginControllerClass extends UIControllerClass {
+  //Constructor
+  function __construct($request) {
+    parent::__construct($request);
+    $this->tpl->assign('module', 'login');
+    $this->tpl->assign('action', $this->sGetRequest('action'));
+  }
+
+  public function execute() {
+    $action = strtolower($this->sGetRequest('action'));
+    switch ($action) {
+      case "checkauth":
+        $this->checkauth();
+        break;
+      case 'logout':
+        $this->logout();
+        break;
+      case 'createaccount':
+        $this->createAccount();
+        break;
+      default:
+        $this->showLogin();
+    }
+    $this->tpl->assign('messages', $this->messages);
+    $this->tpl->display("index.tpl");
+  }
+
+  private function showLogin() {
+    $this->tpl->assign("content", "login");
+  }
+
+  private function checkauth() {
+    //Check if user name was sent. If so, get it. If not, add error to errorMessages array
+    $userName = $this->sGetRequest('loginemail');
+    if (empty($userName)) {
+      $this->messages['errors'][] = 'Please enter your user name.';
+    }
+
+    //Check if password was sent. If so, get it. If not, add error to errorMessages array
+    $pwd = $this->sGetRequest('loginpassword');
+    if (empty($pwd)) {
+      $this->messages['errors'][] = 'Please enter a your password.';
+    }
+
+    if (count($this->messages['errors']) > 0) {//Display login page with error messages
+      $_SESSION['messages'] = json_encode($this->messages);
+      header("Location: index.php?module=login");
+      exit();
+    } else {//If both user name and password are present, check if they are valid
+      $user = $this->DAO->checkLogin($userName, $pwd);
+      if (is_array($user)) {//Valid user
+        $_SESSION['user'] = $user;
+        header('Location: index.php?module=vehicle&action=vehicles');
+        exit();
+      } else {
+        $this->messages['errors'][] = "There are no users saved with those credentials.";
+        $_SESSION['messages'] = json_encode($this->messages);
+        header("Location: index.php?module=login");
+        exit();
+      }
+    }
+  }
+
+  private function logout() {
+    unset($_SESSION);
+    session_unset();
+    session_destroy();
+    header("Location: index.php?module=login");
+  }
+
+  private function createAccount() {
+    //Check if all data was supplied. If not, add error message for each
+    //missing item and show login form again
+    $account = array();
+    if ($this->sGetRequest('firstname')) {
+      $account['firstName'] = $this->sGetRequest('firstname');
+    } else {
+      $this->messages['errors'][] = "Please enter your first name.";
+    }
+
+    if ($this->sGetRequest('lastname')) {
+      $account['lastName'] = $this->sGetRequest('lastname');
+    } else {
+      $this->messages['errors'][] = "Please enter your last name.";
+    }
+
+    if ($this->sGetRequest('email')) {
+      $account['email'] = $this->sGetRequest('email');
+    } else {
+      $this->messages['errors'][] = "Please enter your email.";
+    }
+
+    if ($this->sGetRequest('password')) {
+      $account['password'] = $this->sGetRequest('password');
+    } else {
+      $this->messages['errors'][] = "Please enter your password.";
+    }
+
+    if ($this->sGetRequest('confirmpassword')) {
+      $account['confirmpassword'] = $this->sGetRequest('confirmpassword');
+    } else {
+      $this->messages['errors'][] = "Please reenter your password.";
+    }
+
+    if ($this->sGetRequest('password') && $this->sGetRequest('confirmpassword')
+        && ($this->sGetRequest('password') !== $this->sGetRequest('confirmpassword'))) {
+      $this->messages['errors'][] = "The two passwords do not match. Please try again.";
+    }
+
+    if (count($this->messages['errors']) > 0) {
+      $_SESSION['messages'] = json_encode($this->messages);
+      header("Location: index.php?module=login");
+      exit();
+    } else {
+      $newUser = $this->DAO->createAccount($account);
+      if (is_array($newUser)) {
+        $_SESSION['user'] = $newUser;
+        header('Location: index.php?module=vehicle&action=vehicles');
+        exit();
+      } else {
+        $this->messages['errors'][] = "There was a problem creating your account. Please try again later.";
+        $_SESSION['messages'] = json_encode($this->messages);
+        header("Location: index.php?module=login");
+        exit();
+      }
+    }
+  }
+}

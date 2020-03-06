@@ -1,0 +1,76 @@
+<div class="list-parts-wrapper-div contentContainer topContainer container">
+    <div class="row center" id="topRow">
+        <div class="col-md-6 col-md-offset-3 whiteText" id='topRow'>
+            <h1>Parts for {$vehicleName}</h1>
+            <h2>
+                This page allows you to view, edit, add and delete part information for the selected repair.
+            </h2>
+            {if isset($errors)}
+                {foreach from=$errors item=error}
+                    <div class="alert alert-danger">{$error}</div>
+                {/foreach}
+            {/if}
+            {if isset($messages)}
+                {foreach from=$messages item=message}
+                    <div class="alert alert-success">{$message}</div>
+                {/foreach}
+            {/if} 
+        </div>
+    </div>
+    <div>
+        <button type='button' class='btn btn-md btn-success' id='addPartButton' title="Add a new part to this repair">
+            Add New Part
+        </button>
+        <button type='button' class='btn btn-md btn-success' id='repairsButton' title="Return to repairs list">
+            Repairs List
+        </button>
+        <button type='button' class='btn btn-md btn-success' id='vehiclesButton' title="Return to vehicles list">
+            Vehicles List
+        </button>
+    </div>
+    <div class="row center contentRow marginBottom">
+        <div class="col-md-12">          
+            <table class="table table-bordered whiteText" id='partsTable'>
+                <thead>
+                    <tr>
+                      <th class='center vert-middle desc-col'>Part Description</th>
+                      <th class='center vert-middle desc-col'>Part Number/<br/>Item Number</th>
+                      <th class='center vert-middle desc-col'>Source</th>
+                      <th class='center vert-middle desc-col'>Brand</th>
+                      <th class='center vert-middle desc-col'>Price</th>                  
+                      <th class='center vert-middle desc-col'>Quantity</th>
+                      <th class='center vert-middle desc-col'>Purchase<br>Date</th>
+                      <th class='center vert-middle desc-col'>Comments</th>
+                      <th class='center vert-middle desc-col'></th>
+                    </tr>              
+                </thead>
+                <tbody>
+                    {foreach from=$parts item=part}
+                        <tr data-partid='{$part->getPart_ID()}'>
+                            <td class='center vert-middle'>{$part->getDescription()}</td>
+                            <td class='center vert-middle'>{$part->getNumber()}</td>
+                            <td class='center vert-middle'>{$part->getSource()}</td>
+                            <td class='center vert-middle'>{$part->getBrand()}</td>
+                            <td class='center vert-middle'>{$part->getPrice()}</td>
+                            <td class='center vert-middle'>{$part->getQty()}</td>
+                            <td class='center vert-middle'>{$part->getDate_purchased()|date_format:"%d %b %Y"}</td>
+                            <td class='center vert-middle'>{$part->getComments()}</td>
+                            <td class='center vert-middle'>
+                                <div>
+                                    <button class='btn btn-success' id='editPartButton'>
+                                        Edit
+                                    </button>
+                                    <button class='btn btn-danger' id='deletePartButton'>
+                                        Delete
+                                    </button>                                    
+                                </div>
+                            </td>
+                        </tr>
+                    {/foreach}
+                </tbody>
+            </table>            
+        </div>
+    </div>
+</div>
+    
+      

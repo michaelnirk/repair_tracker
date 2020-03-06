@@ -1,0 +1,138 @@
+<?php
+
+/**
+ * Description of Repair
+ *
+ * @author Michael Nirk
+ */
+require_once 'entity/EntityClass.php';
+class RepairClass extends EntityClass {
+    
+    private $repair_ID;
+    private $vehicle_ID;
+    private $km_at_repair;
+    private $repair_date;
+    private $repair_descrip;
+    private $repair_loc;
+    private $cost;
+    private $notes;
+    private $parts_count;
+    
+    public function __construct(array $args) {
+        if (!empty($args['repair_ID'])) {
+            $this->repair_ID = $args['repair_ID'];
+        }
+        if (!empty($args['vehicle_ID'])) {
+            $this->vehicle_ID = $args['vehicle_ID'];
+        }
+        if (!empty($args['km_at_repair'])) {
+            $this->km_at_repair = $args['km_at_repair'];
+        }
+        if (!empty($args['repair_date'])) {
+            $this->repair_date = $args['repair_date'];
+        }
+        if (!empty($args['repair_descrip'])) {
+            $this->repair_descrip = $args['repair_descrip'];
+        }
+        if (!empty($args['repair_loc'])) {
+            $this->repair_loc = $args['repair_loc'];
+        }
+        if (!empty($args['cost'])) {
+            $this->cost = $args['cost'];
+        }
+        if (!empty($args['notes'])) {
+            $this->notes = $args['notes'];
+        }
+        if (!empty($args['parts_count'])) {
+            $this->parts_count = $args['parts_count'];
+        }
+    }
+    
+    public function getRepair_ID() {
+        return $this->repair_ID;
+    }    
+
+    public function getVehicle_ID() {
+        return $this->vehicle_ID;
+    }
+
+    public function getKm_at_repair() {
+        return $this->km_at_repair;
+    }
+
+    public function getRepair_date() {
+        return $this->repair_date;
+    }
+
+    public function getRepair_descrip() {
+        return $this->repair_descrip;
+    }
+
+    public function getRepair_loc() {
+        return $this->repair_loc;
+    }
+
+    public function getCost() {
+        return $this->cost;
+    }
+
+    public function getNotes() {
+        return $this->notes;
+    }
+    
+    public function getPartsCount() {
+        return $this->parts_count;
+    }
+
+    public function setRepair_ID($repair_ID) {
+        $this->repair_ID = $repair_ID;
+    }
+
+    public function setVehicle_ID($vehicle_ID) {
+        $this->vehicle_ID = $vehicle_ID;
+    }
+
+    public function setKm_at_repair($km_at_repair) {
+        $this->km_at_repair = $km_at_repair;
+    }
+
+    public function setRepair_date($repair_date) {
+        $this->repair_date = $repair_date;
+    }
+
+    public function setRepair_descrip($repair_descrip) {
+        $this->repair_descrip = $repair_descrip;
+    }
+
+    public function setRepair_loc($repair_loc) {
+        $this->repair_loc = $repair_loc;
+    }
+
+    public function setCost($cost) {
+        $this->cost = $cost;
+    }
+
+    public function setNotes($notes) {
+        $this->notes = $notes;
+    }
+
+    public function setPartsCount($partsCount) {
+        $this->parts_count = $partsCount;
+    }
+    
+    public function getArray() {
+        $repair = array(
+            'repair_ID' => $this->getRepair_ID(),
+            'vehicle_ID' => $this->getVehicle_ID(),
+            'km_at_repair' => $this->getKm_at_repair(),
+            'repair_date' => $this->getRepair_date(),
+            'repair_descrip' => $this->getRepair_descrip(),
+            'repair_loc' => $this->getRepair_loc(),
+            'cost' => $this->getCost(),
+            'notes' => $this->getNotes(),
+            'parts_count' => $this->getPartsCount()
+        );
+        return $repair;
+    }
+
+}

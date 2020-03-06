@@ -1,0 +1,30 @@
+<?php
+/* Smarty version 3.1.30, created on 2017-12-10 14:24:14
+  from "/var/www/repair_tracker/templates/vehicle/js.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5a2d438e152b55_15366826',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'd2ed0408295fa42856558825c61c280005ca90ab' => 
+    array (
+      0 => '/var/www/repair_tracker/templates/vehicle/js.tpl',
+      1 => 1512914348,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5a2d438e152b55_15366826 (Smarty_Internal_Template $_smarty_tpl) {
+echo '<script'; ?>
+ src="js/modules/vehicle/list_vehicles.js"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+ src="js/modules/vehicle/form_vehicle.js"><?php echo '</script'; ?>
+><?php }
+}

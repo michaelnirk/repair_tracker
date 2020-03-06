@@ -1,0 +1,50 @@
+#repairTable th {
+    font-size: 1.3em; 
+    text-decoration: underline;  
+    background-color: #400000;
+}
+
+#topRow {
+    margin-top: 70px;
+    padding-top: 20px;        
+}
+
+#topRow h1 {
+    font-size: 300%;
+}
+
+.marginBottom {
+    margin-bottom: 40px;
+}
+
+.desc-col {
+    width: 25%;
+}
+
+.date-col {
+    width: 8%;
+}
+
+.km-col {
+    width: 7%;
+}
+
+.loc-col {
+    width: 10%;
+}
+
+.cost-col {
+    width: 7%;
+}
+
+.notes-col {
+    width: 20%;
+}
+
+.action-col {
+    width: 20%;
+}
+
+.list-repairs-wrapper-div .partsButton {
+    min-width: 93px;
+}

@@ -1,0 +1,141 @@
+<?php
+/* Smarty version 3.1.30, created on 2017-11-12 20:56:50
+  from "C:\wamp\www\repair_tracker\templates\part\list_parts.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5a08a78235a2f2_62577116',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '984d132be1d11ae884f747bb9558c96c1a2f51b2' => 
+    array (
+      0 => 'C:\\wamp\\www\\repair_tracker\\templates\\part\\list_parts.tpl',
+      1 => 1510516150,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5a08a78235a2f2_62577116 (Smarty_Internal_Template $_smarty_tpl) {
+if (!is_callable('smarty_modifier_date_format')) require_once 'C:\\wamp\\www\\repair_tracker\\Smarty\\plugins\\modifier.date_format.php';
+?>
+<div class="list-parts-wrapper-div contentContainer topContainer container">
+    <div class="row center" id="topRow">
+        <div class="col-md-6 col-md-offset-3 whiteText" id='topRow'>
+            <h1>Parts for <?php echo $_smarty_tpl->tpl_vars['vehicleName']->value;?>
+</h1>
+            <h2>
+                This page allows you to view, edit, add and delete part information for the selected repair.
+            </h2>
+            <?php if (isset($_smarty_tpl->tpl_vars['errors']->value)) {?>
+                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['errors']->value, 'error');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['error']->value) {
+?>
+                    <div class="alert alert-danger"><?php echo $_smarty_tpl->tpl_vars['error']->value;?>
+</div>
+                <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
+            <?php }?>
+            <?php if (isset($_smarty_tpl->tpl_vars['messages']->value)) {?>
+                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['messages']->value, 'message');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['message']->value) {
+?>
+                    <div class="alert alert-success"><?php echo $_smarty_tpl->tpl_vars['message']->value;?>
+</div>
+                <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
+            <?php }?> 
+        </div>
+    </div>
+    <div>
+        <button type='button' class='btn btn-md btn-success' id='addPartButton' title="Add a new part to this repair">
+            Add New Part
+        </button>
+        <button type='button' class='btn btn-md btn-success' id='repairsButton' title="Return to repairs list">
+            Repairs List
+        </button>
+        <button type='button' class='btn btn-md btn-success' id='vehiclesButton' title="Return to vehicles list">
+            Vehicles List
+        </button>
+    </div>
+    <div class="row center contentRow marginBottom">
+        <div class="col-md-12">          
+            <table class="table table-bordered whiteText" id='partsTable'>
+                <thead>
+                    <tr>
+                      <th class='center vert-middle desc-col'>Part Description</th>
+                      <th class='center vert-middle desc-col'>Part Number/<br/>Item Number</th>
+                      <th class='center vert-middle desc-col'>Source</th>
+                      <th class='center vert-middle desc-col'>Brand</th>
+                      <th class='center vert-middle desc-col'>Price</th>                  
+                      <th class='center vert-middle desc-col'>Quantity</th>
+                      <th class='center vert-middle desc-col'>Purchase<br>Date</th>
+                      <th class='center vert-middle desc-col'>Comments</th>
+                      <th class='center vert-middle desc-col'></th>
+                    </tr>              
+                </thead>
+                <tbody>
+                    <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['parts']->value, 'part');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['part']->value) {
+?>
+                        <tr data-partid='<?php echo $_smarty_tpl->tpl_vars['part']->value->getPart_ID();?>
+'>
+                            <td class='center vert-middle'><?php echo $_smarty_tpl->tpl_vars['part']->value->getDescription();?>
+</td>
+                            <td class='center vert-middle'><?php echo $_smarty_tpl->tpl_vars['part']->value->getNumber();?>
+</td>
+                            <td class='center vert-middle'><?php echo $_smarty_tpl->tpl_vars['part']->value->getSource();?>
+</td>
+                            <td class='center vert-middle'><?php echo $_smarty_tpl->tpl_vars['part']->value->getBrand();?>
+</td>
+                            <td class='center vert-middle'><?php echo $_smarty_tpl->tpl_vars['part']->value->getPrice();?>
+</td>
+                            <td class='center vert-middle'><?php echo $_smarty_tpl->tpl_vars['part']->value->getQty();?>
+</td>
+                            <td class='center vert-middle'><?php echo smarty_modifier_date_format($_smarty_tpl->tpl_vars['part']->value->getDate_purchased(),"%d %b %Y");?>
+</td>
+                            <td class='center vert-middle'><?php echo $_smarty_tpl->tpl_vars['part']->value->getComments();?>
+</td>
+                            <td class='center vert-middle'>
+                                <div>
+                                    <button class='btn btn-success' id='editPartButton'>
+                                        Edit
+                                    </button>
+                                    <button class='btn btn-danger' id='deletePartButton'>
+                                        Delete
+                                    </button>                                    
+                                </div>
+                            </td>
+                        </tr>
+                    <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
+                </tbody>
+            </table>            
+        </div>
+    </div>
+</div>
+    
+      <?php }
+}

@@ -1,0 +1,676 @@
+<?php
+/**
+ * Description of DatabaseAccessClass
+ *
+ * @author Michael Nirk
+ */
+include_once 'entity/vehicle/VehicleClass.php';
+include_once 'entity/repair/RepairClass.php';
+include_once 'entity/part/PartClass.php';
+include_once 'entity/utility/ReminderClass.php';
+
+class DatabaseAccessClass {  
+    private $conn;
+    private $stmt;
+    //Function to create database connection
+    function getConnection(){
+        try {
+//        $this->conn = new PDO("mysql:host=localhost;dbname=repair_tracker;charset=utf8", "root", "", array(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_FOUND_ROWS => true));
+        $this->conn = new PDO("mysql:host=192.168.178.26;dbname=repair_tracker;charset=utf8", "repairtracker", "eLGe6yVVHscyZoU4", array(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_FOUND_ROWS => true));
+
+        //$conn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_FOUND_ROWS => true);
+
+        } catch(PDOException $ex) {
+            echo "An error occurred while connecting to the database: " . $ex->getMessage();
+        }
+        return $this->conn;
+    }
+    
+    //Function to close database connection
+    private function cleanUp() {
+        $this->stmt = null;
+        $this->conn = null;
+    }
+    //Function to login in user
+    public function checkLogin($userEmail, $userPwd){
+        $user = array();
+        
+        $this->getConnection();
+
+        $password = md5($userPwd);
+
+        $sql = "SELECT * FROM users_t WHERE email = :email AND password = :password LIMIT 1";			
+
+        $this->stmt = $this->conn->prepare($sql);
+
+        $this->stmt->bindParam(':email', $userEmail);
+        $this->stmt->bindParam(':password', $password);
+
+        $this->stmt->execute();
+
+        $rows = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($rows) > 0) {
+            $user['firstname'] = $rows[0]['firstName'];
+            $user['lastname'] = $rows[0]['lastName'];
+            $user['userid'] = $rows[0]['id'];
+                    
+            //Close statement and connection
+            $this->cleanUp();
+            return $user;
+
+        } else {
+            //Close statement and connection
+            $this->cleanUp();
+            return -1;
+
+        }
+    }
+    
+    public function createAccount($account){
+        
+        //Create connection to database
+        $this->getConnection();
+        
+        //Create password from username and password
+        $password = md5($account['password']);
+        
+        //sql for query
+        $sql = "INSERT INTO users_t ("
+                    . "firstName, "
+                    . "lastName, "
+                    . "email, "
+                    . "password) "
+                . "VALUES ("
+                    . ":firstName, "
+                    . ":lastName, "
+                    . ":email, "
+                    . ":password)";
+            
+        $this->stmt = $this->conn->prepare($sql);
+        
+        $this->stmt->bindParam(':firstName', $account['firstName'], PDO::PARAM_STR);
+        $this->stmt->bindParam(':lastName', $account['lastName'], PDO::PARAM_STR);
+        $this->stmt->bindParam(':email', $account['email'], PDO::PARAM_STR);
+        $this->stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        
+        $this->stmt->execute();        
+
+        if ($this->stmt->rowCount() == 1) {
+            $newUserID = $this->conn->lastInsertId();
+            $result = array(
+                'id' => $newUserID,
+                'firstname' => $account['firstName'],
+            );
+        } else {
+            $result = -1;
+        }
+        //Close statement and connection
+        $this->cleanUp();
+        return $result;
+    }
+    
+    //Function to return a list of vehicles for the current user
+    public function listVehicles(){
+        $userID = $_SESSION['userid'];
+        //Create connection to database
+        $this->getConnection();
+        //SQL for query
+        $sql = "SELECT * FROM vehicle_t WHERE userID = :id";
+        
+        $this->stmt = $this->conn->prepare($sql);
+        //Bind parameters
+        $this->stmt->bindParam(':id', $userID, PDO::PARAM_INT);
+
+        $this->stmt->execute();
+
+        $result = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        $vehicles = array();
+
+        foreach ($result as $row) {
+            $vehicles[] = new VehicleClass($row);
+        }
+        //Close statement and connection
+        $this->cleanUp();
+        //Return array of vehicles
+        return $vehicles;
+    }
+    //Fucntion to delete a vehicle for the current user
+    public function deleteVehicle($vehicleID){
+        //Get current user id
+        $userID = $_SESSION['userid'];
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "DELETE FROM vehicle_t WHERE vehicle_ID = :vID AND userID = :id";
+
+        $this->stmt = $this->conn->prepare($sql);
+
+        $this->stmt->bindParam(':vID', $vehicleID, PDO::PARAM_INT);
+
+        $this->stmt->bindParam(':id', $userID, PDO::PARAM_INT);
+
+        $this->stmt->execute();
+
+        if ($this->stmt->rowCount() == 1) {
+            $result = 1;
+        } else {
+            $result = -1;
+        }
+        //Close statement and connection
+        $this->cleanUp();
+        return $result;
+    }
+    
+    public function getVehicle($vehID){
+        //Get current user id
+        $userID = $_SESSION['userid'];
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "SELECT * FROM vehicle_t WHERE vehicle_ID = :vID AND userID = :id LIMIT 1";
+
+        $this->stmt = $this->conn->prepare($sql);  
+
+        $this->stmt->bindParam(':vID', $vehID);
+
+        $this->stmt->bindParam(':id', $userID);
+
+        $this->stmt->execute();
+
+        $result = $this->stmt->fetch(PDO::FETCH_ASSOC);
+        $vehicle = new VehicleClass($result);
+
+        $this->cleanUp();        
+        return $vehicle;
+    }
+    
+    public function saveVehicle(VehicleClass $vehicle){
+        //Get current user id
+        $userID = $_SESSION['userid'];
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "INSERT INTO vehicle_t ("
+                    . "name, "
+                    . "make, "
+                    . "model, "
+                    . "year, "
+                    . "key_num, "
+                    . "date_purchased, "
+                    . "km_at_purchase, "
+                    . "comments, "
+                    . "purchase_price, "
+                    . "license_plate, "
+                    . "VIN, "
+                    . "userID) "
+                . "VALUES ("
+                    . ":name, "
+                    . ":make, "
+                    . ":model, "
+                    . ":year, "
+                    . ":sNum, "
+                    . ":datePurchased, "
+                    . ":kmAtPurchase, "
+                    . ":comments, "
+                    . ":purchasePrice, "
+                    . ":licensePlate, "
+                    . ":vin, "
+                    . ":id)";
+
+        $this->stmt = $this->conn->prepare($sql);
+        
+        $name = $vehicle->getName();
+        $make = $vehicle->getMake();
+        $model = $vehicle->getModel();
+        $year = $vehicle->getYear();
+        $keyNum = $vehicle->getKeyNum();
+        $datePurchased = $vehicle->getDatePurchased();
+        $kmAtPurchase = $vehicle->getKmAtPurchase();
+        $comments = $vehicle->getComments();
+        $purchasePrice = $vehicle->getPurchasePrice();
+        $licensePlate = $vehicle->getLicensePlate();
+        $vin = $vehicle->getVin();
+
+        $this->stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $this->stmt->bindParam(':make', $make, PDO::PARAM_STR);
+        $this->stmt->bindParam(':model', $model, PDO::PARAM_STR);
+        $this->stmt->bindParam(':year', $year, PDO::PARAM_STR);
+        $this->stmt->bindParam(':sNum', $keyNum, PDO::PARAM_STR);
+        $this->stmt->bindParam(':datePurchased', $datePurchased, PDO::PARAM_STR);
+        $this->stmt->bindParam(':kmAtPurchase', $kmAtPurchase, PDO::PARAM_STR);
+        $this->stmt->bindParam(':comments', $comments, PDO::PARAM_STR);
+        $this->stmt->bindParam(':purchasePrice', $purchasePrice, PDO::PARAM_STR);
+        $this->stmt->bindParam(':licensePlate', $licensePlate, PDO::PARAM_STR);
+        $this->stmt->bindParam(':vin', $vin, PDO::PARAM_STR);
+        $this->stmt->bindParam(':id', $userID, PDO::PARAM_INT);
+
+        $this->stmt->execute();
+
+        if ($this->stmt->rowCount() == 1) {//Success
+            return 1;
+        } else {//Failure
+            return -1;
+        }
+
+       $this->cleanUp();
+    }
+    
+    public function updateVehicle(VehicleClass $vehicle){
+        //Get current user id
+        $userID = $_SESSION['userid'];
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "UPDATE vehicle_t SET
+                    name = :name,
+                    make = :make,
+                    model = :model,
+                    year = :year,
+                    key_num = :sNum,
+                    date_purchased = :datePurchased,
+                    km_at_purchase = :kmAtPurchase,
+                    comments = :comments,
+                    purchase_price = :purchasePrice,
+                    license_plate = :licensePlate,
+                    VIN = :vin
+                WHERE vehicle_ID = :vehicleID
+                AND userID = :id";
+
+        $this->stmt = $this->conn -> prepare($sql);
+
+        $this->stmt->bindValue(':name', $vehicle->getName(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':make', $vehicle->getMake(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':model', $vehicle->getModel(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':year', $vehicle->getYear(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':sNum', $vehicle->getKeyNum(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':datePurchased', $vehicle->getDatePurchased(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':kmAtPurchase', $vehicle->getKmAtPurchase(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':comments', $vehicle->getComments(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':purchasePrice', $vehicle->getPurchasePrice(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':licensePlate', $vehicle->getLicensePlate(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':vin', $vehicle->getVin(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':vehicleID', $vehicle->getVehicleID(), PDO::PARAM_INT);
+        $this->stmt->bindValue(':id', $userID, PDO::PARAM_INT);
+        $this->stmt->execute();
+
+        if ($this->stmt->rowCount() == 1) {
+            $this->cleanUp();
+            return 1;
+        } else {
+            $this->cleanUp();
+            return -1;
+        }
+    }
+    
+    public function listRepairs($vehicleID){
+        //Array to hold all repairs
+        $repairs = array();
+        //Create connection to database
+        $this->getConnection();
+        //SQL for query
+        $sql = "SELECT repair_t.*,
+                    COUNT(part_t.part_id) AS parts_count
+                FROM repair_t
+                    LEFT JOIN part_t ON
+                        repair_t.repair_id = part_t.repair_id
+                WHERE repair_t.vehicle_id = :vID
+                GROUP BY repair_t.repair_id
+                ORDER BY repair_date desc";
+
+        $this->stmt = $this->conn->prepare($sql); 
+        
+
+        $this->stmt->bindParam(':vID', $vehicleID);
+
+        $this->stmt->execute();
+                
+        $result = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach($result as $repair) {
+            $repairs[] = new RepairClass($repair);
+        }
+
+        $this->cleanUp();
+        
+        return $repairs;
+    }
+    
+    public function getRepair($repairID){
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "SELECT * FROM repair_t WHERE repair_ID = :rID LIMIT 1";
+
+        $this->stmt = $this->conn->prepare($sql);  
+
+        $this->stmt->bindParam(':rID', $repairID);
+
+        $this->stmt->execute();
+
+        $result = $this->stmt->fetch(PDO::FETCH_ASSOC);
+        $repair = new RepairClass($result);
+
+        $this->cleanUp();        
+        return $repair;
+    }
+    
+    public function saveRepair(RepairClass $repair){
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "INSERT INTO repair_t ("
+                    . "vehicle_ID, "
+                    . "repair_date, "
+                    . "km_at_repair, "
+                    . "repair_descrip, "
+                    . "repair_loc, "
+                    . "cost, "
+                    . "notes"
+                . ") VALUES ("
+                    . ":vID, "
+                    . ":repairDate, "
+                    . ":km, "
+                    . ":description, "
+                    . ":location, "
+                    . ":cost, "
+                    . ":notes)";
+
+        $this->stmt = $this->conn->prepare($sql);
+
+        $this->stmt->bindValue(':vID', $repair->getVehicle_ID(), PDO::PARAM_INT);
+        $this->stmt->bindValue(':repairDate', $repair->getRepair_date(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':km', $repair->getKm_at_repair(), PDO::PARAM_INT);
+        $this->stmt->bindValue(':description', $repair->getRepair_descrip(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':location', $repair->getRepair_loc(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':cost', $repair->getCost(), PDO::PARAM_INT);
+        $this->stmt->bindValue(':notes', $repair->getNotes(), PDO::PARAM_STR);
+
+        $this->stmt->execute();
+
+        if ($this->stmt -> rowCount() == 1) {
+            $this->cleanUp();
+            return 1;
+        } else {
+            $this->cleanUp();
+            return -1;
+        }
+    }
+    
+    public function updateRepair(RepairClass $repair){
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "UPDATE repair_t SET "
+                    . "repair_date = :repairDate, "
+                    . "km_at_repair = :km, "
+                    . "repair_descrip = :repairDescription, "
+                    . "repair_loc = :repairLocation, "
+                    . "cost = :cost, "
+                    . "notes = :notes "
+                . "WHERE repair_ID = :repairID";
+        
+        $this->stmt = $this->conn->prepare($sql);
+
+        $this->stmt->bindValue(':repairDate', $repair->getRepair_date(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':km', $repair->getKm_at_repair(), PDO::PARAM_INT);
+        $this->stmt->bindValue(':repairDescription', $repair->getRepair_descrip(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':repairLocation', $repair->getRepair_loc(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':cost', $repair->getCost(), PDO::PARAM_INT);
+        $this->stmt->bindValue(':notes', $repair->getNotes(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':repairID', $repair->getRepair_ID(), PDO::PARAM_INT);
+
+        $this->stmt->execute();
+        
+        if ($this->stmt->rowCount() == 1) {
+            $result = 1;
+        } else {
+            $result -1;
+        }
+        $this->cleanUp();
+        return $result;
+    }
+    
+    public function deleteRepair($repairID){
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "DELETE FROM repair_t WHERE repair_ID = :rID";
+
+        $this->stmt = $this->conn->prepare($sql);
+
+        $this->stmt->bindParam(':rID', $repairID, PDO::PARAM_INT);
+
+        $this->stmt->execute();
+
+        if ($this->stmt->rowCount() == 1) {
+            $result = 1;
+        } else {
+            $result = -1;
+        }
+        //Close statement and connection
+        $this->cleanUp();
+        return $result;
+    }
+    
+    public function listParts($repairID){
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "SELECT * FROM part_t WHERE repair_ID = :rID";
+
+        $this->stmt = $this->conn->prepare($sql);  
+
+        $this->stmt->bindParam(':rID', $repairID);
+
+        $this->stmt->execute();
+        
+        $result = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $parts = array();
+        foreach ($result as $part){
+            $parts[] = new PartClass($part);
+        }
+        $this->cleanUp();        
+        return $parts;
+    }
+    
+    public function getPart($partID){
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "SELECT * FROM part_t WHERE part_ID = :pID LIMIT 1";
+        
+        $this->stmt = $this->conn->prepare($sql);  
+
+        $this->stmt->bindParam(':pID', $partID);
+
+        $this->stmt->execute();
+
+        $result = $this->stmt->fetch(PDO::FETCH_ASSOC);
+        $part = new PartClass($result);
+        $this->cleanUp();
+        return $part;
+    }
+    
+    public function savePart(PartClass $part){
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "INSERT INTO part_t ("
+                    . "repair_ID, "
+                    . "description, "
+                    . "number, "
+                    . "source, brand, "
+                    . "price, "
+                    . "qty, "
+                    . "date_purchased, "
+                    . "comments) "
+                . "VALUES ("
+                    . ":rID, "
+                    . ":description, "
+                    . ":number, "
+                    . ":source, "
+                    . ":brand, "
+                    . ":price, "
+                    . ":qty, "
+                    . ":date_purchased, "
+                    . ":comments)";
+
+        $this->stmt = $this->conn->prepare($sql);
+
+        $this->stmt->bindValue(':rID', $part->getRepair_ID(), PDO::PARAM_INT);
+        $this->stmt->bindValue(':description', $part->getDescription(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':number', $part->getNumber(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':source', $part->getSource(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':brand', $part->getBrand(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':price', $part->getPrice(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':qty', $part->getQty(), PDO::PARAM_INT);
+        $this->stmt->bindValue(':date_purchased', $part->getDate_purchased(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':comments', $part->getComments(), PDO::PARAM_STR);
+
+        $this->stmt-> execute();
+        
+        if($this->stmt->rowCount() > 0){
+            $result = 1;
+        } else {
+            $result = -1;
+        }
+        $this->cleanUp();
+        return $result;
+    }
+    
+    public function updatePart(PartClass $part){
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "UPDATE part_t SET "
+                    . "description = :description, "
+                    . "number = :number, "
+                    . "source = :source, "
+                    . "brand = :brand, "
+                    . "price = :price, "
+                    . "qty = :qty, "
+                    . "date_purchased = :date_purchased, "
+                    . "comments = :comments "
+                . "WHERE part_ID = :pID";
+
+        $this->stmt = $this->conn->prepare($sql);
+
+        $this->stmt->bindValue(':description', $part->getDescription(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':number', $part->getNumber(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':source', $part->getSource(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':brand', $part->getBrand(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':price', $part->getPrice(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':qty', $part->getQty(), PDO::PARAM_INT);
+        $this->stmt->bindValue(':date_purchased', $part->getDate_purchased(), PDO::PARAM_STR); 
+        $this->stmt->bindValue(':comments', $part->getComments(), PDO::PARAM_STR);
+        $this->stmt->bindValue(':pID', $part->getPart_ID(), PDO::PARAM_INT);
+
+        $this->stmt->execute();
+
+        if ($this->stmt->rowCount() > 0) {
+            $result = 1;
+        } else {
+            $result = -1;
+        }
+        $this->cleanUp();
+        return $result;
+    }
+    
+    public function deletePart($partID){
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "DELETE FROM part_t WHERE part_ID = :pID";
+
+        $this->stmt = $this->conn->prepare($sql);
+
+        $this->stmt->bindParam(':pID', $partID, PDO::PARAM_INT);
+
+        $this->stmt->execute();
+
+        if ($this->stmt->rowCount() == 1) {
+            $result = 1;
+        } else {
+            $result = -1;
+        }
+        //Close statement and connection
+        $this->cleanUp();
+        return $result;
+    }
+    
+    public function getAccountData($userID){
+        //Create connection to database
+        $this->getConnection();
+        //Query SQL
+        $sql = "SELECT * FROM users_t WHERE id = :uID";
+
+        $this->stmt = $this->conn->prepare($sql);
+
+        $this->stmt->bindParam(':uID', $userID, PDO::PARAM_INT);
+
+        $this->stmt->execute();
+        
+        $result = $this->stmt->fetch(PDO::FETCH_ASSOC);
+        
+        $user = array(
+            'id' => $result['id'],
+            'firstname' => $result['firstName'],
+            'lastname' => $result['lastName'],
+            'email' => $result['email'],
+            'password' => $result['password']
+        );
+        //Close statement and connection
+        $this->cleanUp();
+        return $result;
+    }
+    
+    public function changePassword($userID, $password){
+        //Create connection to database
+        $this->getConnection();
+        
+        //Create password hash
+        $newPassword = md5($password);
+        //Query SQL
+        $sql = "UPDATE users_t SET password = :password WHERE id = :uID";
+
+        $this->stmt = $this->conn->prepare($sql);
+
+        $this->stmt->bindParam(':password', $newPassword, PDO::PARAM_STR);
+        $this->stmt->bindParam(':uID', $userID, PDO::PARAM_INT);
+        
+        $this->stmt->execute();
+        
+        if ($this->stmt->rowCount() == 1) {
+            $result = 1;
+        } else {
+            $result = -1;
+        }
+        $this->cleanUp();
+        return $result;
+    }
+    
+    public function getDueReminders() {
+        //Create connection to database
+        $this->getConnection();
+        $today = date('Y-m-d');
+
+        //Query SQL
+        $sql = "SELECT * FROM reminder_t WHERE DATE(reminder_date) = :today";
+
+        $this->stmt = $this->conn->prepare($sql);
+        $this->stmt->bindParam(":today", $today, PDO::PARAM_STR);
+        
+        $this->stmt->execute();
+        
+        $result = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        $reminders = array();
+        foreach ($result as $reminder) {
+            $reminders[] = new ReminderClass($reminder);
+        }
+        
+        //Close statement and connection
+        $this->cleanUp();
+        return $reminders;
+    }
+}

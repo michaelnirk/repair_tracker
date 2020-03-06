@@ -1,0 +1,49 @@
+/* 
+    Created on : Oct 20, 2016, 6:16:48 PM
+    Author     : Michael Nirk
+*/
+.row{margin: 0;}
+.navbar{margin: 0;}
+
+.navbar-brand {
+    font-size: 1.9em;
+}
+
+.topContainer {
+    /*background-color: #CAC2C2;*/
+    background-image: url("/../repair_tracker/htdocs/images/image.jpg"); 
+    position: absolute;
+    top: 50px;
+}
+
+.center {
+  text-align: center;
+}
+
+.whiteText {
+  color: white;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.contentContainer {
+  width: 100%;
+}
+
+.contentRow {
+  margin-top: 40px;
+}
+
+.redBorder {
+    border: 3px solid red;
+}
+
+.vert-middle {
+    vertical-align: middle !important;
+}
+
+.redText {
+    color: red;
+}

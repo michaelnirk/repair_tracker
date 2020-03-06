@@ -1,0 +1,49 @@
+ListRepairs = {
+    init: function(){
+        
+        $(".contentContainer").css("min-height", $(window).height() - 52);
+        
+        $('.list-repairs-wrapper-div').off('click').on('click', function(event){
+            var targetID = event.target.id;
+            switch (targetID){
+                case "addRepair":
+                    window.location = "index.php?module=Repair&action=addnewrepair";
+                    break;
+                case "editRepairButton":
+                    var repairID = $(event.target).parents('tr').data('repairid');
+                    window.location = "index.php?module=Repair&action=editrepair&repairid=" + repairID;
+                    break;
+                case "deleteRepairButton":
+                    ListRepairs.deleteRepair();                    
+                    break;
+                case "viewRepairPartsButton":
+                    var repairID = $(event.target).parents('tr').data('repairid');
+                    window.location = "index.php?module=Part&action=listparts&repairid=" + repairID;
+                    break;
+                case 'vehiclesButton':
+                    window.location = "index.php?module=Vehicle&action=listvehicles";
+                    break;
+                case 'addRepairPartsButton':
+                    var repairID = $(event.target).parents('tr').data('repairid');
+                    window.location = "index.php?module=Part&action=addnewpart&repairid=" + repairID;
+                    break;
+            }
+        });        
+    },
+    
+    deleteRepair: function(){ 
+        if(window.confirm("Do you really want to delete this repair?")){
+            var repairID = $(event.target).parents('tr').data('repairid');
+            window.location = "index.php?module=Repair&action=deleterepair&repairid=" + repairID;
+        }        
+    }
+};
+
+$(document).ready(function(){
+   var isListRepairs = $('.list-repairs-wrapper-div').length;
+   if(isListRepairs > 0){
+       ListRepairs.init();
+   }
+});
+
+

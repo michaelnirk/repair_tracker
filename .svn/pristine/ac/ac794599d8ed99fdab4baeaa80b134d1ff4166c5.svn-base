@@ -1,0 +1,154 @@
+<?php
+/* Smarty version 3.1.30, created on 2017-11-12 17:00:57
+  from "C:\wamp\www\repair_tracker\templates\repair\list_repairs.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5a08703971dda8_41139406',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '6a6ac7b0aaf7fe6417e8b7ed9672f7b101b7810e' => 
+    array (
+      0 => 'C:\\wamp\\www\\repair_tracker\\templates\\repair\\list_repairs.tpl',
+      1 => 1510502415,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5a08703971dda8_41139406 (Smarty_Internal_Template $_smarty_tpl) {
+if (!is_callable('smarty_modifier_date_format')) require_once 'C:\\wamp\\www\\repair_tracker\\Smarty\\plugins\\modifier.date_format.php';
+?>
+<div class="list-repairs-wrapper-div contentContainer topContainer container">
+    <div class="row center" id="topRow">
+        <div class="col-md-6 col-md-offset-3 whiteText">
+            <h1>Repairs for <?php echo $_smarty_tpl->tpl_vars['vehicleName']->value;?>
+</h1>
+            <h2>
+                This page allows you to view, edit, add and delete repair information for this vehicle.
+            </h2>
+            <?php if (isset($_smarty_tpl->tpl_vars['errors']->value)) {?>
+                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['errors']->value, 'error');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['error']->value) {
+?>
+                    <div class="alert alert-danger"><?php echo $_smarty_tpl->tpl_vars['error']->value;?>
+</div>
+                <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
+            <?php }?>
+            <?php if (isset($_smarty_tpl->tpl_vars['messages']->value)) {?>
+                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['messages']->value, 'message');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['message']->value) {
+?>
+                    <div class="alert alert-success"><?php echo $_smarty_tpl->tpl_vars['message']->value;?>
+</div>
+                <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+
+            <?php }?> 
+        </div>
+    </div>
+    <div>
+        <button type='button' class='btn btn-md btn-success' id='addRepair' title="Add a new repair to this vehicle">
+            Add New Repair
+        </button>
+        <button type='button' class='btn btn-md btn-success' id='vehiclesButton' title="Return to vehicles list">
+            Vehicles List
+        </button>
+    </div>
+    <div class="row center contentRow marginBottom">
+        <div class="col-md-12">          
+            <table class="table table-bordered whiteText" id='repairTable'>
+                <thead>
+                    <tr>
+                      <th class='center vert-middle desc-col'>Repair<br>Description</th>
+                      <th class='center vert-middle date-col'>Repair<br>Date</th>
+                      <th class='center vert-middle km-col'>KM at<br>Repair</th>
+                      <th class='center vert-middle loc-col'>Repair<br>Location</th>
+                      <th class='center vert-middle cost-col'>Repair<br>Cost</th>
+                      <th class='center vert-middle notes-col'>Notes</th>
+                      <th class='center vert-middle action-col'></th>
+                    </tr>              
+                </thead>
+                <tbody>
+                    <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['repairs']->value, 'repair');
+if ($_from !== null) {
+foreach ($_from as $_smarty_tpl->tpl_vars['repair']->value) {
+?>
+                        <tr data-repairid="<?php echo $_smarty_tpl->tpl_vars['repair']->value->getRepair_ID();?>
+">
+                            <td class='center vert-middle'><?php echo $_smarty_tpl->tpl_vars['repair']->value->getRepair_descrip();?>
+</td>
+                            <td class='center vert-middle'><?php echo smarty_modifier_date_format($_smarty_tpl->tpl_vars['repair']->value->getRepair_date(),"%d %b %Y");?>
+</td>
+                            <td class='center vert-middle'><?php echo $_smarty_tpl->tpl_vars['repair']->value->getKm_at_repair();?>
+</td>
+                            <td class='center vert-middle'><?php echo $_smarty_tpl->tpl_vars['repair']->value->getRepair_loc();?>
+</td>
+                            <td class='center vert-middle'><?php echo $_smarty_tpl->tpl_vars['repair']->value->getCost();?>
+</td>
+                            <td class='center vert-middle'><?php echo $_smarty_tpl->tpl_vars['repair']->value->getNotes();?>
+</td>
+                            <td class='center vert-middle'>
+                                <div>
+                                    <button type="button" 
+                                            class='btn btn-success editButton' 
+                                            id='editRepairButton' 
+                                            title="Edit this repair"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button type="button" 
+                                            class='btn btn-danger deleteButton' 
+                                            id='deleteRepairButton' 
+                                            title="Delete this repair"
+                                    >
+                                        Delete
+                                    </button>
+                                    <?php if ($_smarty_tpl->tpl_vars['repair']->value->getPartsCount() > 0) {?>
+                                        <button type="button" 
+                                            class='btn btn-success partsButton' 
+                                            id='viewRepairPartsButton' 
+                                            title="This repair has <?php echo $_smarty_tpl->tpl_vars['repair']->value->getPartsCount();
+if ($_smarty_tpl->tpl_vars['repair']->value->getPartsCount() == 1) {?> part<?php } else { ?> parts<?php }?>"
+                                        >View Parts
+                                    </button>
+                                    <?php } else { ?>
+                                        <button type="button" 
+                                            class='btn btn-success partsButton' 
+                                            id='addRepairPartsButton' 
+                                            title="This repair has no parts"
+                                        >Add Parts
+                                    </button>
+                                    <?php }?>                                    
+                                </div>
+                            </td>
+                        </tr>
+                    <?php
+}
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl);
+?>
+                  
+                </tbody>
+            </table>            
+        </div>
+    </div> 
+</div><?php }
+}

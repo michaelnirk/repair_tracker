@@ -1,0 +1,90 @@
+<div class="list-repairs-wrapper-div contentContainer topContainer container">
+    <div class="row center" id="topRow">
+        <div class="col-md-6 col-md-offset-3 whiteText">
+            <h1>Repairs for {$vehicleName}</h1>
+            <h2>
+                This page allows you to view, edit, add and delete repair information for this vehicle.
+            </h2>
+            {if isset($errors)}
+                {foreach from=$errors item=error}
+                    <div class="alert alert-danger">{$error}</div>
+                {/foreach}
+            {/if}
+            {if isset($messages)}
+                {foreach from=$messages item=message}
+                    <div class="alert alert-success">{$message}</div>
+                {/foreach}
+            {/if} 
+        </div>
+    </div>
+    <div>
+        <button type='button' class='btn btn-md btn-success' id='addRepair' title="Add a new repair to this vehicle">
+            Add New Repair
+        </button>
+        <button type='button' class='btn btn-md btn-success' id='vehiclesButton' title="Return to vehicles list">
+            Vehicles List
+        </button>
+    </div>
+    <div class="row center contentRow marginBottom">
+        <div class="col-md-12">          
+            <table class="table table-bordered whiteText" id='repairTable'>
+                <thead>
+                    <tr>
+                      <th class='center vert-middle desc-col'>Repair<br>Description</th>
+                      <th class='center vert-middle date-col'>Repair<br>Date</th>
+                      <th class='center vert-middle km-col'>KM at<br>Repair</th>
+                      <th class='center vert-middle loc-col'>Repair<br>Location</th>
+                      <th class='center vert-middle cost-col'>Repair<br>Cost</th>
+                      <th class='center vert-middle notes-col'>Notes</th>
+                      <th class='center vert-middle action-col'></th>
+                    </tr>              
+                </thead>
+                <tbody>
+                    {foreach from=$repairs item=repair}
+                        <tr data-repairid="{$repair->getRepair_ID()}">
+                            <td class='center vert-middle'>{$repair->getRepair_descrip()}</td>
+                            <td class='center vert-middle'>{$repair->getRepair_date()|date_format:"%d %b %Y"}</td>
+                            <td class='center vert-middle'>{$repair->getKm_at_repair()}</td>
+                            <td class='center vert-middle'>{$repair->getRepair_loc()}</td>
+                            <td class='center vert-middle'>{$repair->getCost()}</td>
+                            <td class='center vert-middle'>{$repair->getNotes()}</td>
+                            <td class='center vert-middle'>
+                                <div>
+                                    <button type="button" 
+                                            class='btn btn-success editButton' 
+                                            id='editRepairButton' 
+                                            title="Edit this repair"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button type="button" 
+                                            class='btn btn-danger deleteButton' 
+                                            id='deleteRepairButton' 
+                                            title="Delete this repair"
+                                    >
+                                        Delete
+                                    </button>
+                                    {if $repair->getPartsCount() > 0}
+                                        <button type="button" 
+                                            class='btn btn-success partsButton' 
+                                            id='viewRepairPartsButton' 
+                                            title="This repair has {$repair->getPartsCount()}{if $repair->getPartsCount() == 1} part{else} parts{/if}"
+                                        >View Parts
+                                    </button>
+                                    {else}
+                                        <button type="button" 
+                                            class='btn btn-success partsButton' 
+                                            id='addRepairPartsButton' 
+                                            title="This repair has no parts"
+                                        >Add Parts
+                                    </button>
+                                    {/if}                                    
+                                </div>
+                            </td>
+                        </tr>
+                    {/foreach}                  
+                </tbody>
+            </table>            
+        </div>
+    </div> 
+</div>

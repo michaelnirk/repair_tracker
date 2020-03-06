@@ -1,0 +1,56 @@
+<?php
+/* Smarty version 3.1.30, created on 2017-11-19 18:03:13
+  from "C:\wamp\www\repair_tracker\templates\header.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5a11b951d3fea1_46519926',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'd4e3ff39a1c10f859a016abb6f9b050aa1912662' => 
+    array (
+      0 => 'C:\\wamp\\www\\repair_tracker\\templates\\header.tpl',
+      1 => 1511110987,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5a11b951d3fea1_46519926 (Smarty_Internal_Template $_smarty_tpl) {
+?>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">          
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="index.php" class="navbar-brand">Repair Tracker</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <div class="navbar-right">
+              <ul class="navbar-nav nav">
+                <li><a href="index.php">Home</a></li>
+                <li><a href="index.php?module=login&action=logout">Log Out</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Options
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Edit Account</a></li>
+                        <li><a href="index.php?module=utility&action=showchangepassword">Change Account Password</a></li>
+                        <li><a href="index.php?module=utility&action=create_reminder">Create Account Reminder</a></li>
+                    </ul>
+                  </li>
+              </ul> 
+            </div>          
+        </div>
+    </div>
+</nav> <?php }
+}

@@ -1,0 +1,185 @@
+<?php
+require_once 'entity/vehicle/VehicleClass.php';
+class VehicleControllerClass extends UIControllerClass {    
+    //Constructor
+    function __construct($request) {
+        parent::__construct($request);
+        $this->tpl->assign('module', 'vehicle');
+    }
+    
+    public function execute(){
+        $action = $this->request['action'];
+        
+        switch($action){
+            case 'listvehicles':
+                $this->listVehicles();
+                break;
+            case 'vieweditvehicle':
+                $this->editVehicle();
+                break;
+            case 'addnewvehicle':
+                $this->showVehicleForm();
+                break;
+            case 'deletevehicle':
+                $this->deleteVehicle();
+                break;
+            case 'savevehicle':
+                $this->saveVehicle();
+                break;
+        }
+        $this->tpl->display("index.tpl");
+    }
+    
+    private function listVehicles(){
+        if(isset($_SESSION['isNewAccount']) && $_SESSION['isNewAccount'] == 1){
+            $this->messages[] = "Your account has been successfully created. Welcome to Repair Tracker!";
+            $this->tpl->assign('messages', $this->messages);
+            unset($_SESSION['isNewAccount']);
+        }
+        if(isset($this->request['changedpassword'])){
+            $this->messages[] = "Your password has been successfully changed.";
+            $this->tpl->assign('messages', $this->messages);
+        }
+        $vehicleList = $this->DAO->listVehicles();
+        if(count($vehicleList) > 0){
+            $this->tpl->assign('vehicleList', $vehicleList);                    
+        } else {
+            $this->errors[] = 'You currently have no vehicles saved. Get started by adding a vehicle.';            
+            $this->tpl->assign('errors', $this->errors);                    
+        }
+        $this->tpl->assign('content', 'list_vehicles');
+    }
+    
+    private function deleteVehicle(){
+        $result = $this->DAO->deleteVehicle($this->request['vehid']);
+        if($result == 1){
+            $this->messages[] = "Vehicle was successfully deleted!";
+            $this->tpl->assign('messages', $this->messages);
+        } else {
+            $this->errors[] = "There was a problem deleting the vehicle. Please try again later.";
+            $this->tpl->assign('errors', $this->errors);
+        }
+        $this->listVehicles();
+    }
+    
+    private function editVehicle($vehicleID = NULL){
+        if(empty($vehicleID)){
+            $vehicle = $this->DAO->getVehicle($this->request['vehid']);
+        } else {
+            $vehicle = $this->DAO->getVehicle($vehicleID);
+        }        
+        $_SESSION['currentVehicleName'] = $vehicle->getName();
+        $_SESSION['currentVehicleID'] = $vehicle->getVehicleID();
+        $this->showVehicleForm($vehicle);
+    }
+    
+    private function showVehicleForm($vehicle = NULL){
+        if(isset($vehicle)){
+            $this->tpl->assign('vehicleName', $_SESSION['currentVehicleName']);
+            $this->tpl->assign('vehicle', $vehicle);
+        }
+        $this->tpl->assign('content', 'form_vehicle');
+    }
+    
+    private function saveVehicle(){
+        //Get vehicle data from request
+        $vehicle = $this->request;
+        //Check if vehicle id is set. If so, this is an update. If not, this is 
+        //a new vehicle save
+        if(!empty($vehicle['vehicle_ID'])){//There is a vehicle id - update
+            //Sanitize all input values
+            if(!empty($vehicle['name'])){
+                $vehicle['name'] = test_input($vehicle['name']);
+            }
+            if(!empty($vehicle['make'])){
+                $vehicle['make'] = test_input($vehicle['make']);
+            }
+            if(!empty($vehicle['model'])){
+                $vehicle['model'] = test_input($vehicle['model']);
+            }
+            if(!empty($vehicle['year'])){
+                $vehicle['year'] = test_input($vehicle['year']);
+            }
+            if(!empty($vehicle['key_num'])){
+                $vehicle['key_num'] = test_input($vehicle['key_num']);
+            }
+            if(!empty($vehicle['date_purchased'])){
+                $date = strtotime(test_input($vehicle['date_purchased']));
+                $vehicle['date_purchased'] = date("Y-m-d", $date);
+            }
+            if(!empty($vehicle['km_at_purchase'])){
+                $vehicle['km_at_purchase'] = test_input($vehicle['km_at_purchase']);
+            }
+            if(!empty($vehicle['comments'])){
+                $vehicle['comments'] = test_input($vehicle['comments']);
+            }
+            if(!empty($vehicle['purchase_price'])){
+                $vehicle['purchase_price'] = test_input($vehicle['purchase_price']);
+            }
+            if(!empty($vehicle['license_plate'])){
+                $vehicle['license_plate'] = test_input($vehicle['license_plate']);
+            }
+            if(!empty($vehicle['vin'])){
+                $vehicle['vin'] = test_input($vehicle['vin']);
+            }
+            $veh = new VehicleClass($vehicle);
+            
+            $result = $this->DAO->updateVehicle($veh);
+            //Based on result, add appropriate message or error
+            if($result == 1){
+                $this->messages[] = "Vehicle information was successfully updated!";
+                $this->tpl->assign('messages', $this->messages);
+            } else {
+                $this->errors[] = "There was a problem updating the vehicle information. Please try again later.";
+                $this->tpl->assign('errors', $this->errors);
+            }            
+            $this->editVehicle($_SESSION['currentVehicleID']);
+        } else {//No vehicle id - save new
+            //Sanitize all input values
+            if(!empty($vehicle['name'])){
+                $vehicle['name'] = test_input($vehicle['name']);
+            }
+            if(!empty($vehicle['make'])){
+                $vehicle['make'] = test_input($vehicle['make']);
+            }
+            if(!empty($vehicle['model'])){
+                $vehicle['model'] = test_input($vehicle['model']);
+            }
+            if(!empty($vehicle['year'])){
+                $vehicle['year'] = test_input($vehicle['year']);
+            }
+            if(!empty($vehicle['key_num'])){
+                $vehicle['key_num'] = test_input($vehicle['key_num']);
+            }
+            if(!empty($vehicle['date_purchased'])){
+                $date = strtotime(test_input($vehicle['date_purchased']));
+                $vehicle['date_purchased'] = date("Y-m-d", $date);
+            }
+            if(!empty($vehicle['km_at_purchase'])){
+                $vehicle['km_at_purchase'] = test_input($vehicle['km_at_purchase']);
+            }
+            if(!empty($vehicle['comments'])){
+                $vehicle['comments'] = test_input($vehicle['comments']);
+            }
+            if(!empty($vehicle['purchase_price'])){
+                $vehicle['purchase_price'] = test_input($vehicle['purchase_price']);
+            }
+            if(!empty($vehicle['license_plate'])){
+                $vehicle['license_plate'] = test_input($vehicle['license_plate']);
+            }
+            if(!empty($vehicle['vin'])){
+                $vehicle['vin'] = test_input($vehicle['vin']);
+            }
+            $veh = new VehicleClass($vehicle);
+            $result = $this->DAO->saveVehicle($veh);
+            if($result == 1){
+                $this->messages[] = "Vehicle was successfully added!";
+                $this->tpl->assign('messages', $this->messages);
+            } else {
+                $this->errors[] = "There was a problem adding the vehicle. Please try again later.";
+                $this->tpl->assign('errors', $this->errors);
+            }
+            $this->listVehicles();
+        }
+    }    
+}

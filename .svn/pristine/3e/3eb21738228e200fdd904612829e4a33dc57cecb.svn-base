@@ -1,0 +1,42 @@
+ListParts = {
+    init: function(){
+        
+        $(".contentContainer").css("min-height", $(window).height() - 52);
+        
+        $('.list-parts-wrapper-div').off('click').on('click', function(event){
+            var target = event.target.id;
+            var partID = $(event.target).parents('tr').data('partid');
+            switch(target){
+                case 'editPartButton':
+                    window.location = "index.php?module=Part&action=editpart&partid=" + partID;
+                    break;
+                case 'deletePartButton':
+                    ListParts.deletePart(partID);
+                    break;
+                case 'addPartButton':
+                    window.location = "index.php?module=Part&action=addnewpart";
+                    break;
+                case 'repairsButton':
+                    window.location = "index.php?module=Repair&action=listrepairs";
+                    break;
+                case 'vehiclesButton':
+                    window.location = "index.php?module=Vehicle&action=listvehicles";
+                    break;
+            }
+        });
+    },
+    
+    deletePart: function(partID){
+        if(window.confirm("Do you really want to delete this part?")){
+            window.location = "index.php?module=Part&action=deletepart&partid=" + partID;
+        }
+    }
+};
+
+$(document).ready(function(){
+    var isListParts = $('.list-parts-wrapper-div').length;
+    if(isListParts > 0){
+        ListParts.init();
+    }
+});
+

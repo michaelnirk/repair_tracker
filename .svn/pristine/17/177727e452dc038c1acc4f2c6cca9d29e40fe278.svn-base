@@ -1,0 +1,143 @@
+<?php
+class PartControllerClass extends UIControllerClass {
+    //Constructor
+    function __construct($request) {
+        parent::__construct($request);
+        $this->tpl->assign('module', 'part');
+    }
+    
+    function execute(){
+        switch($this->request['action']){
+            case 'listparts':
+                $this->listParts();
+                break;
+            case 'addnewpart':
+                $this->showPartForm();
+                break;
+            case 'editpart':
+                $this->editPart();
+                break;
+            case 'deletepart':
+                $this->deletePart();
+                break;
+            case 'savepart':
+                $this->savePart();
+                break;
+        }
+        
+        $this->tpl->display('index.tpl');
+    }
+    
+    private function listParts(){
+        if(empty($this->request['repairid'])){
+            $parts = $this->DAO->listParts($_SESSION['currentRepairID']);
+        } else {
+            $repairID = $this->request['repairid'];
+            $_SESSION['currentRepairID'] = $repairID;
+            $parts = $this->DAO->listParts($repairID);
+        }        
+        
+        if(count($parts) <= 0){
+            $this->errors[] = "This repair has no parts. Add a part by clicking 'Add a Part'.";
+            $this->tpl->assign('errors', $this->errors);
+        }
+        $this->tpl->assign('vehicleName', $_SESSION['currentVehicleName']);
+        $this->tpl->assign('parts', $parts);
+        $this->tpl->assign('content', 'list_parts');
+    }
+    
+    private function editPart(){
+        $part = $this->DAO->getPart($this->request['partid']);
+        $this->showPartForm($part);
+    }
+    
+    private function showPartForm($part = NULL){
+        if(!empty($this->request['repairid'])){
+            $_SESSION['currentRepairID'] = $this->request['repairid'];
+        }
+        if(!empty($part)){   
+            $this->tpl->assign('part', $part);
+            $this->tpl->assign('partJSON', json_encode($part->getArray()));
+        }
+        
+        $this->tpl->assign('vehicleName', $_SESSION['currentVehicleName']);
+        $this->tpl->assign('content', 'form_part');
+    }
+    
+    private function deletePart(){
+        $result = $this->DAO->deletePart($this->request['partid']);
+        if($result > 0){//Successful
+            $this->messages[] = "Part was successfully deleted.";
+            $this->tpl->assign('messages', $this->messages);
+            $this->listParts();
+        } else {//Failed
+            $this->errors[] = "There was a problem deleting the part. Please try again later.";
+            $this->tpl->assign('errors', $this->errors);
+            $this->listParts();
+        }
+    }
+    
+    private function savePart(){
+        $part = $this->request;
+        unset($part['module'], $part['action']);
+        //Sanitize all inout data
+        if(empty($part['description'])){
+            $this->errors[] = "Please enter a part description.";
+        } else {
+            $part['description'] = test_input($part['description']);
+        }
+        
+        if(!empty($part['source'])){
+            $part['source'] = test_input($part['source']);
+        }
+        
+        if(!empty($part['brand'])){
+            $part['brand'] = test_input($part['brand']);
+        }
+        
+        if(!empty($part['price'])){
+            $part['price'] = test_input($part['price']);
+        }
+        
+        if(empty($part['qty'])){
+            $this->errors[] = "Please enter a part quantity.";
+        } else {
+            $part['qty'] = test_input($part['qty']);
+        }
+        
+        if(!empty($part['date_purchased'])){
+            $date = strtotime(test_input($part['date_purchased']));
+            $part['date_purchased'] = date("Y-m-d", $date);
+        }
+        
+        if(count($this->errors) > 0){
+            $this->tpl->assign('errors', $this->errors);
+            $this->showPartForm($part);
+        } else {
+            if(empty($part['part_ID'])){//New save  
+                $part['repair_ID'] = $_SESSION['currentRepairID'];
+                $result = $this->DAO->savePart(new PartClass($part));
+                if($result > 0){//Successful
+                    $this->messages[] = "Part was successfully saved.";
+                    $this->tpl->assign('messages', $this->messages);
+                    $this->listParts();
+                } else {//Failed
+                    $this->errors[] = "There was a problem saving the part. Please try again later.";
+                    $this->tpl->assign('errors', $this->errors);
+                    $this->listParts();
+                }
+            } else {//Update
+                $result = $this->DAO->updatePart(new PartClass($part));
+                if($result > 0){//Successful
+                    $this->messages[] = "Part was successfully updated.";
+                    $this->tpl->assign('messages', $this->messages);
+                    $this->listParts();
+                } else {//Failed
+                    $this->errors[] = "There was a problem saving the part. Please try again later.";
+                    $this->tpl->assign('errors', $this->errors);
+                    $this->listParts();
+                }
+            }
+        }       
+    }
+}

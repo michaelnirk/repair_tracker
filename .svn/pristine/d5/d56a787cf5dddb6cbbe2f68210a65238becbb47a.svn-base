@@ -1,0 +1,54 @@
+<div class="list-vehicles-wrapper-div contentContainer topContainer container">  
+    <div class="row center" id="topRow">
+        <div class="col-md-6 col-md-offset-3 whiteText">
+            <h1>Welcome to Repair Tracker!</h1>
+            {if isset($noVehiclesMessage)}
+                <h2>{$noVehiclesMessage}</h2>
+            {else}
+                <h2>Select the vehicle you want to work with and then click the button for the action you wish to perform.</h2>
+            {/if}
+            
+            {if isset($messages)} 
+                {foreach from=$messages item=message}
+                    <div class="alert alert-success">{$message}</div>  
+                {/foreach}
+            {/if}
+            {if isset($errors)}
+                {foreach from=$errors item=error}
+                    <div class="alert alert-danger">{$error}</div>
+                {/foreach}
+            {/if}
+        </div>
+        <div class="row center contentRow">
+            <div class="col-md-2 col-md-offset-5">
+                <form role="form" method="post" id="select" name="select">
+                    <div class="form-group">
+                        <div class="marginBottom">
+                            {if empty($noVehiclesMessage)}                                
+                                <select class="form-control input-lg" name="vehicleselect" id="vehicleSelect">
+                                    {foreach from=$vehicleList item=vehicle}
+{*                                    {foreach from=$vehicleList key=id item=vehicle}*}
+                                        <option value={$vehicle->getVehicleID()}>{$vehicle->getName()}</option>
+{*                                        <option value={$id}>{$vehicle}</option>*}
+                                    {/foreach}
+                                </select>
+                            {/if}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row center">
+            <div class="col-md-8 col-md-offset-2">          
+                <div class="form-group">
+                    <div>                        
+                        <input type="button" class="btn btn-md btn-success" id="view_editVehicleBtn" value="View/Edit Vehicle" />
+                        <input type="button" class="btn btn-md btn-success" id="addNewVehicleBtn" value="Add New Vehicle" />
+                        <input type="button" class="btn btn-md btn-danger" id="deleteVehicleBtn" value="Delete Vehicle" />
+                        <input type="button" class="btn btn-md btn-success" id="viewRepairsBtn" value="View Vehicle Repairs" />                        
+                    </div>
+                </div>                                                  
+            </div>        
+        </div>
+    </div>
+</div>

@@ -1,0 +1,86 @@
+FormPart = {
+    partJSON: null,
+    init: function(){
+        
+        $(".contentContainer").css("min-height", $(window).height() - 52);
+        
+        $("#purchaseDate").datepicker({
+            changeMonth:true, 
+            changeYear:true, 
+            dateFormat:'d M yy', 
+            maxDate:'0'
+        });
+        
+        $('.form-part-wrapper-div').off('click').on('click', function(event){
+            var target = event.target.id;
+            switch(target){
+                case 'editPart':
+                case 'addPart':
+                    FormPart.savePart();
+                    break;
+                case 'cancelEdit':
+                case 'cancelAdd':
+                    window.location = "index.php?module=Part&action=listparts";
+                    break;
+            }
+        });
+        
+        if(FormPart.partJSON){
+            FormPart.fillFormWithPart();
+        }
+    },
+    
+    savePart: function(){
+        var isValid = FormPart.validatePartForm();
+        if(isValid){
+            $('#partForm').submit();
+        }
+    },
+    
+    validatePartForm: function(){
+        var isValid = true;
+        var description = $('#partDescription').val();
+        var quantity = $('#quantity').val();
+        var errors = [];//array to hold error messages        
+        
+        //Make sure description has a value
+        if(description && description !== ''){
+            $('#partDescription').removeClass('redBorder');                
+        } else {
+            isValid = false;
+            $('#partDescription').addClass('redBorder');
+            errors.push('Please enter a description for this part.');            
+        }
+        //Make sure quantity has a value
+        if(quantity && quantity !== ''){
+            $('#quantity').removeClass('redBorder');                
+        } else {
+            isValid = false;
+            $('#quantity').addClass('redBorder');
+            errors.push('Please enter a quantity for this part.');
+        }
+        if(!isValid){
+            var message = '';
+            errors.forEach(function(item){
+                message += item + '\n\r';
+            });
+            alert(message);
+        }
+        return isValid;
+    },
+    
+    fillFormWithPart: function(){
+        $('#partDescription').height(document.getElementById('partDescription').scrollHeight);
+    }    
+};
+
+$(document).ready(function(){
+    var isFormPart = $('.form-part-wrapper-div').length;
+    if(isFormPart > 0){
+        FormPart.init();
+    }
+});
+    
+
+
+

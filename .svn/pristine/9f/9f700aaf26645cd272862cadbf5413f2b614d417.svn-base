@@ -1,0 +1,171 @@
+<?php
+/**
+ * Description of Vehicle
+ *
+ * @author Michael Nirk
+ */
+require_once 'entity/EntityClass.php';
+class VehicleClass extends EntityClass {
+    
+    private $vehicleID;
+    private $name;
+    private $make;
+    private $model;
+    private $year;
+    private $keyNum;
+    private $datePurchased;
+    private $kmAtPurchase;
+    private $comments;
+    private $purchasePrice;
+    private $licensePlate;
+    private $vin;
+    private $userID;
+    
+    public function __construct(array $args) {
+        if (!empty($args['vehicle_ID'])) {
+            $this->vehicleID = $args['vehicle_ID'];
+        }
+        if (!empty($args['name'])) {
+            $this->name = $args['name'];
+        }
+        if (!empty($args['make'])) {
+            $this->make = $args['make'];
+        }
+        if (!empty($args['model'])) {
+            $this->model = $args['model'];
+        }
+        if (!empty($args['year'])) {
+            $this->year = $args['year'];
+        }
+        if (!empty($args['key_num'])) {
+            $this->keyNum = $args['key_num'];
+        }
+        if (!empty($args['date_purchased'])) {
+            $this->datePurchased = $args['date_purchased'];
+        }
+        if (!empty($args['km_at_purchase'])) {
+            $this->kmAtPurchase = $args['km_at_purchase'];
+        }
+        if (!empty($args['comments'])) {
+            $this->comments = $args['comments'];
+        }
+        if (!empty($args['purchase_price'])) {
+            $this->purchasePrice = $args['purchase_price'];
+        }
+        if (!empty($args['license_plate'])) {
+            $this->licensePlate = $args['license_plate'];
+        }
+        if (!empty($args['VIN'])) {
+            $this->vin = $args['VIN'];
+        }
+        if (!empty($args['userID'])) {
+            $this->userID = $args['userID'];
+        }
+    }
+    
+    public function getVehicleID() {
+        return $this->vehicleID;
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+
+    public function getMake() {
+        return $this->make;
+    }
+
+    public function getModel() {
+        return $this->model;
+    }
+
+    public function getYear() {
+        return $this->year;
+    }
+
+    public function getKeyNum() {
+        return $this->keyNum;
+    }
+
+    public function getDatePurchased() {
+        return $this->datePurchased;
+    }
+
+    public function getKmAtPurchase() {
+        return $this->kmAtPurchase;
+    }
+
+    public function getComments() {
+        return $this->comments;
+    }
+
+    public function getPurchasePrice() {
+        return $this->purchasePrice;
+    }
+
+    public function getLicensePlate() {
+        return $this->licensePlate;
+    }
+
+    public function getVin() {
+        return $this->vin;
+    }
+
+    public function getUserID() {
+        return $this->userID;
+    }
+
+    public function setVehicleID($vehicleID) {
+        $this->vehicleID = $vehicleID;
+    }
+    
+    public function setName($name) {
+        $this->name = $name;
+    }
+
+    public function setMake($make) {
+        $this->make = $make;
+    }
+
+    public function setModel($model) {
+        $this->model = $model;
+    }
+
+    public function setYear($year) {
+        $this->year = $year;
+    }
+
+    public function setKeyNum($keyNum) {
+        $this->keyNum = $keyNum;
+    }
+
+    public function setDatePurchased($datePurchased) {
+        $this->datePurchased = $datePurchased;
+    }
+
+    public function setKmAtPurchase($kmAtPurchase) {
+        $this->kmAtPurchase = $kmAtPurchase;
+    }
+
+    public function setComments($comments) {
+        $this->comments = $comments;
+    }
+
+    public function setPurchasePrice($purchasePrice) {
+        $this->purchasePrice = $purchasePrice;
+    }
+
+    public function setLicensePlate($licensePlate) {
+        $this->licensePlate = $licensePlate;
+    }
+
+    public function setVin($vin) {
+        $this->vin = $vin;
+    }
+
+    public function setUserID($userID) {
+        $this->userID = $userID;
+    }
+
+
+}

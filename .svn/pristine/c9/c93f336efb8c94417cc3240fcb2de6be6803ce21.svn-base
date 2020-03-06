@@ -1,0 +1,135 @@
+<?php
+require_once('../include/DatabaseAccessClass.php');
+class LoginControllerClass extends UIControllerClass {
+    //Constructor
+    function __construct($request) {
+        parent::__construct($request);
+        $this->tpl->assign('module', 'login');
+        $this->DAO = new DatabaseAccessClass();
+    }    
+    
+    public function execute(){
+        $action = strtolower($this->sGetRequest('action'));
+        
+        switch($action){
+            case "checkauth":
+                $this->checkauth();
+                break; 
+            case 'logout':
+                $this->logout();
+                break;
+            case 'createaccount':
+                $this->createAccount();
+                break;            
+            default:
+                $this->showLogin();
+        }        
+        $this->tpl->display("index.tpl");
+    }
+    
+    private function showLogin(){        
+        $this->tpl->assign("content", "login");        
+    }
+    
+    private function checkauth(){
+        
+        //Check if user name was sent. If so, get it. If not, add error to errorMessages array
+        if(empty($this->request['loginemail'])){
+            $this->errors[] = 'Please enter your user name.';            
+        } else {
+            $userName = $this->request['loginemail'];
+        }
+        
+        //Check if password was sent. If so, get it. If not, add error to errorMessages array
+        if(empty($this->request['loginpassword'])){
+            $this->errors[] = 'Please enter a your password.';            
+        } else {
+            $pwd = $this->request['loginpassword'];
+        }
+        
+        
+        if(count($this->errors) > 0){//Display login page with error messages            
+            $this->tpl->assign("errors", $this->errors);
+            $this->showLogin();            
+            
+        } else {//If both user name and password are present, check if they are valid          
+            $user = $this->DAO->checkLogin($userName, $pwd);
+            if(is_array($user)){//Valid user
+                $_SESSION['userid'] = $user['userid'];
+                $_SESSION['user_firstname'] = $user['firstname'];
+                $_SESSION['user_lastname'] = $user['lastname'];
+                $_SESSION['user_fullname'] = ucfirst($user['firstname'] . ' ' . ucfirst($user['lastname']));
+                header('Location: index.php?module=Vehicle&action=listvehicles');
+            } else {
+                $this->errors[] = "There are no users saved with those credentials.";
+                $this->tpl->assign("errors", $this->errors);
+                $this->showLogin();
+            }
+        }
+    }
+    
+    private function logout(){
+        unset($_SESSION);
+        session_unset();
+        session_destroy();
+        $this->messages[] = 'You have been successfully logged out.';
+        $this->tpl->assign('messages', $this->messages);
+        $this->showLogin();
+    }
+    
+    private function createAccount(){
+        //Check if all data was supplied. If not, add error message for each 
+        //missing item and show login form again
+        $account = array();
+        if(empty($this->request['firstname'])){
+            $this->errors[] = "Please enter your first name.";
+        } else {
+            $account['firstName'] = $this->request['firstname'];
+        }
+        
+        if(empty($this->request['lastname'])){
+            $this->errors[] = "Please enter your last name.";
+        } else {
+            $account['lastName'] = $this->request['lastname'];
+        }
+        
+        if(empty($this->request['email'])){
+            $this->errors[] = "Please enter your email address.";
+        } else {
+            $account['email'] = $this->request['email'];
+        }
+        
+        if(empty($this->request['password'])){
+            $this->errors[] = "Please enter a password";
+        } else {
+            $account['password'] = $this->request['password'];
+        }
+        
+        if(empty($this->request['confirmpassword'])){
+            $this->errors[] = "Please reenter your password.";
+        }
+        
+        if(!empty($this->request['password']) && !empty($this->request['confirmpassword'])){
+            if($this->request['password'] !== $this->request['confirmpassword']){
+                $this->errors[] = "The two passwords do not match. Please try again.";
+            } 
+        }
+        
+        if(count($this->errors) > 0){
+            $this->tpl->assign('errors', $this->errors);
+            $this->showLogin();
+        } else {
+            $newUser = $this->DAO->createAccount($account);
+            if(is_array($newUser)){
+                $_SESSION['isNewAccount'] = 1;
+                $_SESSION['userid'] = $newUser['id'];
+                $_SESSION['username'] = $newUser['firstname'];
+                header('Location: index.php?module=Vehicle&action=listvehicles');
+            } else {
+                $this->errors[] = "There was a problem creating your account. Please try again later.";
+                $this->tpl->assign('errors', $this->errors);
+                $this->showLogin();
+            }
+        }
+    }
+}

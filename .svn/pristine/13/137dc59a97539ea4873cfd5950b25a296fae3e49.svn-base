@@ -1,0 +1,30 @@
+<?php
+/* Smarty version 3.1.30, created on 2018-03-25 14:20:56
+  from "/var/www/repair_tracker/templates/part/js.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_5ab7b04805aa39_13420835',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'e6a5dd780776b8c1cdbf8cf70ae282b5cbe9eabc' => 
+    array (
+      0 => '/var/www/repair_tracker/templates/part/js.tpl',
+      1 => 1512914348,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_5ab7b04805aa39_13420835 (Smarty_Internal_Template $_smarty_tpl) {
+echo '<script'; ?>
+ src="js/modules/part/list_parts.js"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+ src="js/modules/part/form_part.js"><?php echo '</script'; ?>
+><?php }
+}

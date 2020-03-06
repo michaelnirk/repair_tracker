@@ -1,0 +1,38 @@
+<?php
+/* Smarty version 3.1.30, created on 2016-10-21 20:39:16
+  from "C:\wamp\www\repair_tracker\templates\header.tpl" */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.30',
+  'unifunc' => 'content_580a60d43e7393_97353753',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'd4e3ff39a1c10f859a016abb6f9b050aa1912662' => 
+    array (
+      0 => 'C:\\wamp\\www\\repair_tracker\\templates\\header.tpl',
+      1 => 1476985266,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_580a60d43e7393_97353753 (Smarty_Internal_Template $_smarty_tpl) {
+$_smarty_tpl->compiled->nocache_hash = '23351580a60d43e17d4_16193778';
+?>
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header pull-left">
+            <a href="#" class="navbar-brand">Repair Tracker</a>
+        </div>
+        <div class="pull-right">
+            <ul class="navbar-nav nav">
+                <li><a href="repair_tracker.php?logout=1">Log Out</a></li>
+            </ul>          
+        </div>
+    </div>
+</div> <?php }
+}
