@@ -16,5 +16,12 @@
       <i class="fas fa-plus fa-fw"></i>
     </button>
   </div>
+  <div class="right">
+    <button type="button"
+            class="toolbar-button"
+            onclick="Vehicles.sendTestEmail();">
+      <i class="fas fa-alarm-plus"></i>
+    </button>
+  </div>
 </div>
 {/strip}

@@ -506,6 +506,37 @@ Vehicles = (function() {
       hideWorking();
     });
   }
+  
+  function sendTestEmail() {
+    $.ajax({
+      url: 'index.php',
+      data: {
+        module: 'vehicle',
+        action: 'send_test_email'
+      }
+    }).done(result => {
+      result = JSON.parse(result);
+      if (typeof result === 'object' && result.hasOwnProperty('success') && result.success === true) {
+        if (parseInt(result.data, 10) === parseInt(vehicleID, 10)) {
+          table.row(`#${vehicleID}`).remove().draw();
+          const message = "Vehicle was successfully deleted!";
+          displayMessage([message]);
+        }
+      } else if (typeof result === 'object' && result.hasOwnProperty('success') && result.success === false) {
+        if (result.data.hasOwnProperty('messages') && result.data.messages.hasOwnProperty('errors') && result.data.messages.errors.length) {
+          errors.length = 0;
+          const title = 'There are errors!';
+          const message = result.data.messages.errors.join('<br>');
+          showMessage(title, message);
+        }
+      } else {
+        console.error(`Error deleing vehicle: ${result}`);
+        const title = 'Error!';
+        const message = 'An error has occurred. The vehicle could not be deleted.';
+        showMessage(title, message);
+      }
+    });
+  }
   /***********************  end Functions  ***********************/
 
   /***********************  Exports  *****************************/
@@ -517,6 +548,7 @@ Vehicles = (function() {
   _this.hideForm = hideForm;
   _this.processAddVehicle = processAddVehicle;
   _this.processDeleteVehicle = processDeleteVehicle;
+  _this.sendTestEmail = sendTestEmail;
   /***********************  end Exports  *************************/
   return _this;
 })();

@@ -5,7 +5,6 @@ class LoginControllerClass extends UIControllerClass {
   //Constructor
   function __construct($request) {
     parent::__construct($request);
-    $this->tpl->assign('module', 'login');
     $this->tpl->assign('action', $this->sGetRequest('action'));
   }
 
@@ -21,11 +20,9 @@ class LoginControllerClass extends UIControllerClass {
       case 'createaccount':
         $this->createAccount();
         break;
-      default:
-        $this->showLogin();
     }
     $this->tpl->assign('messages', $this->messages);
-    $this->tpl->display("index.tpl");
+    $this->tpl->display("login/login.tpl");
   }
 
   private function showLogin() {

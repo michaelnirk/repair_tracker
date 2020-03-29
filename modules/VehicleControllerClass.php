@@ -25,6 +25,9 @@ class VehicleControllerClass extends UIControllerClass {
       case 'set_vehicle':
         $this->setVehicle();
         break;
+      case 'send_test_email':
+        $this->sendTestEmail();
+        break;
     }
     $this->tpl->assign('messages', $this->messages);
     $this->tpl->display("index.tpl");
@@ -113,5 +116,10 @@ class VehicleControllerClass extends UIControllerClass {
       $this->messages['errors'][] = $vehicleID ? "There was a problem updating the vehicle information. Please try again later." : "There was a problem creating the vehicle. Please try again later.";
       die(ajaxError($this->messages));
     }
+  }
+  
+  private function sendTestEmail() {
+    require_once 'include/sendMail2.php';
+    sendMail2();
   }
 }

@@ -56,7 +56,7 @@ if (!isset($_GET['code']) && !isset($_GET['provider'])) {
 exit;
 }
 
-require '../../../vendor/autoload.php';
+require 'vendor/autoload.php';
 
 session_start();
 
@@ -74,12 +74,12 @@ if (!in_array($providerName, ['Google', 'Microsoft', 'Yahoo'])) {
 
 //These details are obtained by setting up an app in the Google developer console,
 //or whichever provider you're using.
-$clientId = '807899027268-16aee4oog4ij86nei402rrdupfq0fr6t.apps.googleusercontent.com';
-$clientSecret = 'pxPv4cG7vzrILbwKcmOoFSwr';
+$clientId = 'RANDOMCHARS-----duv1n2.apps.googleusercontent.com';
+$clientSecret = 'RANDOMCHARS-----lGyjPcRtvP';
 
 //If this automatic URL doesn't work, set it yourself manually to the URL of this script
-//$redirectUri = (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
-$redirectUri = 'http://localhost/repair_tracker/vendor/phpmailer/phpmailer/get_oauth_token.php';
+$redirectUri = (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+//$redirectUri = 'http://localhost/PHPMailer/redirect';
 
 $params = [
     'clientId' => $clientId,

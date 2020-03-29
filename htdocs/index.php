@@ -16,11 +16,7 @@ if (empty($_SESSION['user'])) {
     $module = "vehicle";
     $_REQUEST['action'] = 'vehicles';
   }
-//  die(var_dump($module));
 }
-//die(sendMail('nirkules@gmail.com', 'repair_tracker@nirk.com', 'test', 'Just some text'));
-//$mail = new ReminderEmailClass();
-//die(processReminderEmails());
 $includefile = "../modules/" . ucfirst($module) . 'ControllerClass.php';
 if (file_exists($includefile)) {
   require_once $includefile;
