@@ -2,35 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/develope/repair_tracker_v2/htdocs/js/session.js</file>
-            <file>file:/C:/develope/repair_tracker_v2/templates/index.tpl</file>
-            <file>file:/C:/develope/repair_tracker_v2/htdocs/js/modules/repair/repairs.js</file>
-            <file>file:/C:/develope/repair_tracker_v2/include/DatabaseAccessClass.php</file>
-            <file>file:/C:/develope/repair_tracker_v2/modules/RepairControllerClass.php</file>
-            <file>file:/C:/develope/repair_tracker_v2/entity/repair/RepairClass.php</file>
-            <file>file:/C:/develope/repair_tracker_v2/templates/repair/js.tpl</file>
-            <file>file:/C:/develope/repair_tracker_v2/htdocs/js/common.js</file>
-            <file>file:/C:/develope/repair_tracker_v2/htdocs/css/global_exports.less</file>
-            <file>file:/C:/develope/repair_tracker_v2/templates/repair/css.tpl</file>
-            <file>file:/C:/develope/repair_tracker_v2/templates/vehicle/vehicles.toolbar.tpl</file>
-            <file>file:/C:/develope/repair_tracker_v2/templates/js.tpl</file>
-            <file>file:/C:/develope/repair_tracker_v2/entity/vehicle/VehicleClass.php</file>
-            <file>file:/C:/develope/repair_tracker_v2/htdocs/index.php</file>
-            <file>file:/C:/develope/repair_tracker_v2/htdocs/css/global.less</file>
-            <file>file:/C:/develope/repair_tracker_v2/htdocs/js/modules/vehicle/vehicles.js</file>
-            <file>file:/C:/develope/repair_tracker_v2/modules/PartControllerClass.php</file>
-            <file>file:/C:/develope/repair_tracker_v2/templates/note.tpl</file>
-            <file>file:/C:/develope/repair_tracker_v2/entity/part/PartClass.php</file>
-            <file>file:/C:/develope/repair_tracker_v2/modules/VehicleControllerClass.php</file>
-            <file>file:/C:/develope/repair_tracker_v2/htdocs/css/modules/repair/repairs.less</file>
-            <file>file:/C:/develope/repair_tracker_v2/htdocs/js/modules/part/parts.js</file>
-            <file>file:/C:/develope/repair_tracker_v2/templates/part/parts.tpl</file>
-            <file>file:/C:/develope/repair_tracker_v2/htdocs/css/modules/vehicle/vehicles.less</file>
-            <file>file:/C:/develope/repair_tracker_v2/templates/css.tpl</file>
-            <file>file:/C:/develope/repair_tracker_v2/templates/repair/repairs.tpl</file>
-            <file>file:/C:/develope/repair_tracker_v2/htdocs/js/utils.js</file>
-            <file>file:/C:/develope/repair_tracker_v2/templates/vehicle/vehicles.tpl</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
