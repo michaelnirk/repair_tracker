@@ -48,7 +48,7 @@ function sendMail2($to) {
   $mail->Password = '6O3G42owh*Ou';
 
 //Set who the message is to be sent from
-  $mail->setFrom('Repair Tracker');
+  $mail->setFrom('noreply.repairtracker@gmail.com', 'Repair Tracker');
 
 //Set an alternative reply-to address
 //  $mail->addReplyTo('replyto@example.com', 'First Last');
