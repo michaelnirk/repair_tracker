@@ -38,7 +38,7 @@ table.dataTable thead th, table.dataTable thead td {
   font-size: 1.2rem;
 }
 
-input:not([type='radio']):not([type='checkbox']),
+input:not([type='radio']):not([type='checkbox']):not(.select2-search__field),
 select,
 textarea {
   border: 1px solid #828A93;
@@ -52,14 +52,14 @@ textarea {
   box-sizing: border-box;
 }
 
-input:hover:not([type='file']):not([type='image']):not([type='radio']):not(checkbox),
+input:hover:not([type='file']):not([type='image']):not([type='radio']):not(checkbox):not(.select2-search__field),
 select:hover,
 textarea:hover {
   /*box-shadow: 0 1px 4px rgba(255,174,26) inset;*/
   box-shadow: 0 0 2px 2px rgba(255,174,26) inset;
 }
 
-input:focus:not([type='radio']):not([type='checkbox']),
+input:focus:not([type='radio']):not([type='checkbox']):not(.select2-search__field),
 select:focus,
 textarea:focus {
   outline: none;
@@ -164,7 +164,7 @@ input[type='search']::placeholder {
     div.left {
       @std-flex-div();
       align-items: center;
-      
+
       button.toolbar-button {
         margin-left: 0.5rem;
       }
@@ -174,7 +174,7 @@ input[type='search']::placeholder {
       @std-flex-div();
       align-items: center;
       justify-content: flex-end;
-      
+
       button.toolbar-button {
         margin-right: 0.5rem;
       }
@@ -369,7 +369,7 @@ input[type='search']::placeholder {
         margin: 3px;
       }
     }
-    
+
     a:link {
       text-decoration: none;
     }
@@ -454,7 +454,7 @@ input[type='search']::placeholder {
     align-items: flex-start;
 
     i {
-      margin-left: 5px;
+      margin-left: 0.5rem;
       font-size: 1.2rem;
     }
     i:hover {
@@ -499,7 +499,28 @@ input[type='search']::placeholder {
       right: 0px;
     }
   }
-  
 
+  /*****************     Select2     *****************/
+
+  .select2-selection--multiple {
+    border-radius: 0.4rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) inset;
+    background: linear-gradient(#eee, #fff);
+    border: 1px solid #828A93;
+
+    .select2-selection__rendered li {
+      border-radius: 0.4rem;
+      /*margin-top: 3px;*/
+      padding: 5px 5px;
+      font-size: 1.2rem;
+    }
+  }
+
+  .select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: 1px solid #828A93;
+    box-shadow: 0 0 2px 2px rgba(255,174,26) inset;
+  }
+
+  /*****************     end Select2     *****************/
 }
 

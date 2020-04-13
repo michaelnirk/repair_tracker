@@ -158,7 +158,7 @@ Vehicles = (function() {
 
   /***********************  Functions  ***************************/
   async function init(args) {
-    await getRequiredData();
+    currencyData = await Session.getItem("currencyData");
     populateCurrencySelect();
     tableOptions.data = args.vehicles;
     table = $("#vehiclesTable").DataTable(tableOptions);
@@ -170,17 +170,6 @@ Vehicles = (function() {
     noteTemplateElement.remove();
     noteTemplate.removeClass("new");
     initializeStandardTooltip();
-  }
-
-  function getRequiredData() {
-    return new Promise(resolve => {
-      Session.getItem("currencyData").then(result => {
-        currencyData = result;
-        resolve();
-      }).catch(error => {
-        console.error(error);
-      });
-    });
   }
 
   function populateCurrencySelect() {

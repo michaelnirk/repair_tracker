@@ -114,12 +114,11 @@ Repairs = (function() {
 
   /************************  Functions  *************************/
   async function init(args) {
-    await getRequiredData();
+    currencyData = await Session.getItem("currencyData");
     populateCurrencySelect();
     vehicle = args.vehicle;
     tableOptions.data = args.repairs;
     table = $("#repairsTable").DataTable(tableOptions);
-//    $("#repairDate").datetimepicker(dateTimePickerOptions);
     $("#repairDate").datepicker(dateTimePickerOptions);
     evaluateBackButton();
     //Create template for notes
@@ -129,18 +128,7 @@ Repairs = (function() {
     noteTemplate.removeClass('new');
     initializeStandardTooltip();
   }
-
-  function getRequiredData() {
-    return new Promise(resolve => {
-      Session.getItem("currencyData").then(result => {
-        currencyData = result;
-        resolve();
-      }).catch(error => {
-        console.error(error);
-      });
-    });
-  }
-
+  
   function populateCurrencySelect() {
     const select = $("#repairCostCurrency");
     for (const currencySymbolID in currencyData) {

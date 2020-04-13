@@ -8,16 +8,7 @@ class NoteClass extends EntityClass {
   protected $create_datetime;
 
   public function __construct($properties = null) {
-    if ($properties) {
-      $reflection = new ReflectionClass(get_class($this));
-      $classProps = $reflection->getProperties();
-      foreach ($classProps as $prop) {
-        $propName = $prop->getName();
-        if (isset($properties[$propName])) {
-          $this->$propName = $properties[$propName];
-        }
-      }
-    }
+    parent::__construct($properties);
   }
 
   /**

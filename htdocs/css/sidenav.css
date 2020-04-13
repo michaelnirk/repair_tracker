@@ -1,0 +1,50 @@
+#sideNav {
+  height: 100vh;
+  width: 0;
+  color: #f99a48;
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Stay on top */
+  top: 0;
+  /* Stay at the top */
+  right: 0;
+  background-color: #6c6c6c;
+  /* Black*/
+  overflow-x: hidden;
+  /* Disable horizontal scroll */
+  padding-top: 60px;
+  /* Place content 60px from the top */
+  transition: 0.5s;
+  /* 0.5 second transition effect to slide in the sidenav */
+}
+#sideNav a.side-nav-element {
+  padding: 0.6rem 0 0.6rem 2.5rem;
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: #f99a48;
+  display: block;
+  transition: 0.3s;
+  border-bottom: 1px solid #bfbfbf;
+  width: 25rem;
+}
+#sideNav a.side-nav-element i {
+  color: #f99a48;
+  margin-right: 1rem;
+}
+#sideNav a.side-nav-element.close {
+  border-top: 1px solid #bfbfbf;
+  text-align: right;
+  padding-right: 2.5rem;
+  width: 20rem;
+}
+#sideNav a.side-nav-element:hover {
+  background-color: #f99a48;
+  color: #6c6c6c;
+}
+#sideNav a.side-nav-element:hover i {
+  color: #6c6c6c;
+}
+#sideNav.shown {
+  width: 25rem;
+}

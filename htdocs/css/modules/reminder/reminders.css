@@ -1,0 +1,16 @@
+#remindersWrapper #formReminderWrapper {
+  display: none;
+}
+#remindersWrapper #formReminderWrapper div.reminder-date-unit i {
+  margin-left: 0.5rem;
+}
+#remindersWrapper #formReminderWrapper div.reminder-date-unit i.fa-plus-square {
+  font-size: 1.8rem;
+}
+#remindersWrapper #formReminderWrapper div.reminder-date-unit i.fa-trash-alt {
+  font-size: 1.6rem;
+}
+#remindersWrapper #formReminderWrapper div.reminder-date-unit i:hover {
+  color: #f99a48;
+  cursor: pointer;
+}

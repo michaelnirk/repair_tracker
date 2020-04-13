@@ -2,6 +2,36 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/develop/repair_tracker/templates/reminder/reminders.tpl</file>
+            <file>file:/C:/develop/repair_tracker/include/UIControllerClass.php</file>
+            <file>file:/C:/develop/repair_tracker/htdocs/js/modules/utility/formreminder.js</file>
+            <file>file:/C:/develop/repair_tracker/htdocs/js/modules/vehicle/vehicles.js</file>
+            <file>file:/C:/develop/repair_tracker/htdocs/js/common.js</file>
+            <file>file:/C:/develop/repair_tracker/templates/title.tpl</file>
+            <file>file:/C:/develop/repair_tracker/templates/index.tpl</file>
+            <file>file:/C:/develop/repair_tracker/htdocs/css/sidenav.less</file>
+            <file>file:/C:/develop/repair_tracker/htdocs/js/session.js</file>
+            <file>file:/C:/develop/repair_tracker/templates/toolbar_parent.tpl</file>
+            <file>file:/C:/develop/repair_tracker/htdocs/js/sidenav.js</file>
+            <file>file:/C:/develop/repair_tracker/modules/LoginControllerClass.php</file>
+            <file>file:/C:/develop/repair_tracker/htdocs/css/global.less</file>
+            <file>file:/C:/develop/repair_tracker/modules/VehicleControllerClass.php</file>
+            <file>file:/C:/develop/repair_tracker/htdocs/css/menu.less</file>
+            <file>file:/C:/develop/repair_tracker/templates/sidenav.tpl</file>
+            <file>file:/C:/develop/repair_tracker/templates/login/login.tpl</file>
+            <file>file:/C:/develop/repair_tracker/templates/js.tpl</file>
+            <file>file:/C:/develop/repair_tracker/htdocs/index.php</file>
+            <file>file:/C:/develop/repair_tracker/htdocs/js/modules/login/login.js</file>
+            <file>file:/C:/develop/repair_tracker/templates/banner.tpl</file>
+            <file>file:/C:/develop/repair_tracker/templates/vehicle/vehicles.toolbar.tpl</file>
+            <file>file:/C:/develop/repair_tracker/include/sendMail.php</file>
+            <file>file:/C:/develop/repair_tracker/templates/css.tpl</file>
+            <file>file:/C:/develop/repair_tracker/modules/UtilityControllerClass.php</file>
+            <file>file:/C:/develop/repair_tracker/templates/vehicle/vehicles.tpl</file>
+            <file>file:/C:/develop/repair_tracker/templates/header.tpl</file>
+            <file>file:/C:/develop/repair_tracker/include/sendMail2.php</file>
+            <file>file:/C:/develop/repair_tracker/modules/ReminderControllerClass.php</file>
+        </group>
     </open-files>
 </project-private>

@@ -31,7 +31,7 @@ table.dataTable thead th,
 table.dataTable thead td {
   font-size: 1.2rem;
 }
-input:not([type='radio']):not([type='checkbox']),
+input:not([type='radio']):not([type='checkbox']):not(.select2-search__field),
 select,
 textarea {
   border: 1px solid #828A93;
@@ -44,13 +44,13 @@ textarea {
   color: #5f5f5f;
   box-sizing: border-box;
 }
-input:hover:not([type='file']):not([type='image']):not([type='radio']):not(checkbox),
+input:hover:not([type='file']):not([type='image']):not([type='radio']):not(checkbox):not(.select2-search__field),
 select:hover,
 textarea:hover {
   /*box-shadow: 0 1px 4px rgba(255,174,26) inset;*/
   box-shadow: 0 0 2px 2px rgba(255, 174, 26) inset;
 }
-input:focus:not([type='radio']):not([type='checkbox']),
+input:focus:not([type='radio']):not([type='checkbox']):not(.select2-search__field),
 select:focus,
 textarea:focus {
   outline: none;
@@ -79,6 +79,8 @@ input[type='search']::placeholder {
   background-color: #e2e2e2;
   box-sizing: border-box;
   overflow-y: auto;
+  /*****************     Select2     *****************/
+  /*****************     end Select2     *****************/
 }
 .content div.banner {
   display: flex;
@@ -375,7 +377,7 @@ input[type='search']::placeholder {
   align-items: flex-start;
 }
 .content div.standard-form-element.note i {
-  margin-left: 5px;
+  margin-left: 0.5rem;
   font-size: 1.2rem;
 }
 .content div.standard-form-element.note i:hover {
@@ -420,4 +422,20 @@ input[type='search']::placeholder {
   font-size: 0.8rem;
   top: -5px;
   right: 0px;
+}
+.content .select2-selection--multiple {
+  border-radius: 0.4rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4) inset;
+  background: linear-gradient(#eee, #fff);
+  border: 1px solid #828A93;
+}
+.content .select2-selection--multiple .select2-selection__rendered li {
+  border-radius: 0.4rem;
+  /*margin-top: 3px;*/
+  padding: 5px 5px;
+  font-size: 1.2rem;
+}
+.content .select2-container--default.select2-container--focus .select2-selection--multiple {
+  border: 1px solid #828A93;
+  box-shadow: 0 0 2px 2px rgba(255, 174, 26) inset;
 }

@@ -7,15 +7,3 @@
 #vehiclesWrapper #formVehicleWrapper .notes-header button.toolbar-button {
   margin: 0;
 }
-#vehiclesWrapper #formVehicleWrapper div.standard-form-element.note {
-  padding-left: calc(15vw + 15px);
-  align-items: flex-start;
-}
-#vehiclesWrapper #formVehicleWrapper div.standard-form-element.note i {
-  margin-left: 5px;
-  font-size: 1.2rem;
-}
-#vehiclesWrapper #formVehicleWrapper div.standard-form-element.note i:hover {
-  color: #f99a48;
-  cursor: pointer;
-}

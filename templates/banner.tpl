@@ -4,7 +4,7 @@
   </div>
   <div class='banner-element right'>
     <div class='banner-element'>
-      <span class='standard-tooltip clickable' title='Log out' onclick="logOut();"><i class="fas fa-sign-out-alt"></i>Log out</span>
+{*      <span class='standard-tooltip clickable' title='Log out' onclick="logOut();"><i class="fas fa-sign-out-alt"></i>Log out</span>*}
     </div>
   </div>
 </div>

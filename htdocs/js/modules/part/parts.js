@@ -121,7 +121,7 @@ Parts = (function() {
   
   /***********************  Functions  ***************************/
   async function init(args) {
-    await getRequiredData();
+    currencyData = await Session.getItem("currencyData");
     populateCurrencySelect();
     vehicle = args.vehicle;
     repair = args.repair;
@@ -135,17 +135,6 @@ Parts = (function() {
     noteTemplateElement.remove();
     noteTemplate.removeClass('new');
     initializeStandardTooltip();
-  }
-
-  function getRequiredData() {
-    return new Promise(resolve => {
-      Session.getItem("currencyData").then(result => {
-        currencyData = result;
-        resolve();
-      }).catch(error => {
-        console.error(error);
-      });
-    });
   }
 
   function populateCurrencySelect() {

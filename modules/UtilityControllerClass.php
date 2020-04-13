@@ -14,16 +14,11 @@ class UtilityControllerClass extends UIControllerClass {
             case 'changepassword':
                 $this->changePassword();
                 break;
-            case 'create_reminder':
-                $this->showReminderForm();
-                break;
-            case 'edit_reminder':
-                $this->editReminder();
-            case 'process_reminder_emails':
-                $this->processReminderEmails();
-                exit();
             case 'list_currency_data':
               $this->listCurrencyData();
+              break;
+            case 'get_user_data':
+              $this->getUserData();
               break;
             default:
                 break;
@@ -75,21 +70,12 @@ class UtilityControllerClass extends UIControllerClass {
         }
     }
     
-    private function showReminderForm(ReminderClass $reminder = null) {
-        if ($reminder) {
-            $this->tpl->assign('reminder', $reminder);
-        }
-        $this->tpl->assign('content','formreminder');
-    }
-    
-    private function editReminder() {
-        $reminderID = $this->request['reminder_id'];
-        $reminder = $this->DAO->getReminder($reminderID);
-        $this->showReminderForm($reminder);
-    }
-    
     private function listCurrencyData() {
       $currencyData = $this->DAO->listCurrencyData();
       die(json_encode($currencyData));
+    }
+    
+    private function getUserData() {
+      die(json_encode($_SESSION['user']));
     }
 }

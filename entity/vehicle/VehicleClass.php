@@ -25,16 +25,7 @@ class VehicleClass extends EntityClass {
   protected $repair_count;
 
   public function __construct($properties = NULL) {
-    if($properties) {
-      $reflection = new ReflectionClass(get_class($this));
-      $classProps = $reflection->getProperties();
-      foreach($classProps as $prop) {
-        $propName = $prop->getName();
-        if (isset($properties[$propName])) {
-          $this->$propName = $properties[$propName];
-        }
-      }
-    }
+    parent::__construct($properties);
   }
 
   public function getVehicleID() {

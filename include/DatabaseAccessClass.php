@@ -8,7 +8,6 @@
 include_once 'entity/vehicle/VehicleClass.php';
 include_once 'entity/repair/RepairClass.php';
 include_once 'entity/part/PartClass.php';
-include_once 'entity/utility/ReminderClass.php';
 
 class DatabaseAccessClass {
 
@@ -51,8 +50,6 @@ class DatabaseAccessClass {
 
   //Function to login in user
   public function checkLogin($userEmail, $userPwd) {
-    $user = array();
-
     $this->getConnection();
 
     $password = md5($userPwd);
@@ -66,12 +63,10 @@ class DatabaseAccessClass {
 
     $this->stmt->execute();
 
-    $rows = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    if (count($rows) > 0) {
-      $user['firstName'] = $rows[0]['first_name'];
-      $user['lastName'] = $rows[0]['last_name'];
-      $user['userID'] = $rows[0]['user_id'];
+    if ($this->stmt->rowCount() === 1) {
+      $row = $this->stmt->fetch(PDO::FETCH_ASSOC);
+      $user = $this->getUser($row['user_id']);
 
       //Close statement and connection
       $this->cleanUp();
@@ -132,9 +127,36 @@ class DatabaseAccessClass {
     return $result;
   }
 
+  public function getUser($userID) {
+    require_once 'entity/UserClass.php';
+    //Create connection to database
+    $this->getConnection();
+    //Query SQL
+    $sql = "SELECT u.user_id,
+                   u.first_name,
+                   u.last_name,
+                   u.email,
+                   e.create_datetime
+            FROM users_t AS u
+            INNER JOIN entities AS e
+              ON e.entity_id = u.user_id
+            WHERE u.user_id = :userID";
+
+    $this->stmt = $this->conn->prepare($sql);
+
+    $this->stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+
+    $this->stmt->execute();
+
+    $result = $this->stmt->fetch(PDO::FETCH_ASSOC);
+    $user = new UserClass($result);
+    $this->cleanUp();
+    return $user;
+  }
+
   //Function to return a list of vehicles for the current user
   public function listVehicles() {
-    $userID = $_SESSION['user']['userID'];
+    $userID = $_SESSION['user']['user_id'];
     //Create connection to database
     $this->getConnection();
     //SQL for query
@@ -305,7 +327,7 @@ class DatabaseAccessClass {
     $this->stmt->bindParam(':purchaseCurrency', $vehicle->getPurchaseCurrency(), empty($vehicle->getPurchaseCurrency()) ? PDO::PARAM_NULL : PDO::PARAM_INT);
     $this->stmt->bindParam(':licensePlate', $vehicle->getLicensePlate(), empty($vehicle->getLicensePlate()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
     $this->stmt->bindParam(':vin', $vehicle->getVin(), empty($vehicle->getVin()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
-    $this->stmt->bindParam(':userID', $_SESSION['user']['userID'], PDO::PARAM_INT);
+    $this->stmt->bindParam(':userID', $_SESSION['user']['user_id'], PDO::PARAM_INT);
 
     if ($this->stmt->execute()) {
       $result = $vehicleID;
@@ -358,7 +380,7 @@ class DatabaseAccessClass {
     $this->cleanUp();
     return $result;
   }
-  
+
   private function listVehicleRepairCounts() {
     //Create connection to database
     $this->getConnection();
@@ -375,10 +397,10 @@ class DatabaseAccessClass {
 
     $repairCounts = array();
     $results = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
-    foreach($results as $item) {
+    foreach ($results as $item) {
       $repairCounts[$item['vehicle_id']] = $item['repair_count'];
     }
-    
+
     //Close statement and connection
     $this->cleanUp();
     //Return results
@@ -506,7 +528,7 @@ class DatabaseAccessClass {
     $this->stmt->bindParam(':vID', $vehicleID);
 
     $this->stmt->execute();
-    
+
     $result = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     //Get all vehicle counts
     $partCounts = $this->listRepairPartCounts();
@@ -677,7 +699,7 @@ class DatabaseAccessClass {
     $this->cleanUp();
     return $result;
   }
-  
+
   private function listRepairPartCounts() {
     //Create connection to database
     $this->getConnection();
@@ -694,10 +716,10 @@ class DatabaseAccessClass {
 
     $partCounts = array();
     $results = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
-    foreach($results as $item) {
+    foreach ($results as $item) {
       $partCounts[$item['repair_id']] = $item['part_count'];
     }
-    
+
     //Close statement and connection
     $this->cleanUp();
     //Return results
@@ -999,4 +1021,307 @@ class DatabaseAccessClass {
     return $currencyData;
   }
 
+  public function listReminders() {
+    $userID = $_SESSION['user']['user_id'];
+    require_once 'entity/reminder/ReminderClass.php';
+    //Array to hold all reminders
+    $reminders = array();
+    //Create connection to database
+    $this->getConnection();
+    //SQL for query
+    $sql = "SELECT r.reminder_id,
+                   r.reminder_text,
+                   e.create_datetime
+            FROM reminders AS r
+            INNER JOIN entities AS e
+              ON e.entity_id = r.reminder_id
+            WHERE r.deleted = 0 AND r.user_id = :userID
+            ORDER BY e.create_datetime desc";
+
+    $this->stmt = $this->conn->prepare($sql);
+    $this->stmt->bindParam(":userID", $userID, PDO::PARAM_INT);
+    $this->stmt->execute();
+
+    $result = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($result as $reminderRow) {
+      $reminder = new ReminderClass($reminderRow);
+      $reminder->setReminderDatetimes($this->listReminderDatetimes($reminder->getReminderID()));
+      $reminder->setReminderEmails($this->listReminderEmails($reminder->getReminderID()));
+      $reminders[] = $reminder;
+    }
+
+    $this->cleanUp();
+
+    return $reminders;
+  }
+
+  private function listReminderDatetimes($reminderID) {
+    require_once 'entity/reminder/ReminderDatetimeClass.php';
+    //Array to hold all reminders
+    $reminderDatetimes = array();
+    //Create connection to database
+    $this->getConnection();
+    //SQL for query
+    $sql = "SELECT rd.remind_datetime_id,
+                   rd.reminder_id,
+                   rd.remind_datetime,
+                   rd.is_sent,
+                   e.create_datetime
+            FROM reminder_remind_datetimes AS rd
+            INNER JOIN entities AS e
+              ON e.entity_id = rd.remind_datetime_id
+            WHERE rd.reminder_id = :reminderID
+            ORDER BY rd.remind_datetime";
+
+    $this->stmt = $this->conn->prepare($sql);
+    $this->stmt->bindParam(":reminderID", $reminderID, PDO::PARAM_INT);
+
+    $this->stmt->execute();
+
+    $result = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($result as $reminderDatetimeRow) {
+      $reminderDatetime = new ReminderDatetimeClass($reminderDatetimeRow);
+      $reminderDatetimes[] = $reminderDatetime;
+    }
+
+    $this->cleanUp();
+
+    return $reminderDatetimes;
+  }
+
+  private function listReminderEmails($reminderID) {
+    require_once 'entity/reminder/ReminderEmailClass.php';
+    //Array to hold all reminders
+    $reminderEmails = array();
+    //Create connection to database
+    $this->getConnection();
+    //SQL for query
+    $sql = "SELECT re.remind_email_id,
+                   re.reminder_id,
+                   re.email,
+                   e.create_datetime
+            FROM reminder_remind_emails AS re
+            INNER JOIN entities AS e
+              ON e.entity_id = re.remind_email_id
+            WHERE re.reminder_id = :reminderID";
+
+    $this->stmt = $this->conn->prepare($sql);
+    $this->stmt->bindParam(":reminderID", $reminderID, PDO::PARAM_INT);
+
+    $this->stmt->execute();
+
+    $result = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($result as $reminderDatetimeRow) {
+      $reminderEmail = new ReminderEmailClass($reminderDatetimeRow);
+      $reminderEmails[] = $reminderEmail;
+    }
+
+    $this->cleanUp();
+
+    return $reminderEmails;
+  }
+
+  public function setReminder(ReminderClass $reminder) {
+    if ($reminder->getReminderID()) {
+      $reminderID = $reminder->getReminderID();
+      $this->updateReminder($reminder);
+      $this->deleteReminderRemindDatetimes($reminder);
+      $this->deleteReminderEmails($reminder);
+    } else {
+      $reminderID = $this->createReminder($reminder);
+      $reminder->setReminderID($reminderID);
+    }
+    $this->setReminderRemindDatetimes($reminder);
+    $this->setReminderEmails($reminder);
+
+    return $reminderID;
+  }
+
+  private function createReminder(ReminderClass $reminder) {
+    $reminderID = $this->createEntity(7);
+    //Create connection to database
+    $this->getConnection();
+    //Query SQL
+    $sql = "INSERT INTO reminders (
+              reminder_id,
+              user_id,
+              reminder_text
+            ) VALUES (
+              :reminderID,
+              :userID,
+              :reminderText
+            )";
+
+    $this->stmt = $this->conn->prepare($sql);
+
+    $this->stmt->bindParam(':reminderID', $reminderID, PDO::PARAM_INT);
+    $this->stmt->bindValue(':userID', $reminder->getUserID(), PDO::PARAM_INT);
+    $this->stmt->bindValue(':reminderText', $reminder->getReminderText(), PDO::PARAM_STR);
+
+    if ($this->stmt->execute()) {
+      $result = $reminderID;
+    } else {
+      $result = -1;
+    }
+    $this->cleanUp();
+    return $result;
+  }
+
+  private function updateReminder(ReminderClass $reminder) {
+    //Create connection to database
+    $this->getConnection();
+    //Query SQL
+    $sql = "UPDATE reminder SET
+                   reminder_text = :reminderText
+            WHERE reminder_id = :reminderID";
+
+    $this->stmt = $this->conn->prepare($sql);
+
+    $this->stmt->bindValue(':reminderText', $reminder->getReminderText(), PDO::PARAM_STR);
+    $this->stmt->bindValue(':reminderID', $reminder->getReminderID(), PDO::PARAM_INT);
+    if ($this->stmt->execute()) {
+      $result = $reminder->getReminderID();
+    } else {
+      $result = -1;
+    }
+
+    $this->cleanUp();
+    return $result;
+  }
+
+  private function deleteReminderRemindDatetimes(ReminderClass $reminder) {
+    //Create connection to database
+    $this->getConnection();
+    //Query SQL
+    $sql = "DELETE FROM reminder_remind_datetimes
+            WHERE reminder_id = :reminderID";
+
+    $this->stmt = $this->conn->prepare($sql);
+
+    $this->stmt->bindValue(':reminderID', $reminder->getReminderID(), PDO::PARAM_INT);
+
+    $this->stmt->execute();
+
+    //Close statement and connection
+    $this->cleanUp();
+  }
+
+  private function deleteReminderEmails(ReminderClass $reminder) {
+    //Create connection to database
+    $this->getConnection();
+    //Query SQL
+    $sql = "DELETE FROM reminder_remind_emails
+            WHERE reminder_id = :reminderID";
+
+    $this->stmt = $this->conn->prepare($sql);
+
+    $this->stmt->bindValue(':reminderID', $reminder->getReminderID(), PDO::PARAM_INT);
+
+    $this->stmt->execute();
+
+    //Close statement and connection
+    $this->cleanUp();
+  }
+
+  private function setReminderRemindDatetimes(ReminderClass $reminder) {
+    $reminderDatetimes = $reminder->getReminderDatetimes();
+    $reminderID = $reminder->getReminderID();
+    foreach ($reminderDatetimes as $reminderDatetime) {
+      $remindDatetimeID = $this->createEntity(8);
+      //Create connection to database
+      $this->getConnection();
+      //Query SQL
+      $sql = "INSERT INTO reminder_remind_datetimes (
+                remind_datetime_id,
+                reminder_id,
+                remind_datetime
+              ) VALUES (
+                :remindDatetimeID,
+                :reminderID,
+                :remindDatetime
+              )";
+      $this->stmt = $this->conn->prepare($sql);
+      $this->stmt->bindParam(':remindDatetimeID', $remindDatetimeID, PDO::PARAM_INT);
+      $this->stmt->bindParam(':reminderID', $reminderID, PDO::PARAM_INT);
+      $this->stmt->bindValue(':remindDatetime', $reminderDatetime->getRemindDatetime(), PDO::PARAM_STR);
+      $this->stmt->execute();
+      $this->cleanUp();
+    }
+  }
+
+  private function setReminderEmails(ReminderClass $reminder) {
+    $reminderEmails = $reminder->getReminderEmails();
+    $reminderID = $reminder->getReminderID();
+    foreach ($reminderEmails as $reminderEmail) {
+      $remindEmailID = $this->createEntity(9);
+      //Create connection to database
+      $this->getConnection();
+      //Query SQL
+      $sql = "INSERT INTO reminder_remind_emails (
+                remind_email_id,
+                reminder_id,
+                email
+              ) VALUES (
+                :remindEmailID,
+                :reminderID,
+                :email
+              )";
+      $this->stmt = $this->conn->prepare($sql);
+      $this->stmt->bindParam(':remindEmailID', $remindEmailID, PDO::PARAM_INT);
+      $this->stmt->bindParam(':reminderID', $reminderID, PDO::PARAM_INT);
+      $this->stmt->bindValue(':email', $reminderEmail->getEmail(), PDO::PARAM_STR);
+      $this->stmt->execute();
+      $this->cleanUp();
+    }
+  }
+
+  public function getReminder($reminderID) {
+    //Create connection to database
+    $this->getConnection();
+
+    $sql = "SELECT r.reminder_id,
+                   r.user_id,
+                   r.reminder_text,
+                   e.create_datetime
+            FROM reminders AS r
+            INNER JOIN entities AS e
+              ON r.reminder_id = e.entity_id
+            WHERE r.reminder_id = :reminderID AND r.deleted = 0";
+    $this->stmt = $this->conn->prepare($sql);
+    $this->stmt->bindParam(':reminderID', $reminderID, PDO::PARAM_INT);
+    
+    $this->stmt->execute();
+
+    $result = $this->stmt->fetch(PDO::FETCH_ASSOC);
+    $reminder = new ReminderClass($result);
+    $reminder->setReminderDatetimes($this->listReminderDatetimes($reminderID));
+    $reminder->setReminderEmails($this->listReminderEmails($reminderID));
+    $this->cleanUp();
+    return $reminder;
+  }
+  
+  public function deleteReminder($reminderID) {
+    //Create connection to database
+    $this->getConnection();
+    
+    //Query SQL
+    $sql = "UPDATE reminders SET
+              deleted = 1
+            WHERE reminder_id = :reminderID";
+
+    $this->stmt = $this->conn->prepare($sql);
+
+    $this->stmt->bindParam(':reminderID', $reminderID, PDO::PARAM_INT);
+
+    $this->stmt->execute();
+
+    if ($this->stmt->rowCount() == 1) {
+      $result = $reminderID;
+    } else {
+      $result = -1;
+    }
+    //Close statement and connection
+    $this->cleanUp();
+    return $result;
+  }
 }

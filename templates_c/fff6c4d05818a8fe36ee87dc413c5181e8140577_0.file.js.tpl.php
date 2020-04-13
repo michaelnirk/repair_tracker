@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2020-03-29 11:08:33
+/* Smarty version 3.1.30, created on 2020-04-11 16:28:44
   from "C:\develop\repair_tracker\templates\js.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_5e8081b1961059_10562613',
+  'unifunc' => 'content_5e91f03ce55741_37382634',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'fff6c4d05818a8fe36ee87dc413c5181e8140577' => 
     array (
       0 => 'C:\\develop\\repair_tracker\\templates\\js.tpl',
-      1 => 1585477755,
+      1 => 1586622489,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5e8081b1961059_10562613 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e91f03ce55741_37382634 (Smarty_Internal_Template $_smarty_tpl) {
 echo '<script'; ?>
 	src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"><?php echo '</script'; ?>
 >
@@ -39,7 +39,13 @@ echo '<script'; ?>
  type="text/javascript" src="js/moment.js"><?php echo '</script'; ?>
 >
 <?php echo '<script'; ?>
+ src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
  src='js/common.js'><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+ src='js/sidenav.js'><?php echo '</script'; ?>
 >
 <?php echo '<script'; ?>
  src='js/utils.js'><?php echo '</script'; ?>

@@ -14,7 +14,7 @@ use PHPMailer\PHPMailer\Exception;
 //require_once 'PHPMailer/PHPMailerAutoload.php';
 require 'vendor/autoload.php';
 
-function sendMail2() {
+function sendMail2($to) {
   //Create a new PHPMailer instance
   $mail = new PHPMailer();
 
@@ -48,16 +48,16 @@ function sendMail2() {
   $mail->Password = '6O3G42owh*Ou';
 
 //Set who the message is to be sent from
-  $mail->setFrom('repairtracker@gmail.com', 'Repair Tracker');
+  $mail->setFrom('Repair Tracker');
 
 //Set an alternative reply-to address
 //  $mail->addReplyTo('replyto@example.com', 'First Last');
 
 //Set who the message is to be sent to
-  $mail->addAddress('nirkules@gmail.com', '');
+  $mail->addAddress($to);
 
 //Set the subject line
-  $mail->Subject = 'PHPMailer GMail SMTP test';
+  $mail->Subject = 'Cron Test';
 
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body

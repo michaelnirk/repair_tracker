@@ -17,16 +17,7 @@ class RepairClass extends EntityClass {
   protected $part_count;
 
   public function __construct($properties = null) {
-    if ($properties) {
-      $reflection = new ReflectionClass(get_class($this));
-      $classProps = $reflection->getProperties();
-      foreach ($classProps as $prop) {
-        $propName = $prop->getName();
-        if (isset($properties[$propName])) {
-          $this->$propName = $properties[$propName];
-        }
-      }
-    }
+    parent::__construct($properties);
   }
 
   public function getRepairID() {

@@ -48,8 +48,8 @@ class LoginControllerClass extends UIControllerClass {
       exit();
     } else {//If both user name and password are present, check if they are valid
       $user = $this->DAO->checkLogin($userName, $pwd);
-      if (is_array($user)) {//Valid user
-        $_SESSION['user'] = $user;
+      if (is_object($user)) {//Valid user
+        $_SESSION['user'] = $user->getPropertiesArray();
         header('Location: index.php?module=vehicle&action=vehicles');
         exit();
       } else {
