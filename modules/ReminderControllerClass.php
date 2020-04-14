@@ -1,8 +1,10 @@
 <?php
+
 require_once 'entity/NoteClass.php';
 
 class ReminderControllerClass extends UIControllerClass {
-    //Constructor
+
+  //Constructor
   function __construct($request) {
     parent::__construct($request);
     $this->tpl->assign('module', 'reminder');
@@ -26,18 +28,18 @@ class ReminderControllerClass extends UIControllerClass {
     $this->tpl->assign('messages', $this->messages);
     $this->tpl->display("index.tpl");
   }
-  
+
   private function showReminders() {
     $reminders = $this->DAO->listReminders();
 //    die(var_dump($reminders));
-    foreach($reminders as &$reminder) {
+    foreach ($reminders as &$reminder) {
       $reminder = $reminder->getPropertiesArray();
     }
     $this->tpl->assign('reminders', $reminders);
     $this->tpl->assign('pageTitle', "Manage Reminders");
     $this->tpl->assign('content', 'reminders');
   }
-  
+
   private function setReminder() {
     require_once 'entity/reminder/ReminderClass.php';
     require_once 'entity/reminder/ReminderDatetimeClass.php';
@@ -63,14 +65,14 @@ class ReminderControllerClass extends UIControllerClass {
     $reminder->setReminderText($reminderText);
     $reminder->setReminderID($reminderID);
     $reminderEmailObjects = array();
-    foreach($reminderEmails as $reminderEmail) {
+    foreach ($reminderEmails as $reminderEmail) {
       $emailObject = new ReminderEmailClass();
       $emailObject->setEmail($reminderEmail);
       $reminderEmailObjects[] = $emailObject;
     }
     $reminder->setReminderEmails($reminderEmailObjects);
     $reminderDatetimeObjects = array();
-    foreach(json_decode($reminderDatetimes, true) as $reminderDatetime) {
+    foreach (json_decode($reminderDatetimes, true) as $reminderDatetime) {
       $reminderDatetimeObject = new ReminderDatetimeClass();
       $reminderDatetimeObject->setRemindDatetime($reminderDatetime);
       $reminderDatetimeObjects[] = $reminderDatetimeObject;
@@ -86,7 +88,7 @@ class ReminderControllerClass extends UIControllerClass {
       die(ajaxError($this->messages));
     }
   }
-  
+
   private function deleteReminder() {
     $reminderID = $this->request['reminder_id'];
     if ($this->DAO->deleteReminder($reminderID) === $reminderID) {
@@ -96,6 +98,5 @@ class ReminderControllerClass extends UIControllerClass {
       die(ajaxError($this->messages));
     }
   }
-  
-  
+
 }

@@ -1275,6 +1275,15 @@ class DatabaseAccessClass {
     }
   }
 
+  public function setReminderDatetimeToSent($remindDatetimeID) {
+    //Create connection to database
+    $this->getConnection();
+    $sql = "UPDATE reminder_remind_datetimes SET is_sent = 1 WHERE remind_datetime_id = :remindDatetimeID";
+    $this->stmt = $this->conn->prepare($sql);
+    $this->stmt->bindParam(':remindDatetimeID', $remindDatetimeID, PDO::PARAM_INT);
+    $this->stmt->execute();
+  }
+
   public function getReminder($reminderID) {
     //Create connection to database
     $this->getConnection();
@@ -1289,21 +1298,22 @@ class DatabaseAccessClass {
             WHERE r.reminder_id = :reminderID AND r.deleted = 0";
     $this->stmt = $this->conn->prepare($sql);
     $this->stmt->bindParam(':reminderID', $reminderID, PDO::PARAM_INT);
-    
+
     $this->stmt->execute();
 
     $result = $this->stmt->fetch(PDO::FETCH_ASSOC);
+    require_once 'entity/reminder/ReminderClass.php';
     $reminder = new ReminderClass($result);
     $reminder->setReminderDatetimes($this->listReminderDatetimes($reminderID));
     $reminder->setReminderEmails($this->listReminderEmails($reminderID));
     $this->cleanUp();
     return $reminder;
   }
-  
+
   public function deleteReminder($reminderID) {
     //Create connection to database
     $this->getConnection();
-    
+
     //Query SQL
     $sql = "UPDATE reminders SET
               deleted = 1
@@ -1324,4 +1334,23 @@ class DatabaseAccessClass {
     $this->cleanUp();
     return $result;
   }
+
+  public function listDueReminders() {
+    $this->getConnection();
+    $sql = "SELECT rd.reminder_id
+            FROM reminder_remind_datetimes AS rd
+            INNER JOIN reminders AS r
+              ON r.reminder_id = rd.reminder_id
+            WHERE rd.remind_datetime < NOW() AND rd.is_sent = 0 AND r.deleted = 0";
+    $this->stmt = $this->conn->prepare($sql);
+    $this->stmt->execute();
+    $dueReminderIDs = $this->stmt->fetch(PDO::FETCH_ASSOC);
+    $this->cleanUp();
+    $dueReminders = array();
+    foreach ($dueReminderIDs as $dueReminderID) {
+      $dueReminders[] = $this->getReminder($dueReminderID);
+    }
+    return $dueReminders;
+  }
+
 }

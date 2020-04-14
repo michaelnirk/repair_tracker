@@ -12,7 +12,7 @@ Session = (function() {
     user: {
       url: 'index.php',
       data: {
-        module: 'utility',
+        module: 'user',
         action: 'get_user_data'
       }
     }

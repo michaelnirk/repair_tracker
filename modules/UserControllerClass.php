@@ -1,7 +1,9 @@
 <?php
+
 require_once('../include/DatabaseAccessClass.php');
 
 class UserControllerClass extends UIControllerClass {
+
   //Constructor
   function __construct($request) {
     parent::__construct($request);
@@ -19,6 +21,12 @@ class UserControllerClass extends UIControllerClass {
         break;
       case 'createaccount':
         $this->createAccount();
+        break;
+      case 'changepassword':
+        $this->changePassword();
+        break;
+      case 'get_user_data':
+        $this->getUserData();
         break;
     }
     $this->tpl->assign('messages', $this->messages);
@@ -98,8 +106,7 @@ class UserControllerClass extends UIControllerClass {
       $this->messages['errors'][] = "Please reenter your password.";
     }
 
-    if ($this->sGetRequest('password') && $this->sGetRequest('confirmpassword')
-        && ($this->sGetRequest('password') !== $this->sGetRequest('confirmpassword'))) {
+    if ($this->sGetRequest('password') && $this->sGetRequest('confirmpassword') && ($this->sGetRequest('password') !== $this->sGetRequest('confirmpassword'))) {
       $this->messages['errors'][] = "The two passwords do not match. Please try again.";
     }
 
@@ -121,4 +128,47 @@ class UserControllerClass extends UIControllerClass {
       }
     }
   }
+
+  private function changePassword() {
+    $oldPassword = $this->request['oldpassword'];
+    $newPassword1 = $this->request['newpassword1'];
+    $newPassword2 = $this->request['newpassword2'];
+
+    if (trim($oldPassword) == '') {
+      $this->errors[] = 'You must enter your old password.';
+    } else if (trim($newPassword1) == '' || trim($newPassword2) == '') {
+      $this->errors[] = 'You must enter your new password in both "New Password" fields.';
+    } else if (trim($newPassword1) !== trim($newPassword2)) {
+      $this->errors[] = 'The new passwords you have entered do not match. Please enter them again.';
+    }
+
+    if (count($this->errors) > 0) {
+      $this->tpl->assign('userName', $_SESSION['user_fullname']);
+      $this->tpl->assign('errors', $this->errors);
+      $this->tpl->assign('content', 'showchangepassword');
+    } else {
+      $userArray = $this->DAO->getAccountData($_SESSION['userid']);
+      if (md5($oldPassword) !== $userArray['password']) {
+        $this->errors[] = 'The current password entered is incorrect. Please enter your data again.';
+        $this->tpl->assign('userName', $_SESSION['user_fullname']);
+        $this->tpl->assign('errors', $this->errors);
+        $this->tpl->assign('content', 'showchangepassword');
+      } else {
+        $result = $this->DAO->changePassword($_SESSION['userid'], trim($newPassword1));
+        if ($result == 1) {
+          header('Location: index.php?module=Vehicle&action=listvehicles&changedpassword=1');
+        } else {
+          $this->errors[] = "There was a problem changing your password, Please try again.";
+          $this->tpl->assign('userName', $_SESSION['user_fullname']);
+          $this->tpl->assign('errors', $this->errors);
+          $this->tpl->assign('content', 'showchangepassword');
+        }
+      }
+    }
+  }
+
+  private function getUserData() {
+    die(json_encode($_SESSION['user']));
+  }
+
 }
