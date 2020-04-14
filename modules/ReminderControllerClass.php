@@ -96,4 +96,6 @@ class ReminderControllerClass extends UIControllerClass {
       die(ajaxError($this->messages));
     }
   }
+  
+  
 }

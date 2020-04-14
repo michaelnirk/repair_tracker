@@ -8,7 +8,7 @@ require_once '../include/UIControllerClass.php';
 require_once '../include/utilities.php';
 
 if (empty($_SESSION['user'])) {
-  $module = "login";
+  $module = "user";
 } else {
   if (isset($_REQUEST['module'])) {
     $module = $_REQUEST['module'];

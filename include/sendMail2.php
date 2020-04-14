@@ -1,5 +1,7 @@
 <?php
 
+set_include_path(get_include_path() . PATH_SEP . '/var/www/html/repair_tracker/');
+
 //Import PHPMailer classes into the global namespace
 //use PHPMailer\PHPMailer\PHPMailer;
 //use PHPMailer\PHPMailer\OAuth;
@@ -52,7 +54,6 @@ function sendMail2($to) {
 
 //Set an alternative reply-to address
 //  $mail->addReplyTo('replyto@example.com', 'First Last');
-
 //Set who the message is to be sent to
   $mail->addAddress($to);
 
@@ -62,14 +63,13 @@ function sendMail2($to) {
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
 //  $mail->msgHTML(file_get_contents('contents.html'), __DIR__);
-  $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+  $mail->Body = 'This is the HTML message body <b>in bold!</b>';
 
 //Replace the plain text body with one created manually
   $mail->AltBody = 'This is a plain-text message body';
 
 //Attach an image file
 //  $mail->addAttachment('images/phpmailer_mini.png');
-
 //send the message, check for errors
   if (!$mail->send()) {
     echo 'Mailer Error: ' . $mail->ErrorInfo;

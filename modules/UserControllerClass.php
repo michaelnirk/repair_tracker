@@ -1,7 +1,7 @@
 <?php
 require_once('../include/DatabaseAccessClass.php');
 
-class LoginControllerClass extends UIControllerClass {
+class UserControllerClass extends UIControllerClass {
   //Constructor
   function __construct($request) {
     parent::__construct($request);
@@ -22,11 +22,7 @@ class LoginControllerClass extends UIControllerClass {
         break;
     }
     $this->tpl->assign('messages', $this->messages);
-    $this->tpl->display("login/login.tpl");
-  }
-
-  private function showLogin() {
-    $this->tpl->assign("content", "login");
+    $this->tpl->display("user/login.tpl");
   }
 
   private function checkauth() {
@@ -44,7 +40,7 @@ class LoginControllerClass extends UIControllerClass {
 
     if (count($this->messages['errors']) > 0) {//Display login page with error messages
       $_SESSION['messages'] = json_encode($this->messages);
-      header("Location: index.php?module=login");
+      header("Location: index.php?module=user");
       exit();
     } else {//If both user name and password are present, check if they are valid
       $user = $this->DAO->checkLogin($userName, $pwd);
@@ -55,7 +51,7 @@ class LoginControllerClass extends UIControllerClass {
       } else {
         $this->messages['errors'][] = "There are no users saved with those credentials.";
         $_SESSION['messages'] = json_encode($this->messages);
-        header("Location: index.php?module=login");
+        header("Location: index.php?module=user");
         exit();
       }
     }
@@ -65,7 +61,7 @@ class LoginControllerClass extends UIControllerClass {
     unset($_SESSION);
     session_unset();
     session_destroy();
-    header("Location: index.php?module=login");
+    header("Location: index.php?module=user");
   }
 
   private function createAccount() {
@@ -109,7 +105,7 @@ class LoginControllerClass extends UIControllerClass {
 
     if (count($this->messages['errors']) > 0) {
       $_SESSION['messages'] = json_encode($this->messages);
-      header("Location: index.php?module=login");
+      header("Location: index.php?module=user");
       exit();
     } else {
       $newUser = $this->DAO->createAccount($account);
@@ -120,7 +116,7 @@ class LoginControllerClass extends UIControllerClass {
       } else {
         $this->messages['errors'][] = "There was a problem creating your account. Please try again later.";
         $_SESSION['messages'] = json_encode($this->messages);
-        header("Location: index.php?module=login");
+        header("Location: index.php?module=user");
         exit();
       }
     }

@@ -92,12 +92,10 @@ Vehicles = (function() {
           if (type === "display") {
             let content = "";
             if (data) {
-              content =
-                currencyData[row.purchase_currency].currency_symbol_position ===
-                "1"
+              content = currencyData[row.purchase_currency].currency_symbol_position === "1"
                 ? `${currencyData[row.purchase_currency].html_entity} ${data}`
                 : `${data} ${
-                currencyData[row.purchase_currency].html_entity
+                  currencyData[row.purchase_currency].html_entity
                 }`;
             }
             return content;
@@ -495,7 +493,7 @@ Vehicles = (function() {
       hideWorking();
     });
   }
-  
+
   function sendTestEmail() {
     $.ajax({
       url: 'index.php',

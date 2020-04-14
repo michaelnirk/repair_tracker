@@ -13,7 +13,7 @@
             <div class="navbar-right">
               <ul class="navbar-nav nav">
                 <li><a href="index.php">Home</a></li>
-                <li><a href="index.php?module=login&action=logout">Log Out</a></li>
+                <li><a href="index.php?module=user&action=logout">Log Out</a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Options
                         <span class="caret"></span>

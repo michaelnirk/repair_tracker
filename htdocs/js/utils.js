@@ -83,7 +83,7 @@ function evaluateBackButton() {
 
 function logOut() {
   sessionStorage.clear();
-  window.location.href = "index.php?module=login&action=logout";
+  window.location.href = "index.php?module=user&action=logout";
 }
 
 function autoresize(textarea) {
