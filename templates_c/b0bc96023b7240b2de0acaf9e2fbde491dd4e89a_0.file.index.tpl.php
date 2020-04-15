@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2020-04-11 11:57:58
+/* Smarty version 3.1.30, created on 2020-04-15 12:28:40
   from "C:\develop\repair_tracker\templates\index.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_5e91b0c6512383_35434001',
+  'unifunc' => 'content_5e96fdf874f3d2_62128203',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'b0bc96023b7240b2de0acaf9e2fbde491dd4e89a' => 
     array (
       0 => 'C:\\develop\\repair_tracker\\templates\\index.tpl',
-      1 => 1586606215,
+      1 => 1586953614,
       2 => 'file',
     ),
   ),
@@ -27,7 +27,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:sidenav.tpl' => 1,
   ),
 ),false)) {
-function content_5e91b0c6512383_35434001 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5e96fdf874f3d2_62128203 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +50,9 @@ function content_5e91b0c6512383_35434001 (Smarty_Internal_Template $_smarty_tpl)
       <?php $_smarty_tpl->_subTemplateRender("file:banner.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
 ?>
 
-      <?php if (file_exists(((string)$_SERVER['DOCUMENT_ROOT'])."/../templates/".((string)$_smarty_tpl->tpl_vars['module']->value)."/".((string)$_smarty_tpl->tpl_vars['action']->value).".toolbar.tpl")) {?>
+      <p><?php echo $_SERVER['DOCUMENT_ROOT'];?>
+</p>
+      <?php if (file_exists(((string)$_SERVER['DOCUMENT_ROOT'])."/repair_tracker/templates/".((string)$_smarty_tpl->tpl_vars['module']->value)."/".((string)$_smarty_tpl->tpl_vars['action']->value).".toolbar.tpl")) {?>
         <?php $_smarty_tpl->_subTemplateRender(((string)$_smarty_tpl->tpl_vars['module']->value)."/".((string)$_smarty_tpl->tpl_vars['action']->value).".toolbar.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, true);
 ?>
 
