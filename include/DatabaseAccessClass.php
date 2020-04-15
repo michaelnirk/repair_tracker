@@ -1123,7 +1123,7 @@ class DatabaseAccessClass {
 
   public function setReminder(ReminderClass $reminder) {
     if ($reminder->getReminderID()) {
-      $reminderID = $reminder->getReminderID();
+      $reminderID = $this->updateReminder($reminder);
       $this->updateReminder($reminder);
       $this->deleteReminderRemindDatetimes($reminder);
       $this->deleteReminderEmails($reminder);
@@ -1171,7 +1171,7 @@ class DatabaseAccessClass {
     //Create connection to database
     $this->getConnection();
     //Query SQL
-    $sql = "UPDATE reminder SET
+    $sql = "UPDATE reminders SET
                    reminder_text = :reminderText
             WHERE reminder_id = :reminderID";
 
