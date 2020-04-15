@@ -13,7 +13,6 @@
   <body>
     <div class="content">
       {include file='banner.tpl'}
-      <p>{$smarty.server.DOCUMENT_ROOT}</p>
       {if file_exists("`$smarty.server.DOCUMENT_ROOT`/repair_tracker/templates/`$module`/`$action`.toolbar.tpl")}
         {include file="$module/$action.toolbar.tpl"}
       {/if}
