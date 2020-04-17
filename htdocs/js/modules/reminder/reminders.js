@@ -34,7 +34,11 @@ Reminders = (function() {
         render: function(data, type, row) {
           const formattedDates = [];
           for (const item of row.reminder_datetimes) {
-            formattedDates.push(moment(item.remind_datetime).format('DD MMM YYYY HH:mm'));
+            if (parseInt(item.is_sent, 10)) {
+              formattedDates.push(`<span class='past-remind-date standard-tooltip' title='This reminder has been sent at this date and time.'>${moment(item.remind_datetime).format('DD MMM YYYY HH:mm')}</span>`);
+            } else {
+              formattedDates.push(`<span>${moment(item.remind_datetime).format('DD MMM YYYY HH:mm')}</span>`);
+            }
           }
           return formattedDates.join('<br>');
         }
@@ -69,8 +73,16 @@ Reminders = (function() {
         width: "10%",
         className: "all-center",
         render: function(data, type, row) {
+          //If the reminder has no remind dates that are not already past then inactivate the edit button
+          let editButtonClass = 'disabled';
+          for (const reminderDate of row.reminder_datetimes) {
+            if (!parseInt(reminderDate.is_sent, 10)) {
+              editButtonClass = '';
+              break;
+            }
+          }
           return `<div class='table-function-icons-wrapper'>
-                    <i class="fas fa-edit fa-fw standard-tooltip" title='Edit reminder' onclick='Reminders.processEditReminder(${row.reminder_id});'></i>
+                    <i class="fas fa-edit fa-fw standard-tooltip ${editButtonClass}" title='Edit reminder' onclick='Reminders.processEditReminder(${row.reminder_id});'></i>
                     <i class="fas fa-trash-alt fa-fw standard-tooltip" title='Delete reminder' onclick='Reminders.processDeleteReminder(${row.reminder_id});'></i>
                   </div>`;
         }
@@ -152,12 +164,12 @@ Reminders = (function() {
     $('#reminderText').val('');
     $(".reminder-date-unit", "#reminderDateUnitWrapper").not(':first').remove();
     $("#reminderDate").val('');
-    $("#reminderDateAlt").val('');
+    $("#reminderDateAlt").val('').removeAttr('data-remind_datetime_id');
     $("#reminderEmails").empty().select2($.extend({}, select2Options, {data: [{id: user.email, text: user.email}]})).val('');
   }
 
 
-  function processAddReminderDateUnit(datetime) {
+  function processAddReminderDateUnit(datetime, remindDatetimeID) {
     const dateUnit = reminderDateDummy.clone();
     const now = Date.now();
     $("input.reminder-date", dateUnit).attr("id", `reminderDate${now}`);
@@ -166,6 +178,7 @@ Reminders = (function() {
     $(`#reminderDate${now}`).datetimepicker(dateTimePickerOptions);
     if (datetime) {
       $(`#reminderDate${now}`).val(moment(datetime).format("DD MMM YYYY HH:mm")).trigger('change.reminderDate');
+      $(`#reminderDateAlt${now}`).attr('data-remind_datetime_id', remindDatetimeID);
     }
     evaluateReminderDateButtons();
   }
@@ -193,7 +206,11 @@ Reminders = (function() {
       //Gather reminder dates
       const reminderDates = [];
       $('input.reminder-date-alt').each(function() {
-        reminderDates.push(this.value);
+        const id = $(this).attr('data-remind_datetime_id');
+        reminderDates.push({
+          remind_datetime_id: id,
+          remind_datetime: this.value
+        });
       });
       $("#reminderDatetimes").val(JSON.stringify(reminderDates));
       const reminderFormData = new FormData(reminderForm);
@@ -214,7 +231,8 @@ Reminders = (function() {
           table.row.add(reminderData).draw();
           const message = reminder ? "The reminder was successfully updated!" : "The reminder was successfully created!";
           displayMessage([message]);
-          clearForm();
+//          clearForm();
+          hideForm();
         } else if (typeof result === 'object' && result.hasOwnProperty('success') && result.success === false) {
           if (result.hasOwnProperty('reason') && result.reason.hasOwnProperty('errors') && result.reason.errors.length) {
             errors.length = 0;
@@ -369,12 +387,19 @@ Reminders = (function() {
       emails.push(item.email);
     }
     $("#reminderEmails").empty().select2($.extend({}, select2Options, {data: options})).val(emails).trigger('change');
-    for (let i = 0; i < reminder.reminder_datetimes.length; i++) {
-      if (i === 0) {
-        $("#reminderDate").val( moment(reminder.reminder_datetimes[i].remind_datetime).format("DD MMM YYYY HH:mm")).trigger('change.reminderDate');
-      } else {
-        processAddReminderDateUnit(reminder.reminder_datetimes[i].remind_datetime);
+    //Fill reminder dates, but only dates that have not passed can be edited
+    let editDateCount = 0;
+    for (const reminderDate of reminder.reminder_datetimes) {
+      if (parseInt(reminderDate.is_sent, 10)) {
+        continue;
       }
+      if (editDateCount === 0) {
+        $("#reminderDate").val( moment(reminderDate.remind_datetime).format("DD MMM YYYY HH:mm")).trigger('change.reminderDate');
+        $("#reminderDateAlt").attr('data-remind_datetime_id', reminderDate.remind_datetime_id);
+      } else {
+        processAddReminderDateUnit(reminderDate.remind_datetime, reminderDate.remind_datetime_id);
+      }
+      editDateCount++;
     }
   }
 

@@ -14,3 +14,6 @@
   color: #f99a48;
   cursor: pointer;
 }
+#remindersWrapper #listRemindersWrapper span.past-remind-date {
+  color: red;
+}

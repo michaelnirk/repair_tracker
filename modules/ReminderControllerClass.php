@@ -73,8 +73,7 @@ class ReminderControllerClass extends UIControllerClass {
     $reminder->setReminderEmails($reminderEmailObjects);
     $reminderDatetimeObjects = array();
     foreach (json_decode($reminderDatetimes, true) as $reminderDatetime) {
-      $reminderDatetimeObject = new ReminderDatetimeClass();
-      $reminderDatetimeObject->setRemindDatetime($reminderDatetime);
+      $reminderDatetimeObject = new ReminderDatetimeClass($reminderDatetime);
       $reminderDatetimeObjects[] = $reminderDatetimeObject;
     }
     $reminder->setReminderDatetimes($reminderDatetimeObjects);

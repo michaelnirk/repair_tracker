@@ -1125,7 +1125,6 @@ class DatabaseAccessClass {
     if ($reminder->getReminderID()) {
       $reminderID = $this->updateReminder($reminder);
       $this->updateReminder($reminder);
-      $this->deleteReminderRemindDatetimes($reminder);
       $this->deleteReminderEmails($reminder);
     } else {
       $reminderID = $this->createReminder($reminder);
@@ -1189,23 +1188,6 @@ class DatabaseAccessClass {
     return $result;
   }
 
-  private function deleteReminderRemindDatetimes(ReminderClass $reminder) {
-    //Create connection to database
-    $this->getConnection();
-    //Query SQL
-    $sql = "DELETE FROM reminder_remind_datetimes
-            WHERE reminder_id = :reminderID";
-
-    $this->stmt = $this->conn->prepare($sql);
-
-    $this->stmt->bindValue(':reminderID', $reminder->getReminderID(), PDO::PARAM_INT);
-
-    $this->stmt->execute();
-
-    //Close statement and connection
-    $this->cleanUp();
-  }
-
   private function deleteReminderEmails(ReminderClass $reminder) {
     //Create connection to database
     $this->getConnection();
@@ -1227,11 +1209,21 @@ class DatabaseAccessClass {
     $reminderDatetimes = $reminder->getReminderDatetimes();
     $reminderID = $reminder->getReminderID();
     foreach ($reminderDatetimes as $reminderDatetime) {
-      $remindDatetimeID = $this->createEntity(8);
-      //Create connection to database
-      $this->getConnection();
-      //Query SQL
-      $sql = "INSERT INTO reminder_remind_datetimes (
+      $reminderDatetime->setReminderID($reminderID);
+      if ($reminderDatetime->getRemindDatetimeID()) {
+        $this->updateReminderDatetime($reminderDatetime);
+      } else {
+        $this->createReminderDatetime($reminderDatetime);
+      }
+    }
+  }
+
+  private function createReminderDatetime(ReminderDatetimeClass $reminderDatetime) {
+    $remindDatetimeID = $this->createEntity(8);
+    //Create connection to database
+    $this->getConnection();
+    //Query SQL
+    $sql = "INSERT INTO reminder_remind_datetimes (
                 remind_datetime_id,
                 reminder_id,
                 remind_datetime
@@ -1240,13 +1232,26 @@ class DatabaseAccessClass {
                 :reminderID,
                 :remindDatetime
               )";
-      $this->stmt = $this->conn->prepare($sql);
-      $this->stmt->bindParam(':remindDatetimeID', $remindDatetimeID, PDO::PARAM_INT);
-      $this->stmt->bindParam(':reminderID', $reminderID, PDO::PARAM_INT);
-      $this->stmt->bindValue(':remindDatetime', $reminderDatetime->getRemindDatetime(), PDO::PARAM_STR);
-      $this->stmt->execute();
-      $this->cleanUp();
-    }
+    $this->stmt = $this->conn->prepare($sql);
+    $this->stmt->bindParam(':remindDatetimeID', $remindDatetimeID, PDO::PARAM_INT);
+    $this->stmt->bindValue(':reminderID', $reminderDatetime->getReminderID(), PDO::PARAM_INT);
+    $this->stmt->bindValue(':remindDatetime', $reminderDatetime->getRemindDatetime(), PDO::PARAM_STR);
+    $this->stmt->execute();
+    $this->cleanUp();
+  }
+
+  private function updateReminderDatetime(ReminderDatetimeClass $reminderDatetime) {
+    //Create connection to database
+    $this->getConnection();
+    //Query SQL
+    $sql = "UPDATE reminder_remind_datetimes SET
+                remind_datetime = :remindDatetime
+            WHERE remind_datetime_id = :remindDatetimeID";
+    $this->stmt = $this->conn->prepare($sql);
+    $this->stmt->bindValue(':remindDatetimeID', $reminderDatetime->getRemindDatetimeID(), PDO::PARAM_INT);
+    $this->stmt->bindValue(':remindDatetime', $reminderDatetime->getRemindDatetime(), PDO::PARAM_STR);
+    $this->stmt->execute();
+    $this->cleanUp();
   }
 
   private function setReminderEmails(ReminderClass $reminder) {
