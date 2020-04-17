@@ -74,16 +74,16 @@ Reminders = (function() {
         className: "all-center",
         render: function(data, type, row) {
           //If the reminder has no remind dates that are not already past then inactivate the edit button
-          let editButtonClass = 'disabled';
+          let buttonClass = 'disabled';
           for (const reminderDate of row.reminder_datetimes) {
             if (!parseInt(reminderDate.is_sent, 10)) {
-              editButtonClass = '';
+              buttonClass = '';
               break;
             }
           }
           return `<div class='table-function-icons-wrapper'>
-                    <i class="fas fa-edit fa-fw standard-tooltip ${editButtonClass}" title='Edit reminder' onclick='Reminders.processEditReminder(${row.reminder_id});'></i>
-                    <i class="fas fa-trash-alt fa-fw standard-tooltip" title='Delete reminder' onclick='Reminders.processDeleteReminder(${row.reminder_id});'></i>
+                    <i class="fas fa-edit fa-fw standard-tooltip ${buttonClass}" title='Edit reminder' onclick='Reminders.processEditReminder(${row.reminder_id});'></i>
+                    <i class="fas fa-trash-alt fa-fw standard-tooltip ${buttonClass}" title='Delete reminder' onclick='Reminders.processDeleteReminder(${row.reminder_id});'></i>
                   </div>`;
         }
       },
