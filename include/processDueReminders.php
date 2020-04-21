@@ -14,3 +14,4 @@ require_once 'modules/UtilityControllerClass.php';
 
 $reminderController = new UtilityControllerClass();
 $reminderController->processDueReminders();
+echo "Done - " . date("d M Y H:i:s");
