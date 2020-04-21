@@ -1352,10 +1352,11 @@ class DatabaseAccessClass {
     $dueReminderIDs = $this->stmt->fetch(PDO::FETCH_ASSOC);
     $this->cleanUp();
     $dueReminders = array();
-    foreach ($dueReminderIDs as $dueReminderID) {
-      $dueReminders[] = $this->getReminder($dueReminderID);
+    if ($dueReminderIDs) {
+      foreach ($dueReminderIDs as $dueReminderID) {
+        $dueReminders[] = $this->getReminder($dueReminderID);
+      }
     }
     return $dueReminders;
   }
-
 }
