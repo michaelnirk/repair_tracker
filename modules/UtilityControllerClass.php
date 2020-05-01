@@ -39,7 +39,7 @@ class UtilityControllerClass {
       }
       $body = "<html><body style='font-size=12px;'><h2>A reminder from Repair Tracker!</h2><br>
              <em>" . $dueReminder->getReminderText() . "</em></body></html>";
-      sendMail($emails, $subject, $body);
+      sendMail($emails, $subject, utf8_decode($body));
       //Set remind dateteimes to sent
       $remindDatetimes = $dueReminder->getReminderDatetimes();
       foreach($remindDatetimes as $remindDatetime) {
