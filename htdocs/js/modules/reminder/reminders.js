@@ -15,6 +15,7 @@ Reminders = (function() {
     tags: true
   };
   let reminderDateDummy;
+  let reminderDateLabelDummy;
   let reminderEmailDummy;
   const errors = [];
   const tableOptions = {
@@ -74,10 +75,10 @@ Reminders = (function() {
         className: "all-center",
         render: function(data, type, row) {
           //If the reminder has no remind dates that are not already past then inactivate the edit button
-          let buttonClass = 'disabled';
+          let buttonClass = '';
           for (const reminderDate of row.reminder_datetimes) {
-            if (!parseInt(reminderDate.is_sent, 10)) {
-              buttonClass = '';
+            if (parseInt(reminderDate.is_sent, 10)) {
+//              buttonClass = 'disabled';
               break;
             }
           }
@@ -103,6 +104,8 @@ Reminders = (function() {
     $.datetimepicker.setDateFormatter('moment');
     reminderDateDummy = $(".reminder-date-unit").first().clone();
     reminderEmailDummy = $(".reminder-email-unit").first().clone();
+    reminderDateLabelDummy = $(".reminder-date-label-unit").first().clone();
+    $(".reminder-date-label-unit").remove();
     $(document).on('change.reminderDate', '.reminder-date', function(event) {
       const target = $(event.target);
       if (target.val()) {
@@ -166,8 +169,14 @@ Reminders = (function() {
     $("#reminderDate").val('');
     $("#reminderDateAlt").val('').removeAttr('data-remind_datetime_id');
     $("#reminderEmails").empty().select2($.extend({}, select2Options, {data: [{id: user.email, text: user.email}]})).val('');
+    $("div.reminder-date-label-unit", $("#reminderDateUnitWrapper")).remove();
   }
 
+  function processAddReminderDateLabel(reminderDatetime) {
+    const labelUnit = reminderDateLabelDummy.clone();
+    $(".reminder-date-label", $(labelUnit)).html(moment(reminderDatetime).format("DD MMM YYYY HH:mm"));
+    $("#reminderDateUnitWrapper").prepend(labelUnit);
+  }
 
   function processAddReminderDateUnit(datetime, remindDatetimeID) {
     const dateUnit = reminderDateDummy.clone();
@@ -391,15 +400,16 @@ Reminders = (function() {
     let editDateCount = 0;
     for (const reminderDate of reminder.reminder_datetimes) {
       if (parseInt(reminderDate.is_sent, 10)) {
-        continue;
-      }
-      if (editDateCount === 0) {
-        $("#reminderDate").val( moment(reminderDate.remind_datetime).format("DD MMM YYYY HH:mm")).trigger('change.reminderDate');
-        $("#reminderDateAlt").attr('data-remind_datetime_id', reminderDate.remind_datetime_id);
+        processAddReminderDateLabel(reminderDate.remind_datetime);
       } else {
-        processAddReminderDateUnit(reminderDate.remind_datetime, reminderDate.remind_datetime_id);
+        if (editDateCount === 0) {
+          $("#reminderDate").val( moment(reminderDate.remind_datetime).format("DD MMM YYYY HH:mm")).trigger('change.reminderDate');
+          $("#reminderDateAlt").attr('data-remind_datetime_id', reminderDate.remind_datetime_id);
+        } else {
+          processAddReminderDateUnit(reminderDate.remind_datetime, reminderDate.remind_datetime_id);
+        }
+        editDateCount++;
       }
-      editDateCount++;
     }
   }
 
@@ -409,6 +419,7 @@ Reminders = (function() {
   _this.init = init;
   _this.processAddReminder = processAddReminder;
   _this.hideForm = hideForm;
+  _this.processAddReminderDateLabel = processAddReminderDateLabel;
   _this.processAddReminderDateUnit = processAddReminderDateUnit;
   _this.processDeleteReminderDateUnit = processDeleteReminderDateUnit;
   _this.processSaveReminder = processSaveReminder;

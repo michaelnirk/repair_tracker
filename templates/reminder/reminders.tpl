@@ -52,15 +52,21 @@
         <tbody></tbody>
       </table>
     </div>
+    <div class='standard-form-element reminder-date-label-unit'> 
+      <label class='form-label'>
+        Reminder Date
+      </label>
+      <div class="reminder-date-label width2"></div>
+    </div>
   </div>
   <script src='js/modules/reminder/reminders.js'></script>
   <script src='js/jquery.datetimepicker.full.min.js'></script>
   <script>
-            $(document).ready(() => {
-              const args = {
-                reminders: {$reminders|@json_encode}
-              };
-              Reminders.init(args);
-            });
+        $(document).ready(() => {
+          const args = {
+            reminders: {$reminders|@json_encode}
+          };
+          Reminders.init(args);
+        });
   </script>
 {/strip}
