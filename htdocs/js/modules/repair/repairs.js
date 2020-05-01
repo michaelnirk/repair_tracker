@@ -73,7 +73,7 @@ Repairs = (function() {
               if (currencyData[row.repair_cost_currency].currency_symbol_position === '1') {//Before value
                 content = `${currencyData[row.repair_cost_currency].html_entity}${data}`;
               } else {//After value
-                contenyt = `${data} ${currencyData[row.repair_cost_currency].html_entity}`;
+                content = `${data} ${currencyData[row.repair_cost_currency].html_entity}`;
               }
             }
             return content;
