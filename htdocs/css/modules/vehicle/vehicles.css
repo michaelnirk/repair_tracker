@@ -1,6 +1,10 @@
 #vehiclesWrapper #formVehicleWrapper {
   display: none;
 }
+#vehiclesWrapper #formVehicleWrapper #archived {
+  height: 1.7rem;
+  width: 1.7rem;
+}
 #vehiclesWrapper #formVehicleWrapper .notes-header {
   display: flex;
 }

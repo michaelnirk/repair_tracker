@@ -67,9 +67,11 @@ function displayMessage(messages) {
 }
 
 function initializeStandardTooltip(target) {
-  let elements = target
-    ? $(target)
-    : $(".standard-tooltip:not(.tooltipstered)");
+  let elements =  $(".standard-tooltip:not(.tooltipstered)");
+  if (target) {
+    $(target).tooltipster('destroy');
+    elements = $(target);
+  }
   elements.tooltipster({
     theme: "tooltipster-light"
   });

@@ -171,7 +171,9 @@ class DatabaseAccessClass {
                    key_code,
                    year,
                    vin,
-                   license_plate
+                   license_plate,
+                   archived,
+                   deleted
              FROM vehicle_t 
              WHERE user_id = :id AND deleted = 0";
 
@@ -239,7 +241,9 @@ class DatabaseAccessClass {
                    purchase_price,
                    purchase_currency,
                    license_plate,
-                   vin
+                   vin,
+                   archived,
+                   deleted
             FROM vehicle_t 
             WHERE vehicle_ID = :vID LIMIT 1";
 
@@ -315,19 +319,19 @@ class DatabaseAccessClass {
 
     $this->stmt = $this->conn->prepare($sql);
 
-    $this->stmt->bindParam(':vehicleID', $vehicleID, PDO::PARAM_INT);
-    $this->stmt->bindParam(':name', $vehicle->getName(), PDO::PARAM_STR);
-    $this->stmt->bindParam(':make', $vehicle->getMake(), empty($vehicle->getMake()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
-    $this->stmt->bindParam(':model', $vehicle->getModel(), empty($vehicle->getModel()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
-    $this->stmt->bindParam(':year', $vehicle->getYear(), empty($vehicle->getYear()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
-    $this->stmt->bindParam(':keyCode', $vehicle->getKeyCode(), empty($vehicle->getKeyCode()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
-    $this->stmt->bindParam(':datePurchased', $vehicle->getDatePurchased(), empty($vehicle->getDatePurchased()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
-    $this->stmt->bindParam(':kmAtPurchase', $vehicle->getKmAtPurchase(), empty($vehicle->getKmAtPurchase()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
-    $this->stmt->bindParam(':purchasePrice', $vehicle->getPurchasePrice(), empty($vehicle->getPurchasePrice()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
-    $this->stmt->bindParam(':purchaseCurrency', $vehicle->getPurchaseCurrency(), empty($vehicle->getPurchaseCurrency()) ? PDO::PARAM_NULL : PDO::PARAM_INT);
-    $this->stmt->bindParam(':licensePlate', $vehicle->getLicensePlate(), empty($vehicle->getLicensePlate()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
-    $this->stmt->bindParam(':vin', $vehicle->getVin(), empty($vehicle->getVin()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
-    $this->stmt->bindParam(':userID', $_SESSION['user']['user_id'], PDO::PARAM_INT);
+    $this->stmt->bindValue(':vehicleID', $vehicleID, PDO::PARAM_INT);
+    $this->stmt->bindValue(':name', $vehicle->getName(), PDO::PARAM_STR);
+    $this->stmt->bindValue(':make', $vehicle->getMake(), empty($vehicle->getMake()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $this->stmt->bindValue(':model', $vehicle->getModel(), empty($vehicle->getModel()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $this->stmt->bindValue(':year', $vehicle->getYear(), empty($vehicle->getYear()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $this->stmt->bindValue(':keyCode', $vehicle->getKeyCode(), empty($vehicle->getKeyCode()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $this->stmt->bindValue(':datePurchased', $vehicle->getDatePurchased(), empty($vehicle->getDatePurchased()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $this->stmt->bindValue(':kmAtPurchase', $vehicle->getKmAtPurchase(), empty($vehicle->getKmAtPurchase()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $this->stmt->bindValue(':purchasePrice', $vehicle->getPurchasePrice(), empty($vehicle->getPurchasePrice()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $this->stmt->bindValue(':purchaseCurrency', $vehicle->getPurchaseCurrency(), empty($vehicle->getPurchaseCurrency()) ? PDO::PARAM_NULL : PDO::PARAM_INT);
+    $this->stmt->bindValue(':licensePlate', $vehicle->getLicensePlate(), empty($vehicle->getLicensePlate()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $this->stmt->bindValue(':vin', $vehicle->getVin(), empty($vehicle->getVin()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $this->stmt->bindValue(':userID', $_SESSION['user']['user_id'], PDO::PARAM_INT);
 
     if ($this->stmt->execute()) {
       $result = $vehicleID;
@@ -353,7 +357,8 @@ class DatabaseAccessClass {
                    purchase_currency = :purchaseCurrency,
                    license_plate = :licensePlate,
                    vin = :vin,
-                   date_purchased = :datePurchased
+                   date_purchased = :datePurchased,
+                   archived = :archived
             WHERE vehicle_ID = :vehicleID";
 
     $this->stmt = $this->conn->prepare($sql);
@@ -369,6 +374,7 @@ class DatabaseAccessClass {
     $this->stmt->bindValue(':purchaseCurrency', $vehicle->getPurchaseCurrency(), empty($vehicle->getPurchaseCurrency()) ? PDO::PARAM_NULL : PDO::PARAM_INT);
     $this->stmt->bindValue(':licensePlate', $vehicle->getLicensePlate(), empty($vehicle->getLicensePlate()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
     $this->stmt->bindValue(':vin', $vehicle->getVin(), empty($vehicle->getVin()) ? PDO::PARAM_NULL : PDO::PARAM_STR);
+    $this->stmt->bindValue(':archived', $vehicle->getArchived(), PDO::PARAM_INT);
     $this->stmt->bindValue(':vehicleID', $vehicle->getVehicleId(), PDO::PARAM_INT);
     $this->stmt->execute();
 

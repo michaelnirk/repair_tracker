@@ -71,6 +71,12 @@
             </select>
           </div>
         </div>
+        <div class='standard-form-element'>
+          <label class='form-label' for='archived'>
+            Archive Vehicle
+          </label>
+          <input type='checkbox' name='archived' id='archived'/>
+        </div>
         <div class='notes-header'>
           <label class='form-label'>Notes</label>
           <button type='button' class='toolbar-button standard-tooltip add-note' onclick='Vehicles.addNote();' title='Add a new note'>
@@ -102,6 +108,7 @@
             <th>Purchase<br>Price</th>
             <th>License<br>Plate</th>
             <th>VIN</th>
+            <th></th>
             <th></th>
             <th></th>
           </tr>

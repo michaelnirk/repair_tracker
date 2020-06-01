@@ -2,6 +2,7 @@ Vehicles = (function() {
   let _this = {};
   /***********************  Variables  ***************************/
   let vehicle = null;
+  let vehicles = null;
   const dateTimePickerOptions = {
     altField: '#datePurchasedHidden',
     altFormat: 'yy-mm-dd',
@@ -28,7 +29,7 @@ Vehicles = (function() {
       {width: "7%", targets: 8},
       {width: "14%", targets: 9},
       {width: "8%", targets: 10},
-      {visible: false, targets: 11},
+      {visible: false, targets: [11, 12]},
       {orderable: false, sortable: false, targets: 10}
     ],
     columns: [
@@ -95,7 +96,7 @@ Vehicles = (function() {
               content = currencyData[row.purchase_currency].currency_symbol_position === "1"
                 ? `${currencyData[row.purchase_currency].html_entity} ${data}`
                 : `${data} ${
-                  currencyData[row.purchase_currency].html_entity
+                currencyData[row.purchase_currency].html_entity
                 }`;
             }
             return content;
@@ -125,20 +126,26 @@ Vehicles = (function() {
           const repairCount = row.repair_count;
           const repairCountTitle = (repairCount === '1') ? 'repair' : 'repairs';
           const editVehicleIcon = `<i class="fas fa-edit fa-fw standard-tooltip" title='Edit vehicle' onclick='Vehicles.processEditVehicle(${row.vehicle_id});'></i>`;
-          const viewRepairsIcon = `<a href='index.php?module=repair&action=repairs&vehicle_id=${row.vehicle_id}'>
+          const repairsIcon = `<a href='index.php?module=repair&action=repairs&vehicle_id=${row.vehicle_id}'>
                                      <div class='icon-with-count'>
-                                       <i class="fas fa-car-mechanic fa-fw standard-tooltip" title='View vehicle repairs'></i>
+                                       <i class="fas fa-car-mechanic fa-fw standard-tooltip" title='Vehicle repairs'></i>
                                        <div class='icon-count standard-tooltip' title='This vehicle has ${repairCount} ${repairCountTitle}'>
                                          ${repairCount}
                                        </div>
                                      </div>
                                    </a>`;
           const deleteVehicleIcon = `<i class="fas fa-trash-alt fa-fw standard-tooltip" title='Delete vehicle' onclick='Vehicles.processDeleteVehicle(${row.vehicle_id});'></i>`;
-          return `<div class='table-function-icons-wrapper'>${editVehicleIcon}${viewRepairsIcon}${deleteVehicleIcon}</div>`;
+          return `<div class='table-function-icons-wrapper'>${repairsIcon}${editVehicleIcon}${deleteVehicleIcon}</div>`;
         }
       },
       {
         data: "vehicle_id",
+        render: function(data) {
+          return data;
+        }
+      },
+      {
+        data: "archived",
         render: function(data) {
           return data;
         }
@@ -158,7 +165,9 @@ Vehicles = (function() {
   async function init(args) {
     currencyData = await Session.getItem("currencyData");
     populateCurrencySelect();
-    tableOptions.data = args.vehicles;
+    vehicles = args.vehicles;
+    const tableData = vehicles.filter(vehicle => vehicle.archived === "0");
+    tableOptions.data = tableData;
     table = $("#vehiclesTable").DataTable(tableOptions);
     evaluateBackButton();
     $("#datePurchased").datepicker(dateTimePickerOptions);
@@ -219,6 +228,9 @@ Vehicles = (function() {
       $('#purchasePrice').val(vehicle.purchase_price);
       $("#purchaseCurrency").val(vehicle.purchase_currency);
     }
+    if (parseInt(vehicle.archived, 10) === 1) {
+      $('#archived').prop('checked', true);
+    }
     if (vehicle.notes && vehicle.notes.length) {
       for (const note of vehicle.notes) {
         addNote(note);
@@ -277,6 +289,7 @@ Vehicles = (function() {
     $('#licensePlate').val('');
     $('#purchasePrice').val('');
     $("#purchaseCurrency").val('');
+    $("#archived").prop("checked", false);
     $("#vehicleNotesWrapper").empty();
   }
 
@@ -307,23 +320,45 @@ Vehicles = (function() {
           showWorking();
         }
       }).done(result => {
-        result = JSON.parse(result);
-        if (typeof result === 'object' && result.hasOwnProperty('success') && result.success === true) {
-          const vehicleData = result.data;
-          table.row(`#${vehicleData.vehicle_id}`).remove();
-          table.row.add(vehicleData).draw();
-          const message = vehicle ? "Vehicle information was successfully updated!" : "The vehicle was successfully created!";
-          displayMessage([message]);
-          hideForm();
-        } else if (typeof result === 'object' && result.hasOwnProperty('success') && result.success === false) {
-          if (result.data.hasOwnProperty('messages') && result.data.messages.hasOwnProperty('errors') && result.data.messages.errors.length) {
-            errors.length = 0;
-            const title = 'There are errors!';
-            const message = result.data.messages.errors.join('<br>');
+        try {
+          result = JSON.parse(result);
+          if (typeof result === 'object' && result.hasOwnProperty('success') && result.success === true) {
+            const vehicleData = result.data;
+            if (vehicle) {
+              for (let i = 0; i < vehicles.length; i++) {
+                if (vehicles[i].vehicle_id === vehicleData.vehicle_id) {
+                  vehicles[i] = vehicleData;
+                  break;
+                }
+              }
+            } else {
+              vehicles.push(vehicleData);
+            }
+            table.rows().remove();
+            if ($("#archiveVehiclesButton").hasClass('active')) {
+              table.rows.add(vehicles);
+            } else {
+              const tableData = vehicles.filter(vehicle => vehicle.archived === '0');
+              table.rows.add(tableData);
+            }
+            table.draw();
+            const message = vehicle ? "Vehicle information was successfully updated!" : "The vehicle was successfully created!";
+            displayMessage([message]);
+            hideForm();
+          } else if (typeof result === 'object' && result.hasOwnProperty('success') && result.success === false) {
+            if (result.data.hasOwnProperty('messages') && result.data.messages.hasOwnProperty('errors') && result.data.messages.errors.length) {
+              errors.length = 0;
+              const title = 'There are errors!';
+              const message = result.data.messages.errors.join('<br>');
+              showMessage(title, message);
+            }
+          } else {
+            console.error(`Error setting vehicle: ${result}`);
+            const title = 'Error!';
+            const message = 'An error has occurred. The vehicle data could not be successfully saved.';
             showMessage(title, message);
           }
-        } else {
-          console.error(`Error setting vehicle: ${result}`);
+        } catch (e) {
           const title = 'Error!';
           const message = 'An error has occurred. The vehicle data could not be successfully saved.';
           showMessage(title, message);
@@ -467,6 +502,7 @@ Vehicles = (function() {
       result = JSON.parse(result);
       if (typeof result === 'object' && result.hasOwnProperty('success') && result.success === true) {
         if (parseInt(result.data, 10) === parseInt(vehicleID, 10)) {
+          vehicles = vehicles.filter(vehicle => parseInt(vehicle.vehicle_id, 10) !== parseInt(result.data, 10));
           table.row(`#${vehicleID}`).remove().draw();
           const message = "Vehicle was successfully deleted!";
           displayMessage([message]);
@@ -492,6 +528,21 @@ Vehicles = (function() {
     }).always(() => {
       hideWorking();
     });
+  }
+
+  function toggleArchivedVehicles(target) {
+    target = $(target);
+    table.rows().remove();
+    if (target.hasClass('active')) {
+      target.removeClass('active').attr('title', 'Show archived vehicles');
+      const tableData = vehicles.filter(vehicle => vehicle.archived === "0");
+      table.rows.add(tableData);
+    } else {
+      target.addClass('active').attr('title', 'Hide archived vehicles');
+      table.rows.add(vehicles);
+    }
+    table.draw();
+    initializeStandardTooltip(target[0]);
   }
 
   function sendTestEmail() {
@@ -535,6 +586,7 @@ Vehicles = (function() {
   _this.hideForm = hideForm;
   _this.processAddVehicle = processAddVehicle;
   _this.processDeleteVehicle = processDeleteVehicle;
+  _this.toggleArchivedVehicles = toggleArchivedVehicles;
   _this.sendTestEmail = sendTestEmail;
   /***********************  end Exports  *************************/
   return _this;

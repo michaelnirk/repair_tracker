@@ -75,6 +75,7 @@ class VehicleControllerClass extends UIControllerClass {
     $purchasePrice = $this->request['purchase_price'] ? test_input($this->request['purchase_price']) : "";
     $purchaseCurrency = isset($this->request['purchase_currency']) ? test_input($this->request['purchase_currency']) : "";
     $licensePlate = $this->request['license_plate'] ? test_input($this->request['license_plate']) : "";
+    $archived = isset($this->request['archived']) ? 1 : 0;
     $vin = $this->request['vin'] ? test_input($this->request['vin']) : "";
 
     if (count($this->messages['errors'])) {
@@ -93,6 +94,7 @@ class VehicleControllerClass extends UIControllerClass {
     $vehicle->setPurchaseCurrency($purchaseCurrency);
     $vehicle->setLicensePlate($licensePlate);
     $vehicle->setVin($vin);
+    $vehicle->setArchived($archived);
     /*
      * Process any notes, if present
      */

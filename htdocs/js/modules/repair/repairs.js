@@ -91,14 +91,14 @@ Repairs = (function() {
           const editRepairIcon = `<i class="fas fa-edit fa-fw standard-tooltip" title='Edit repair' onclick='Repairs.processEditRepair(${row.repair_id});'></i>`;
           const viewRepairPartsIcon = `<a href='index.php?module=part&action=parts&repair_id=${row.repair_id}'>
                                          <div class='icon-with-count'>
-                                          <i class="fas fa-cogs fa-fw standard-tooltip" title='View repair parts'></i>
+                                          <i class="fas fa-cogs fa-fw standard-tooltip" title='Repair parts'></i>
                                           <div class='icon-count standard-tooltip' title='This repair has ${partCount} ${partCountTitle}'>
                                             ${partCount}
                                           </div>
                                          </div>
                                        </a>`;
           const deleteRepairIcon = `<i class="fas fa-trash-alt fa-fw standard-tooltip" title='Delete repair' onclick='Repairs.processDeleteRepair(${row.repair_id});'></i>`;
-          return `<div class='table-function-icons-wrapper'>${editRepairIcon}${viewRepairPartsIcon}${deleteRepairIcon}</div>`;
+          return `<div class='table-function-icons-wrapper'>${viewRepairPartsIcon}${editRepairIcon}${deleteRepairIcon}</div>`;
         }
       }
     ],

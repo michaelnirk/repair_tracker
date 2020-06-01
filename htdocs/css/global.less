@@ -55,7 +55,6 @@ textarea {
 input:hover:not([type='file']):not([type='image']):not([type='radio']):not(checkbox):not(.select2-search__field),
 select:hover,
 textarea:hover {
-  /*box-shadow: 0 1px 4px rgba(255,174,26) inset;*/
   box-shadow: 0 0 2px 2px rgba(255,174,26) inset;
 }
 
@@ -160,6 +159,14 @@ input[type='search']::placeholder {
     padding: 0.4rem 0;
     border: 1px solid #5f5f5f;
     background-color: #bfbfbf;
+    
+    button.toolbar-button:focus {
+      outline: none;
+    }
+
+    button.toolbar-button.active {
+      border: 0.15rem solid #EE7748;
+    }
 
     div.left {
       @std-flex-div();
@@ -365,7 +372,7 @@ input[type='search']::placeholder {
       justify-content: space-evenly;
 
       i {
-        font-size: 1.2rem;
+        font-size: 1.6rem;
         margin: 3px;
       }
     }

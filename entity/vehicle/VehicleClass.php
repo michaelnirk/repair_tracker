@@ -21,6 +21,8 @@ class VehicleClass extends EntityClass {
   protected $purchase_currency;
   protected $license_plate;
   protected $vin;
+  protected $archived;
+  protected $deleted;
   protected $user_id;
   protected $repair_count;
 
@@ -78,6 +80,14 @@ class VehicleClass extends EntityClass {
 
   public function getVin() {
     return $this->vin;
+  }
+  
+  public function getArchived() {
+    return $this->archived;
+  }
+  
+  public function getDeleted() {
+    return $this->deleted;
   }
 
   public function getUserID() {
@@ -138,6 +148,14 @@ class VehicleClass extends EntityClass {
 
   public function setVin($vin) {
     $this->vin = $vin;
+  }
+  
+  public function setArchived($archived) {
+    $this->archived = $archived;
+  }
+  
+  public function setDeleted($deleted) {
+    $this->deleted = $deleted;
   }
 
   public function setUserID($user_id) {
