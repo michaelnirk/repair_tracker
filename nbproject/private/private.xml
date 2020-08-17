@@ -24,6 +24,7 @@
             <file>file:/C:/develop/repair_tracker/templates/js.tpl</file>
             <file>file:/C:/develop/repair_tracker/htdocs/js/modules/repair/repairs.js</file>
             <file>file:/C:/develop/repair_tracker/htdocs/index.php</file>
+            <file>file:/C:/develop/repair_tracker/entity/vehicle/VehicleClass.php</file>
             <file>file:/C:/develop/repair_tracker/templates/banner.tpl</file>
             <file>file:/C:/develop/repair_tracker/templates/repair/repairs.toolbar.tpl</file>
             <file>file:/C:/develop/repair_tracker/htdocs/js/utils.js</file>
@@ -36,6 +37,7 @@
             <file>file:/C:/develop/repair_tracker/htdocs/css/modules/reminder/reminders.less</file>
             <file>file:/C:/develop/repair_tracker/modules/UtilityControllerClass.php</file>
             <file>file:/C:/develop/repair_tracker/templates/vehicle/vehicles.tpl</file>
+            <file>file:/C:/develop/repair_tracker/htdocs/css/modules/vehicle/vehicles.less</file>
             <file>file:/C:/develop/repair_tracker/modules/ReminderControllerClass.php</file>
             <file>file:/C:/develop/repair_tracker/modules/UserControllerClass.php</file>
         </group>

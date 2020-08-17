@@ -61,19 +61,21 @@
       </form>
     </div>
     <div id='listRepairsWrapper'>
-      <table id='repairsTable'>
-        <thead>
-          <tr>
-            <th>Description</th>
-            <th>Repair Date</th>
-            <th>KM</th>
-            <th>Repair Location</th>
-            <th>Repair Cost</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="table-wrapper">
+        <table id='repairsTable'>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Repair Date</th>
+              <th>KM</th>
+              <th>Repair Location</th>
+              <th>Repair Cost</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
   </div>
   <script src='js/modules/repair/repairs.js'></script>

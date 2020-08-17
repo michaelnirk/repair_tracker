@@ -95,26 +95,28 @@
       </form>
     </div>
     <div id='listVehiclesWrapper'>
-      <table id='vehiclesTable'>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Make</th>
-            <th>Model</th>
-            <th>Year</th>
-            <th>Key<br>Code</th>
-            <th>Date<br>Purchased</th>
-            <th>KM at<br>Purchase</th>
-            <th>Purchase<br>Price</th>
-            <th>License<br>Plate</th>
-            <th>VIN</th>
-            <th></th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="table-wrapper">
+        <table id='vehiclesTable'>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Make</th>
+              <th>Model</th>
+              <th>Year</th>
+              <th>Key<br>Code</th>
+              <th>Date<br>Purchased</th>
+              <th>KM at<br>Purchase</th>
+              <th>Purchase<br>Price</th>
+              <th>License<br>Plate</th>
+              <th>VIN</th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
   </div>
 {/strip}    

@@ -277,6 +277,9 @@ input[type='search']::placeholder {
   justify-content: center;
   box-sizing: border-box;
 }
+.content div.table-wrapper {
+  margin: 0 1rem;
+}
 .content table.dataTable thead tr {
   border: 1px solid white;
 }

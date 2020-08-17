@@ -73,21 +73,23 @@
       </form>
     </div>
     <div id="listPartsWrapper">
-      <table class="table table-bordered whiteText" id='partsTable'>
-        <thead>
-          <tr>
-            <th>Part Description</th>
-            <th>Part Number/<br/>Item Number</th>
-            <th>Source</th>
-            <th>Brand</th>
-            <th>Price (ea)</th>                  
-            <th>Quantity</th>
-            <th>Purchase<br>Date</th>
-            <th></th>
-          </tr>              
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="table-wrapper">
+        <table class="table table-bordered whiteText" id='partsTable'>
+          <thead>
+            <tr>
+              <th>Part Description</th>
+              <th>Part Number/<br/>Item Number</th>
+              <th>Source</th>
+              <th>Brand</th>
+              <th>Price (ea)</th>                  
+              <th>Quantity</th>
+              <th>Purchase<br>Date</th>
+              <th></th>
+            </tr>              
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
   </div>
   <script src='js/modules/part/parts.js'></script>
