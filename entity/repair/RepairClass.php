@@ -15,6 +15,7 @@ class RepairClass extends EntityClass {
   protected $create_datetime;
   protected $notes;
   protected $part_count;
+  protected $parts;
 
   public function __construct($properties = null) {
     parent::__construct($properties);
@@ -64,6 +65,10 @@ class RepairClass extends EntityClass {
     return $this->part_count;
   }
 
+  public function getParts() {
+    return $this->parts;
+  }
+
   public function setRepairID($repairID) {
     $this->repair_id = $repairID;
   }
@@ -108,4 +113,7 @@ class RepairClass extends EntityClass {
     $this->part_count = $partCount;
   }
 
+  public function setParts($parts) {
+    $this->parts = $parts;
+  }
 }

@@ -28,6 +28,9 @@ class VehicleControllerClass extends UIControllerClass {
       case 'send_test_email':
         $this->sendTestEmail();
         break;
+      case 'export_pdf':
+        $this->exportVehicleRepairData();
+        break;
     }
     $this->tpl->assign('messages', $this->messages);
     $this->tpl->display("index.tpl");
@@ -123,5 +126,19 @@ class VehicleControllerClass extends UIControllerClass {
   private function sendTestEmail() {
     require_once 'include/sendMail2.php';
     sendMail2();
+  }
+
+  private function exportVehicleRepairData() {
+    require_once 'entity/vehicle/VehicleRepairDataPDF.php';
+    $vehicle = $this->DAO->getVehicle($this->request['vehicle_id']);
+    if (!$vehicle instanceof VehicleClass) {
+      return;
+    }
+    $vehicle->setRepairs($this->DAO->listRepairs($vehicle->getVehicleID()));
+    foreach ($vehicle->getRepairs() as &$repair) {
+      $repair->setParts($this->DAO->listParts($repair->getRepairID()));
+    }
+    $pdf = new VehicleRepairDataPDF($vehicle);
+    $pdf->createPDF();
   }
 }

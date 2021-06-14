@@ -1,5 +1,7 @@
 Vehicles = (function() {
+
   let _this = {};
+
   /***********************  Variables  ***************************/
   let vehicle = null;
   let vehicles = null;
@@ -134,8 +136,11 @@ Vehicles = (function() {
                                        </div>
                                      </div>
                                    </a>`;
+          const exportRepairDataIcon = `<a href='index.php?module=vehicle&action=export_pdf&vehicle_id=${row.vehicle_id}' class="standard-tooltip" title="Export vehicle repair data as PDF">
+                                          <i class="fas fa-file-export"></i>
+                                        </a>`;
           const deleteVehicleIcon = `<i class="fas fa-trash-alt fa-fw standard-tooltip" title='Delete vehicle' onclick='Vehicles.processDeleteVehicle(${row.vehicle_id});'></i>`;
-          return `<div class='table-function-icons-wrapper'>${repairsIcon}${editVehicleIcon}${deleteVehicleIcon}</div>`;
+          return `<div class='table-function-icons-wrapper'>${repairsIcon}${editVehicleIcon}${deleteVehicleIcon}${exportRepairDataIcon}</div>`;
         }
       },
       {
@@ -239,20 +244,16 @@ Vehicles = (function() {
   }
 
   function processAddVehicle() {
-    let proceed = true;
     if (vehicle) {
       const title = 'Proceed?';
       const message = 'If you continue all of your changes will be lost. Do you really want to proceed?';
       showVerificationMessage(title, message).then(result => {
-        if (!result) {
-          proceed = false;
+        if (result) {
+          clearForm();
+          showForm();
+          setPageTitle('Add New Vehicle');
         }
       });
-    }
-    if (proceed) {
-      clearForm();
-      showForm();
-      setPageTitle('Add New Vehicle');
     }
   }
 

@@ -25,6 +25,7 @@ class VehicleClass extends EntityClass {
   protected $deleted;
   protected $user_id;
   protected $repair_count;
+  protected $repairs;
 
   public function __construct($properties = NULL) {
     parent::__construct($properties);
@@ -98,6 +99,10 @@ class VehicleClass extends EntityClass {
     return $this->repair_count;
   }
 
+  public function getRepairs() {
+    return $this->repairs;
+  }
+
   public function setVehicleID($vehicle_id) {
     $this->vehicle_id = $vehicle_id;
   }
@@ -164,5 +169,9 @@ class VehicleClass extends EntityClass {
 
   public function setRepairCount($repairCount) {
     $this->repair_count = $repairCount;
+  }
+
+  public function setRepairs($repairs) {
+    $this->repairs = $repairs;
   }
 }
