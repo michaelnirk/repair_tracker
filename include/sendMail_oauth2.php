@@ -10,7 +10,7 @@ use League\OAuth2\Client\Provider\Google;
 //require_once 'PHPMailer/PHPMailerAutoload.php';
 require 'vendor/autoload.php';
 
-function sendMail($to, $from, $subject, $body){
+function sendMail(array $to, $subject, $body){
     $mail = new PHPMailer();
     
     $mail->IsSMTP(); // enable SMTP
@@ -21,18 +21,7 @@ function sendMail($to, $from, $subject, $body){
     $mail->SMTPSecure = 'tls';
     
     //Whether to use SMTP authentication
-    $mail->SMTPAuth = true;
-    
-    
-    $mail->SMTPOptions = array(
-        'ssl' => array(
-            'verify_peer' => false,
-            'verify_peer_name' => false,
-            'allow_self_signed' => true
-        )
-    );
-    
-    
+    $mail->SMTPAuth = true; 
     
     //Set AuthType to use XOAUTH2
     $mail->AuthType = 'XOAUTH2';
@@ -46,8 +35,8 @@ function sendMail($to, $from, $subject, $body){
     //Create a new OAuth2 provider instance
     $provider = new Google(
         [
-            'clientId' => CLIENT_ID,
-            'clientSecret' => CLIENT_SECRET,
+            'clientId' => $_ENV['GMAIL_OAUTH_CLIENT_ID'],
+            'clientSecret' => $_ENV['GMAIL_OAUTH_CLIENT_SECRET'],
         ]
     );
     
@@ -56,18 +45,20 @@ function sendMail($to, $from, $subject, $body){
         new OAuth(
             [
                 'provider' => $provider,
-                'clientId' => CLIENT_ID,
-                'clientSecret' => CLIENT_SECRET,
-                'refreshToken' => REFRESH_TOKEN,
-                'userName' => GMAIL_USER_NAME,
+                'clientId' => $_ENV['GMAIL_OAUTH_CLIENT_ID'],
+                'clientSecret' => $_ENV['GMAIL_OAUTH_CLIENT_SECRET'],
+                'refreshToken' => $_ENV['GMAIL_OAUTH_REFRESH_TOKEN'],
+                'userName' => $_ENV['GMAIL_USER_NAME'],
             ]
         )
     );
     $mail->CharSet = 'utf-8';
-	$mail->SetFrom($from);
+	$mail->SetFrom($_ENV['GMAIL_FROM']);
 	$mail->Subject = $subject;
 	$mail->Body = $body;
-	$mail->AddAddress($to);
+    foreach($to as $recipient) {
+        $mail->AddAddress($recipient);
+    }
 	if(!$mail->Send()) {
 //        echo "Mailer Error: " . $mail->ErrorInfo;
 //		$error = 'Mail error: '.$mail->ErrorInfo; 

@@ -123,11 +123,6 @@ class VehicleControllerClass extends UIControllerClass {
     }
   }
   
-  private function sendTestEmail() {
-    require_once 'include/sendMail2.php';
-    sendMail2();
-  }
-
   private function exportVehicleRepairData() {
     require_once 'entity/vehicle/VehicleRepairDataPDF.php';
     $vehicle = $this->DAO->getVehicle($this->request['vehicle_id']);

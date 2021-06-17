@@ -17,10 +17,12 @@ class DatabaseAccessClass {
   //Function to create database connection
   function getConnection() {
     try {
-      //        $this->conn = new PDO("mysql:host=localhost;dbname=repair_tracker;charset=utf8", "root", "", array(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_FOUND_ROWS => true));
-      $this->conn = new PDO("mysql:host=192.168.178.26;dbname=repair_tracker;charset=utf8", "repairtracker", "eLGe6yVVHscyZoU4", array(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_FOUND_ROWS => true));
+      $dbHost = $_ENV['DB_HOST'];
+      $dbName = $_ENV['DB_NAME'];
+      $dbUser = $_ENV['DB_USER'];
+      $dbPwd = $_ENV['DB_PWD'];
+      $this->conn = new PDO("mysql:host=" . $dbHost . ";dbname=" . $dbName . ";charset=utf8", $dbUser, $dbPwd, array(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_FOUND_ROWS => true));
 
-      //$conn -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_FOUND_ROWS => true);
     } catch (PDOException $ex) {
       echo "An error occurred while connecting to the database: " . $ex->getMessage();
     }

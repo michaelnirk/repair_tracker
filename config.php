@@ -8,6 +8,3 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
     set_include_path(get_include_path() . PATH_SEP . '/var/www/html/repair_tracker/');
     define('SMARTY_HOME','/var/www/html/repair_tracker/');
 }
-
-define('GMAIL_USER_NAME', 'repair-tracker@gmail.com');
-define('GMAIL_PWD', '6O3G42owh*Ou');

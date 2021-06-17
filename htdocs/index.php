@@ -2,6 +2,10 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
+require '../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->safeLoad();
 
 require_once '../config.php';
 require_once '../include/UIControllerClass.php';
@@ -25,4 +29,3 @@ if (file_exists($includefile)) {
 $classname = ucfirst($module) . "ControllerClass";
 $ui = new $classname($_REQUEST);
 $ui->execute(array_change_key_case($_REQUEST));
-

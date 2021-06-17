@@ -26,7 +26,7 @@ class UtilityControllerClass {
   }
   
   public function processDueReminders() {
-    require_once 'include/sendMail.php';
+    require_once 'include/sendMail_oauth2.php';
     $subject = "Repair Tracker Reminder!";
     //Get all due reminders
     $dueReminders = $this->DAO->listDueReminders();
