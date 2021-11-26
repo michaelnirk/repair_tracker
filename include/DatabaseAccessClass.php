@@ -22,11 +22,12 @@ class DatabaseAccessClass {
       $dbUser = $_ENV['DB_USER'];
       $dbPwd = $_ENV['DB_PWD'];
       $this->conn = new PDO("mysql:host=" . $dbHost . ";dbname=" . $dbName . ";charset=utf8", $dbUser, $dbPwd, array(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_FOUND_ROWS => true));
+      return $this->conn;
 
     } catch (PDOException $ex) {
-      echo "An error occurred while connecting to the database: " . $ex->getMessage();
+      // echo "An error occurred while connecting to the database: " . $ex->getMessage();
+      die("An error occurred while connecting to the database: " . $ex->getMessage());
     }
-    return $this->conn;
   }
 
   //Function to close database connection

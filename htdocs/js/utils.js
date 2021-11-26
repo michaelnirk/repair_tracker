@@ -32,14 +32,14 @@ function showVerificationMessage(title, message) {
       maxHeight: $(".content").outerHeight(),
       buttons: [
         {
-          text: "Ja",
+          text: "Yes",
           click: function() {
             $(this).dialog("close");
             resolve(true);
           }
         },
         {
-          text: "Nein",
+          text: "No",
           click: function() {
             $(this).dialog("close");
             resolve(false);

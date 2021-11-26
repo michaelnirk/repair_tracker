@@ -249,12 +249,18 @@ Vehicles = (function() {
       const message = 'If you continue all of your changes will be lost. Do you really want to proceed?';
       showVerificationMessage(title, message).then(result => {
         if (result) {
-          clearForm();
-          showForm();
-          setPageTitle('Add New Vehicle');
+          addVehicle();
         }
       });
+    } else {
+      addVehicle();
     }
+  }
+  
+  function addVehicle() {
+    clearForm();
+    showForm();
+    setPageTitle('Add New Vehicle');
   }
 
   function showForm() {
