@@ -164,6 +164,7 @@ Reminders = (function() {
 
   function clearForm() {
     reminder = null;
+    $('#reminderID').val('');
     $('#reminderText').val('');
     $(".reminder-date-unit", "#reminderDateUnitWrapper").not(':first').remove();
     $("#reminderDate").val('');
@@ -240,7 +241,6 @@ Reminders = (function() {
           table.row.add(reminderData).draw();
           const message = reminder ? "The reminder was successfully updated!" : "The reminder was successfully created!";
           displayMessage([message]);
-//          clearForm();
           hideForm();
         } else if (typeof result === 'object' && result.hasOwnProperty('success') && result.success === false) {
           if (result.hasOwnProperty('reason') && result.reason.hasOwnProperty('errors') && result.reason.errors.length) {
@@ -383,7 +383,7 @@ Reminders = (function() {
   function editReminder(reminderID) {
     reminder = table.row(`#${reminderID}`).data();
     setPageTitle(`Edit Reminder`);
-    fillForm(reminder);
+    fillForm();
     showForm();
   }
 
