@@ -215,6 +215,7 @@ Repairs = (function() {
 
   function clearForm() {
     repair = null;
+    $('#repairID').val('');
     $("#repairDate").datepicker('setDate', null);
     $("#repairDateHidden").val('');
     $('#description').val('');

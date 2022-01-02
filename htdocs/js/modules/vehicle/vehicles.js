@@ -96,7 +96,7 @@ Vehicles = (function() {
             let content = "";
             if (data) {
               content = currencyData[row.purchase_currency].currency_symbol_position === "1"
-                ? `${currencyData[row.purchase_currency].html_entity} ${data}`
+                ? `${currencyData[row.purchase_currency].html_entity}${data}`
                 : `${data} ${
                 currencyData[row.purchase_currency].html_entity
                 }`;
@@ -285,6 +285,7 @@ Vehicles = (function() {
 
   function clearForm() {
     vehicle = null;
+    $('#vehicleID').val('');
     $('#name').val('');
     $('#make').val('');
     $('#model').val('');

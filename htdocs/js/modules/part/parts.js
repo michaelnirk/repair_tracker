@@ -230,6 +230,7 @@ Parts = (function() {
 
   function clearForm() {
     part = null;
+    $('#partID').val('');
     $('#description').val('');
     $('#partNumber').val('');
     $('#source').val('');
