@@ -53,17 +53,14 @@ function showVerificationMessage(title, message) {
   });
 }
 
-function displayMessage(messages) {
+function displayMessage(messages = []) {
   const text = messages.join('<br>');
-  $('.content').animate({scrollTop: 0}, function() {
-    $('#jsMessagesWrapper').html(`${text}`).slideDown(400, () => {
-      setTimeout(() => {
-        $('#jsMessagesWrapper').slideUp(400, function() {
-          $(this).html('');
-        });
-      }, 4000);
-    });
-  });
+  const element = document.getElementById('jsMessagesWrapper');
+  element.innerHTML = text;
+  element.classList.add('shown');
+  setTimeout(() => {
+    element.classList.remove('shown');
+  }, 3000);
 }
 
 function initializeStandardTooltip(target) {

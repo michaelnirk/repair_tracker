@@ -458,7 +458,7 @@ Parts = (function() {
   _this.processDeleteNote = processDeleteNote;
   _this.hideForm = hideForm;
   _this.processAddPart = processAddPart;
-  _this.processDeletePart = processDeletePart;
+  _this.processDeletePart = processDeletePart; 
   /***********************  end Exports  *************************/
   return _this;
 })();

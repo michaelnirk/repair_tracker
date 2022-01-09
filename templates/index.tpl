@@ -20,7 +20,10 @@
       {include file="title.tpl"}
       {include file="$module/$content.tpl"}
       {include file="working.tpl"}
-      {include file="sidenav.tpl"}
+      {include file="sidenav.tpl"}   
+      <script src='js/modules/vehicle/vehicles.js'></script>
+      <script src='js/modules/repair/repairs.js'></script>
+      <script src='js/modules/part/parts.js'></script>
     </div>
   </body>
 </html>

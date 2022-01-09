@@ -431,6 +431,10 @@ Repairs = (function() {
     }).always(() => {
       hideWorking();
     });
+  }  
+
+  function showRepairsList() {
+    window.location.href = `index.php?module=repair&action=repairs&vehicle_id=${vehicle.vehicle_id}`;
   }
   /************************  end Functions  *********************/
 
@@ -442,7 +446,8 @@ Repairs = (function() {
   _this.processDeleteNote = processDeleteNote;
   _this.hideForm = hideForm;
   _this.processAddRepair = processAddRepair;
-  _this.processDeleteRepair = processDeleteRepair;
+  _this.processDeleteRepair = processDeleteRepair; 
+  _this.showRepairsList = showRepairsList;
   /************************  end Exports  ***********************/
   return _this;
 })();

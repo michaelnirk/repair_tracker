@@ -119,8 +119,7 @@
       </div>
     </div>
   </div>
-{/strip}    
-<script src='js/modules/vehicle/vehicles.js'></script>
+{/strip} 
 <script>
   $(document).ready(() => {
   {if isset($user)}

@@ -173,7 +173,7 @@ input[type='search']::placeholder {
   margin: 15px auto;
   word-wrap: break-word;
   text-align: center;
-  border-radius: 10px;
+  border-radius: 0.5rem;
 }
 .content div.message.error {
   background: #ffa3a5;
@@ -191,17 +191,25 @@ input[type='search']::placeholder {
   color: #000000;
 }
 .content div#jsMessagesWrapper {
-  display: none;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
   margin: 1rem auto;
   min-width: 25vw;
   background: #bee38a;
   border: 1px solid green;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   color: #000000;
   font-size: 1.2rem;
   padding: 1rem 1.5rem;
-  text-align: center;
-  vertical-align: middle;
+  transition: opacity 400ms linear;
+}
+.content div#jsMessagesWrapper.shown {
+  opacity: 1;
 }
 .content div.standard-form-wrapper {
   margin-top: 15px;

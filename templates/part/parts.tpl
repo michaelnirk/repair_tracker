@@ -92,7 +92,6 @@
       </div>
     </div>
   </div>
-  <script src='js/modules/part/parts.js'></script>
   <script>
     $(document).ready(() => {
       const args = {

@@ -78,14 +78,13 @@
       </div>
     </div>
   </div>
-  <script src='js/modules/repair/repairs.js'></script>
   <script>
-            $(document).ready(() => {
-              const args = {
-                repairs: {$repairs|@json_encode},
-                vehicle: {$vehicle|@json_encode}
-              };
-              Repairs.init(args);
-            });
+    $(document).ready(() => {
+      const args = {
+        repairs: {$repairs|@json_encode},
+        vehicle: {$vehicle|@json_encode}
+      };
+      Repairs.init(args);
+    });
   </script>
 {/strip}

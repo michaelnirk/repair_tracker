@@ -582,7 +582,12 @@ Vehicles = (function() {
         showMessage(title, message);
       }
     });
+  } 
+
+  function showVehicleList() {
+    window.location.href = `index.php?module=vehicle&action=vehicles`;
   }
+
   /***********************  end Functions  ***********************/
 
   /***********************  Exports  *****************************/
@@ -596,6 +601,7 @@ Vehicles = (function() {
   _this.processDeleteVehicle = processDeleteVehicle;
   _this.toggleArchivedVehicles = toggleArchivedVehicles;
   _this.sendTestEmail = sendTestEmail;
+  _this.showVehicleList = showVehicleList;
   /***********************  end Exports  *************************/
   return _this;
 })();
