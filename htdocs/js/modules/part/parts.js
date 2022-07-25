@@ -208,6 +208,10 @@ Parts = (function() {
     }
   }
 
+  function showRepairsList() {
+    window.location.href = `index.php?module=repair&action=repairs&vehicle_id=${vehicle.vehicle_id}`;
+  }
+
   function showForm() {
     $('#formPartWrapper').slideDown(600, () => {
       $("textarea.auto-expand").each(function() {
@@ -459,6 +463,7 @@ Parts = (function() {
   _this.hideForm = hideForm;
   _this.processAddPart = processAddPart;
   _this.processDeletePart = processDeletePart; 
+  _this.showRepairsList = showRepairsList;
   /***********************  end Exports  *************************/
   return _this;
 })();
